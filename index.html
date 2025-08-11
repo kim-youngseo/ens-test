@@ -1,2 +1,72 @@
 <!DOCTYPE html>
-<!-- The code will be here, placeholder for demonstration -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENS 테스트</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    img {
+      max-width: 90%;
+      height: auto;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      background: #007BFF;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>ENS 테스트 페이지</h1>
+
+  <script>
+    const assets = {
+      cover: './ens-test/cover.png',
+      resultImgs: [
+        './ens-test/w1.jpeg',
+        './ens-test/w2.jpeg',
+        './ens-test/w3.jpeg',
+        './ens-test/w4.jpeg'
+      ]
+    };
+
+    // Cover 이미지 보여주기
+    const coverImg = document.createElement('img');
+    coverImg.src = assets.cover;
+    coverImg.alt = "Cover Image";
+    document.body.appendChild(coverImg);
+
+    // 결과 이미지들 보여주기
+    assets.resultImgs.forEach((src, idx) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Result Image ${idx + 1}`;
+      document.body.appendChild(img);
+    });
+
+    // ENS 홈페이지 버튼
+    const ensBtn = document.createElement('a');
+    ensBtn.href = "https://www.snuens.com/";
+    ensBtn.className = "btn";
+    ensBtn.innerText = "ENS 홈페이지";
+    document.body.appendChild(ensBtn);
+
+    // 다시하기 버튼
+    const retryBtn = document.createElement('a');
+    retryBtn.href = "/";
+    retryBtn.className = "btn";
+    retryBtn.style.background = "#28a745";
+    retryBtn.innerText = "↻ 다시하기";
+    document.body.appendChild(retryBtn);
+  </script>
+</body>
+</html>
