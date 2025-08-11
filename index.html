@@ -26,4 +26,340 @@
       --accent:#ff8fb3;
       --accent-700:#ff6b96;
       --accent-100:#ffe3ec;
-      --shadow:0 10px 30px rgba(0,0,0
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family: 'Noto Sans KR', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      display:flex; justify-content:center; align-items:flex-start;
+    }
+    .wrap{width:100%; max-width:420px; padding:28px 18px 100px}
+    .card{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px}
+    h1{margin:8px 0 10px; font-size:36px; line-height:1.22; letter-spacing:-.3px}
+    h2{margin:0 0 12px; font-size:22px}
+    p{margin:0 0 12px; color:var(--muted);}
+
+    /* Intro */
+    .brand{color:#b1b1b1; font-weight:700; letter-spacing:.2px; text-align:center; font-size:14px}
+    .hero{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center}
+    .title{font-weight:900; font-size:34px; text-align:center; letter-spacing:-0.4px}
+    .hero img{width:320px; height:320px; object-fit:cover; border-radius:18px; box-shadow:var(--shadow)}
+
+    .cta{appearance:none; border:none; padding:18px 22px; border-radius:999px; background:var(--accent);
+      color:#fff; font-weight:900; font-size:18px; cursor:pointer; box-shadow:0 14px 38px rgba(255,105,135,.35);
+      transition:transform .06s ease, box-shadow .2s ease; width:100%;}
+    .cta:hover{transform:translateY(-1px)}
+    .cta:active{transform:translateY(1px)}
+
+    .small-muted{color:#8a8a8a; text-align:center; margin-top:6px; font-weight:700}
+
+    .share-row{display:flex; gap:16px; justify-content:center; margin-top:16px}
+    .icon-btn{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; text-decoration:none; box-shadow:var(--shadow)}
+    .icon-fb{background:#3b5998}
+    .icon-x{background:#1da1f2}
+    .icon-kk{background:#ffde00}
+    .icon-link{background:#2f2f2f}
+    .icon-btn svg{width:26px;height:26px; fill:#fff}
+    .icon-kk svg{fill:#111}
+
+    /* Quiz */
+    .progress{height:8px; background:#eee; border-radius:999px; overflow:hidden; margin:6px 0 18px}
+    .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-700));}
+
+    .q-title{font-size:18px; font-weight:900; margin:0 0 18px; letter-spacing:.2px; line-height:1.6}
+    .q-block{margin-bottom:32px}
+    .likert{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin-bottom:18px}
+    .pill{
+      position:relative; border-radius:14px; border:1.6px solid #e7e7e7; text-align:center;
+      padding:14px 6px; cursor:pointer; user-select:none; background:#fff; font-weight:800; letter-spacing:.6px
+    }
+    .pill input{position:absolute; inset:0; opacity:0; cursor:pointer}
+    .pill.active{border-color:var(--accent); background:var(--accent-100); color:#bf0f57}
+
+    .helper{color:#9a9a9a; margin-top:-2px; margin-bottom:14px; font-size:13px}
+
+    .nav-row{display:flex; gap:10px; margin-top:10px}
+    .btn{flex:1; padding:14px 16px; border-radius:14px; border:none; font-weight:900; cursor:pointer}
+    .btn.secondary{background:#f4f5f7}
+    .btn.primary{background:var(--accent); color:#fff}
+
+    /* Result */
+    .result-title{font-size:28px; font-weight:900; margin:0 0 8px; color:var(--accent-700); text-align:center}
+    .sup{color:#767676; text-align:center; font-weight:700; margin-bottom:6px}
+    .result-hero{width:280px; height:280px; object-fit:cover; border-radius:16px; display:block; margin:0 auto 6px; box-shadow:var(--shadow)}
+    .divider{height:6px; width:56px; background:var(--accent-100); border-radius:999px; margin:18px auto}
+    .result-sub{font-size:20px; font-weight:900; text-align:center; color:#222; margin:0 0 8px}
+    .result-desc{white-space:pre-line; color:#333; line-height:1.9; font-weight:600; text-align:center}
+
+    .retry{display:flex; align-items:center; justify-content:center; gap:6px; margin:14px auto 8px; color:#444; font-weight:800}
+
+    .big-cta{display:block; text-align:center; padding:18px 20px; border-radius:999px; background:var(--accent); color:#fff; font-weight:900; text-decoration:none; box-shadow:0 18px 40px rgba(255,105,135,.35); margin:18px 0 18px}
+
+    .share-row.bottom{margin-top:6px; margin-bottom:2px}
+
+    .footer-space{height:80px}
+
+    @media (max-width:380px){
+      .wrap{padding:22px 14px 80px}
+      .hero img{width:280px; height:280px}
+      h1.title{font-size:32px}
+      .result-hero{width:240px; height:240px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Intro -->
+    <div id="screen-intro" class="card" role="region" aria-labelledby="introTitle">
+      <div class="brand">문화산업 경영전략학회 ENS</div>
+      <h1 id="introTitle" class="title">뚠 성향 테스트</h1>
+      <div class="hero">
+        <!-- 로컬 표지 이미지 -->
+        <img id="coverImg" src="./cover.png" alt="표지 이미지" />
+        <button class="cta" id="startBtn">시작하기</button>
+        <div class="small-muted" id="counter">## 명이 이미 참여했어요!</div>
+        <div class="share-row" aria-label="공유 버튼">
+          <a class="icon-btn icon-fb" href="#" id="shareFb" aria-label="Facebook 공유" title="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.2V12h2.2V9.8c0-2.2 1.3-3.5 3.3-3.5.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 2.9h-1.9v7A10 10 0 0 0 22 12"/></svg>
+          </a>
+          <a class="icon-btn icon-x" href="#" id="shareTw" aria-label="X 공유" title="X">
+            <svg viewBox="0 0 24 24"><path d="M3 3h4.9l4.3 6 5-6H21l-7.1 8.4L21 21h-4.9l-4.6-6.4L6 21H3l7.4-8.7L3 3z"/></svg>
+          </a>
+          <a class="icon-btn icon-kk" href="#" id="shareKt" aria-label="카카오 공유" title="KakaoTalk">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          </a>
+          <a class="icon-btn icon-link" href="#" id="shareLink" aria-label="링크 복사" title="링크 복사">
+            <svg viewBox="0 0 24 24"><path d="M3.9 12a4.9 4.9 0 0 1 4.9-4.9h3v2h-3a2.9 2.9 0 1 0 0 5.8h3v2h-3A4.9 4.9 0 0 1 3.9 12Zm6.3 1h3.6v-2h-3.6v2Zm5-5h3a4.9 4.9 0 0 1 0 9.8h-3v-2h3a2.9 2.9 0 1 0 0-5.8h-3v-2Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <div id="screen-quiz" class="card" style="display:none" role="region" aria-live="polite">
+      <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+      <div id="quizHeader" class="small-muted" style="margin-bottom:6px">1/4주차</div>
+      <h2 id="quizTitle">1주차 – 산업/시장 리서치</h2>
+      <div id="questions"></div>
+      <div class="nav-row">
+        <button class="btn secondary" id="prevBtn">이전</button>
+        <button class="btn primary" id="nextBtn">다음</button>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div id="screen-result" class="card" style="display:none" role="region" aria-labelledby="resultTitle">
+      <div class="sup">당신의 유형은</div>
+      <div id="resultType" class="result-title">1주차 - 산업 헌터형</div>
+      <!-- 로컬 초기 이미지 -->
+      <img id="resultImg" class="result-hero" src="./w1.jpeg" alt="결과 이미지" />
+      <div class="divider"></div>
+      <div id="resultSub" class="result-sub">당신은 이걸 원할 것이다!</div>
+      <p id="resultDesc" class="result-desc"></p>
+
+      <div class="retry" id="retryBtn">↻ 다시하기</div>
+      <a class="big-cta" id="homeBtn" href="https://www.snuens.com/" target="_blank" rel="noopener">ENS 홈페이지로 이동</a>
+      <div class="share-row bottom" aria-label="공유 버튼(결과)">
+        <a class="icon-btn icon-fb" href="#" id="shareFb2" aria-label="Facebook 공유" title="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.2V12h2.2V9.8c0-2.2 1.3-3.5 3.3-3.5.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 2.9h-1.9v7A10 10 0 0 0 22 12"/></svg>
+        </a>
+        <a class="icon-btn icon-x" href="#" id="shareTw2" aria-label="X 공유" title="X">
+          <svg viewBox="0 0 24 24"><path d="M3 3h4.9l4.3 6 5-6H21l-7.1 8.4L21 21h-4.9l-4.6-6.4L6 21H3l7.4-8.7L3 3z"/></svg>
+        </a>
+        <a class="icon-btn icon-kk" href="#" id="shareKt2" aria-label="카카오 공유" title="KakaoTalk">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+        </a>
+        <a class="icon-btn icon-link" href="#" id="shareLink2" aria-label="링크 복사" title="링크 복사">
+          <svg viewBox="0 0 24 24"><path d="M3.9 12a4.9 4.9 0 0 1 4.9-4.9h3v2h-3a2.9 2.9 0 1 0 0 5.8h3v2h-3A4.9 4.9 0 0 1 3.9 12Zm6.3 1h3.6v-2h-3.6v2Zm5-5h3a4.9 4.9 0 0 1 0 9.8h-3v-2h3a2.9 2.9 0 1 0 0-5.8h-3v-2Z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-space" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    // ===== 이미지 경로(로컬) =====
+    const assets = {
+      cover: './cover.png',
+      resultImgs: ['./w1.jpeg', './w2.jpeg', './w3.jpeg', './w4.jpeg']
+    };
+    document.getElementById('coverImg').src = assets.cover;
+
+    // ===== 질문 데이터 =====
+    const weeks = [
+      { title: '1주차 – 산업/시장 리서치', questions: [
+        '새로운 산업·트렌드 리포트·시장 데이터를 파고드는 게 재밌다.',
+        '큰 그림을 보기 위해 뉴스나 통계 자료를 수집하는 걸 좋아한다.' ]},
+      { title: '2주차 – 소비자 조사', questions: [
+        '사람들에게 “왜 그렇게 생각하세요?”라고 묻는 게 즐겁다.',
+        '설문을 직접 만들어보고 결과를 분석하는 게 흥미롭다.' ]},
+      { title: '3주차 – 아이디어 기획', questions: [
+        '아이디어 회의에서 “그거 재밌다!”라는 말을 들으면 뿌듯하다.',
+        '아이디어를 실현 가능하게 만들기 위해 계속 수정하는 것도 즐겁다.' ]},
+      { title: '4주차 – 전략 구체화 & 목업 설계', questions: [
+        '슬라이드·목업·발표자료 등 결과물을 만드는 걸 좋아한다.',
+        '기획 내용을 구체적인 흐름과 구조로 정리할 수 있다.' ]}
+    ];
+
+    // ===== 결과 텍스트 =====
+    const resultDefs = [
+      { title:'1주차 - 산업 헌터형', sub:'나는 산업을 사냥한다!',
+        desc:`기사, 보고서, 통계 자료…
+너한텐 그게 바로 사냥감!
+신산업, 뜨는 시장, 트렌드 변화에
+레이더를 켜고 “이건 된다”를 외치는 스타일.
+“자료조사 과몰입으로 밤새본 적 있음”`,
+        img: assets.resultImgs[0] },
+      { title:'2주차 - 소비자 탐정형', sub:'당신은 이걸 원할 것이다!',
+        desc:`왜 그렇게 행동했을까? 어떻게 생각했을까?
+관찰력 레벨 99! 사람들의 마음을 읽는 당신은 소비자 탐정.
+“설문지에 혼을 담는 당신”
+ENS 2주차 프로젝트에 적합한 인재입니다`,
+        img: assets.resultImgs[1] },
+      { title:'3주차 - 아이디어 마법사형', sub:'아이디어가 폭발한다!',
+        desc:`무슨 회의든 아이디어가 펑!펑!
+쏟아져 나오는 기획 천재.
+크리에이티브 파워 +
+실행 가능성까지 챙기는 실속 마법사!
+“회의에서 자꾸 말하게 되는 사람 1위”`,
+        img: assets.resultImgs[2] },
+      { title:'4주차 - 구현 장인형', sub:'슬라이드에 혼을 담다',
+        desc:`PPT, 목업, 흐름도…
+정갈하게 딱딱 맞춰가는 당신.
+한 장 만들 때마다 장인의 손길이 느껴진다.
+“픽토그램 모으면 기분 좋아지는 사람”`,
+        img: assets.resultImgs[3] }
+    ];
+
+    // ===== 상태 =====
+    let step = 0; // 0~3
+    const answers = [ [null,null], [null,null], [null,null], [null,null] ];
+
+    const intro = document.getElementById('screen-intro');
+    const quiz = document.getElementById('screen-quiz');
+    const result = document.getElementById('screen-result');
+
+    const bar = document.getElementById('bar');
+    const quizHeader = document.getElementById('quizHeader');
+    const quizTitle = document.getElementById('quizTitle');
+    const qWrap = document.getElementById('questions');
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const resultType = document.getElementById('resultType');
+    const resultImg = document.getElementById('resultImg');
+    const resultDesc = document.getElementById('resultDesc');
+    const resultSub = document.getElementById('resultSub');
+
+    // ===== 공유 공통 =====
+    const shareData = {title:'ENS 뚠 성향 테스트', text:'나의 ENS 성향은?', url: location.href};
+    function copyLink(){ navigator.clipboard.writeText(location.href).then(()=> alert('링크가 복사됐어요!')); }
+    function openFB(){ window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`,'_blank'); }
+    function openTW(){ window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('ENS 뚠 성향 테스트')}&url=${encodeURIComponent(location.href)}`,'_blank'); }
+    function openKT(){ if(navigator.share){ navigator.share(shareData).catch(()=>{}); } else alert('모바일에서 공유하기를 사용해 주세요!'); }
+
+    ['shareFb','shareFb2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openFB();}));
+    ['shareTw','shareTw2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openTW();}));
+    ['shareKt','shareKt2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openKT();}));
+    ['shareLink','shareLink2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();copyLink();}));
+
+    // ===== 시작/네비게이션 =====
+    document.getElementById('startBtn').addEventListener('click', ()=>{
+      intro.style.display='none';
+      quiz.style.display='block';
+      renderStep();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    prevBtn.addEventListener('click', ()=>{
+      if(step===0){ // 처음으로
+        quiz.style.display='none'; intro.style.display='block'; return;
+      }
+      step--; renderStep();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    nextBtn.addEventListener('click', ()=>{
+      if(!isStepAnswered()){
+        alert('두 문항 모두 1~5 중 하나를 선택해 주세요!');
+        return;
+      }
+      if(step===weeks.length-1){ showResult(); }
+      else{ step++; renderStep(); }
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    function renderStep(){
+      const total = weeks.length;
+      const percent = Math.round(((step)/total)*100);
+      bar.style.width = `${percent}%`;
+      quizHeader.textContent = `${step+1}/${total}주차`;
+      quizTitle.textContent = weeks[step].title;
+
+      qWrap.innerHTML = '';
+      weeks[step].questions.forEach((text, idx)=>{
+        const picked = answers[step][idx];
+        const block = document.createElement('div');
+        block.className = 'q-block';
+        block.innerHTML = `
+          <div class="q-title">Q${idx+1}. ${text}</div>
+          <div class="likert" role="radiogroup" aria-label="리커트 척도">
+            ${[1,2,3,4,5].map(v=>`
+              <label class="pill ${picked===v?'active':''}">
+                <input type="radio" name="q${idx}" value="${v}" ${picked===v?'checked':''} />
+                ${v}
+              </label>
+            `).join('')}
+          </div>
+          <div class="helper">1 전혀 아니다 · 3 보통 · 5 매우 그렇다</div>
+        `;
+        qWrap.appendChild(block);
+      });
+
+      qWrap.querySelectorAll('input[type="radio"]').forEach((inp)=>{
+        inp.addEventListener('change', (e)=>{
+          const name = e.target.name;
+          const i = Number(name.replace('q',''));
+          answers[step][i] = Number(e.target.value);
+          qWrap.querySelectorAll(`input[name="${name}"]`).forEach(x=> x.parentElement.classList.toggle('active', x.checked));
+        });
+      });
+
+      prevBtn.textContent = step===0 ? '처음으로' : '이전';
+      nextBtn.textContent = step===total-1 ? '결과 보기' : '다음';
+    }
+
+    function isStepAnswered(){
+      return answers[step][0] != null && answers[step][1] != null;
+    }
+
+    function showResult(){
+      // 합산 + 동점 시 뒤 주차 우선
+      const sums = answers.map(pair => (pair[0]||0) + (pair[1]||0));
+      const maxVal = Math.max(...sums);
+      let winner = -1;
+      for(let i = sums.length-1; i>=0; i--){ if(sums[i] === maxVal){ winner = i; break; } }
+
+      const def = resultDefs[winner];
+      resultType.textContent = def.title;
+      resultImg.src = def.img;
+      resultSub.textContent = def.sub;
+      resultDesc.textContent = def.desc;
+
+      quiz.style.display='none';
+      result.style.display='block';
+    }
+
+    // 다시하기 → 첫 화면
+    document.getElementById('retryBtn').addEventListener('click', ()=>{
+      step = 0; for(let i=0;i<answers.length;i++){ answers[i] = [null,null]; }
+      result.style.display='none'; intro.style.display='block';
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  </script>
+</body>
+</html>
