@@ -19,21 +19,15 @@
 
   <style>
     :root{
-      --bg:#fff7fb;
-      --card:#ffffff;
-      --text:#2a2a2a;
-      --muted:#7b7b7b;
-      --accent:#ff8fb3;
-      --accent-700:#ff6b96;
-      --accent-100:#ffe3ec;
-      --shadow:0 10px 30px rgba(0,0,0,.06);
-      --radius:22px;
+      --bg:#fff7fb; --card:#ffffff; --text:#2a2a2a; --muted:#7b7b7b;
+      --accent:#ff8fb3; --accent-700:#ff6b96; --accent-100:#ffe3ec;
+      --shadow:0 10px 30px rgba(0,0,0,.06); --radius:22px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0; background:var(--bg); color:var(--text);
-      font-family: 'Noto Sans KR', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family:'Noto Sans KR',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
       display:flex; justify-content:center; align-items:flex-start;
     }
     .wrap{width:100%; max-width:420px; padding:28px 18px 100px}
@@ -43,7 +37,11 @@
     p{margin:0 0 12px; color:var(--muted);}
 
     /* Intro */
-    .brand{color:#b1b1b1; font-weight:700; letter-spacing:.2px; text-align:center; font-size:14px}
+    .brand{
+      color:#b1b1b1; font-weight:700; letter-spacing:.2px; text-align:center; font-size:14px;
+      /* (1) 브랜드와 제목 사이 간격 2배 */
+      margin-bottom:28px;
+    }
     .hero{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center}
     .title{font-weight:900; font-size:34px; text-align:center; letter-spacing:-0.4px}
     .hero img{width:320px; height:320px; object-fit:cover; border-radius:18px; box-shadow:var(--shadow)}
@@ -51,8 +49,7 @@
     .cta{appearance:none; border:none; padding:18px 22px; border-radius:999px; background:var(--accent);
       color:#fff; font-weight:900; font-size:18px; cursor:pointer; box-shadow:0 14px 38px rgba(255,105,135,.35);
       transition:transform .06s ease, box-shadow .2s ease; width:100%;}
-    .cta:hover{transform:translateY(-1px)}
-    .cta:active{transform:translateY(1px)}
+    .cta:hover{transform:translateY(-1px)} .cta:active{transform:translateY(1px)}
 
     .small-muted{color:#8a8a8a; text-align:center; margin-top:6px; font-weight:700}
 
@@ -69,37 +66,30 @@
     .progress{height:8px; background:#eee; border-radius:999px; overflow:hidden; margin:6px 0 18px}
     .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-700));}
 
-    .q-title{font-size:18px; font-weight:900; margin:0 0 18px; letter-spacing:.2px; line-height:1.6}
+    /* (4) 질문 글자 크기/굵기 살짝 줄임 */
+    .q-title{font-size:16px; font-weight:700; margin:0 0 18px; letter-spacing:.1px; line-height:1.65}
     .q-block{margin-bottom:32px}
     .likert{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin-bottom:18px}
-    .pill{
-      position:relative; border-radius:14px; border:1.6px solid #e7e7e7; text-align:center;
-      padding:14px 6px; cursor:pointer; user-select:none; background:#fff; font-weight:800; letter-spacing:.6px
-    }
+    .pill{position:relative; border-radius:14px; border:1.6px solid #e7e7e7; text-align:center;
+      padding:14px 6px; cursor:pointer; user-select:none; background:#fff; font-weight:800; letter-spacing:.6px}
     .pill input{position:absolute; inset:0; opacity:0; cursor:pointer}
     .pill.active{border-color:var(--accent); background:var(--accent-100); color:#bf0f57}
-
     .helper{color:#9a9a9a; margin-top:-2px; margin-bottom:14px; font-size:13px}
-
     .nav-row{display:flex; gap:10px; margin-top:10px}
     .btn{flex:1; padding:14px 16px; border-radius:14px; border:none; font-weight:900; cursor:pointer}
-    .btn.secondary{background:#f4f5f7}
-    .btn.primary{background:var(--accent); color:#fff}
+    .btn.secondary{background:#f4f5f7} .btn.primary{background:var(--accent); color:#fff}
 
     /* Result */
     .result-title{font-size:28px; font-weight:900; margin:0 0 8px; color:var(--accent-700); text-align:center}
+    .result-title.smaller{font-size:26px;} /* (6) 3주차만 살짝 작게 */
     .sup{color:#767676; text-align:center; font-weight:700; margin-bottom:6px}
     .result-hero{width:280px; height:280px; object-fit:cover; border-radius:16px; display:block; margin:0 auto 6px; box-shadow:var(--shadow)}
     .divider{height:6px; width:56px; background:var(--accent-100); border-radius:999px; margin:18px auto}
     .result-sub{font-size:20px; font-weight:900; text-align:center; color:#222; margin:0 0 8px}
     .result-desc{white-space:pre-line; color:#333; line-height:1.9; font-weight:600; text-align:center}
-
     .retry{display:flex; align-items:center; justify-content:center; gap:6px; margin:14px auto 8px; color:#444; font-weight:800}
-
     .big-cta{display:block; text-align:center; padding:18px 20px; border-radius:999px; background:var(--accent); color:#fff; font-weight:900; text-decoration:none; box-shadow:0 18px 40px rgba(255,105,135,.35); margin:18px 0 18px}
-
     .share-row.bottom{margin-top:6px; margin-bottom:2px}
-
     .footer-space{height:80px}
 
     @media (max-width:380px){
@@ -117,10 +107,14 @@
       <div class="brand">문화산업 경영전략학회 ENS</div>
       <h1 id="introTitle" class="title">뚠 성향 테스트</h1>
       <div class="hero">
-        <!-- 로컬 표지 이미지 -->
+        <!-- 표지: 로컬 이미지 -->
         <img id="coverImg" src="./cover.png" alt="표지 이미지" />
         <button class="cta" id="startBtn">시작하기</button>
-        <div class="small-muted" id="counter">## 명이 이미 참여했어요!</div>
+
+        <!-- (2) 실제 참여자 수 표시 -->
+        <div class="small-muted" id="counter">… 집계 중 …</div>
+
+        <!-- 아이콘 (3) : X는 유지, 나머지는 원형/색 정리 -->
         <div class="share-row" aria-label="공유 버튼">
           <a class="icon-btn icon-fb" href="#" id="shareFb" aria-label="Facebook 공유" title="Facebook">
             <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.2V12h2.2V9.8c0-2.2 1.3-3.5 3.3-3.5.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 2.9h-1.9v7A10 10 0 0 0 22 12"/></svg>
@@ -154,7 +148,7 @@
     <div id="screen-result" class="card" style="display:none" role="region" aria-labelledby="resultTitle">
       <div class="sup">당신의 유형은</div>
       <div id="resultType" class="result-title">1주차 - 산업 헌터형</div>
-      <!-- 로컬 초기 이미지 -->
+      <!-- 결과 이미지: 로컬 초기값 -->
       <img id="resultImg" class="result-hero" src="./w1.jpeg" alt="결과 이미지" />
       <div class="divider"></div>
       <div id="resultSub" class="result-sub">당신은 이걸 원할 것이다!</div>
@@ -162,6 +156,7 @@
 
       <div class="retry" id="retryBtn">↻ 다시하기</div>
       <a class="big-cta" id="homeBtn" href="https://www.snuens.com/" target="_blank" rel="noopener">ENS 홈페이지로 이동</a>
+
       <div class="share-row bottom" aria-label="공유 버튼(결과)">
         <a class="icon-btn icon-fb" href="#" id="shareFb2" aria-label="Facebook 공유" title="Facebook">
           <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.2V12h2.2V9.8c0-2.2 1.3-3.5 3.3-3.5.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 2.9h-1.9v7A10 10 0 0 0 22 12"/></svg>
@@ -204,7 +199,7 @@
         '기획 내용을 구체적인 흐름과 구조로 정리할 수 있다.' ]}
     ];
 
-    // ===== 결과 텍스트 =====
+    // ===== 결과 텍스트 (5: 2주차 문구 줄바꿈 수정) =====
     const resultDefs = [
       { title:'1주차 - 산업 헌터형', sub:'나는 산업을 사냥한다!',
         desc:`기사, 보고서, 통계 자료…
@@ -215,7 +210,8 @@
         img: assets.resultImgs[0] },
       { title:'2주차 - 소비자 탐정형', sub:'당신은 이걸 원할 것이다!',
         desc:`왜 그렇게 행동했을까? 어떻게 생각했을까?
-관찰력 레벨 99! 사람들의 마음을 읽는 당신은 소비자 탐정.
+관찰력 레벨 99!
+사람들의 마음을 읽는 당신은 소비자 탐정.
 “설문지에 혼을 담는 당신”
 ENS 2주차 프로젝트에 적합한 인재입니다`,
         img: assets.resultImgs[1] },
@@ -255,17 +251,40 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
     const resultDesc = document.getElementById('resultDesc');
     const resultSub = document.getElementById('resultSub');
 
-    // ===== 공유 공통 =====
+    // ===== 공유 (아이콘 클릭 시) =====
     const shareData = {title:'ENS 뚠 성향 테스트', text:'나의 ENS 성향은?', url: location.href};
     function copyLink(){ navigator.clipboard.writeText(location.href).then(()=> alert('링크가 복사됐어요!')); }
     function openFB(){ window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`,'_blank'); }
     function openTW(){ window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('ENS 뚠 성향 테스트')}&url=${encodeURIComponent(location.href)}`,'_blank'); }
     function openKT(){ if(navigator.share){ navigator.share(shareData).catch(()=>{}); } else alert('모바일에서 공유하기를 사용해 주세요!'); }
-
     ['shareFb','shareFb2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openFB();}));
     ['shareTw','shareTw2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openTW();}));
     ['shareKt','shareKt2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openKT();}));
     ['shareLink','shareLink2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();copyLink();}));
+
+    // ===== (2) 실제 참여자 수: CountAPI 사용 =====
+    const COUNTER_NS = 'ens-youngseo-2025';   // 네임스페이스(바꾸고 싶으면 바꿔도 OK)
+    const COUNTER_KEY = 'ens-quiz-result-count';
+    const counterEl = document.getElementById('counter');
+
+    async function fetchCount(){
+      try{
+        const r = await fetch(`https://api.countapi.xyz/get/${COUNTER_NS}/${COUNTER_KEY}`);
+        const data = await r.json();
+        counterEl.textContent = `${(data.value||0).toLocaleString()}명이 이미 참여했어요!`;
+      }catch(e){
+        counterEl.textContent = '지금까지 많은 분들이 참여했어요!';
+      }
+    }
+    fetchCount();
+
+    async function hitCount(){
+      try{
+        const r = await fetch(`https://api.countapi.xyz/hit/${COUNTER_NS}/${COUNTER_KEY}`);
+        const data = await r.json();
+        counterEl.textContent = `${(data.value||0).toLocaleString()}명이 이미 참여했어요!`;
+      }catch(e){ /* 실패해도 무시 */ }
+    }
 
     // ===== 시작/네비게이션 =====
     document.getElementById('startBtn').addEventListener('click', ()=>{
@@ -276,9 +295,7 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
     });
 
     prevBtn.addEventListener('click', ()=>{
-      if(step===0){ // 처음으로
-        quiz.style.display='none'; intro.style.display='block'; return;
-      }
+      if(step===0){ quiz.style.display='none'; intro.style.display='block'; return; }
       step--; renderStep();
       window.scrollTo({top:0, behavior:'smooth'});
     });
@@ -333,9 +350,7 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
       nextBtn.textContent = step===total-1 ? '결과 보기' : '다음';
     }
 
-    function isStepAnswered(){
-      return answers[step][0] != null && answers[step][1] != null;
-    }
+    function isStepAnswered(){ return answers[step][0] != null && answers[step][1] != null; }
 
     function showResult(){
       // 합산 + 동점 시 뒤 주차 우선
@@ -350,8 +365,14 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
       resultSub.textContent = def.sub;
       resultDesc.textContent = def.desc;
 
+      // (6) 3주차일 때만 제목 작게
+      resultType.classList.toggle('smaller', winner === 2);
+
       quiz.style.display='none';
       result.style.display='block';
+
+      // (2) 결과 도출 시 카운터 +1
+      hitCount();
     }
 
     // 다시하기 → 첫 화면
