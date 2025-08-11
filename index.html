@@ -39,7 +39,7 @@
     /* Intro */
     .brand{
       color:#b1b1b1; font-weight:700; letter-spacing:.2px; text-align:center; font-size:14px;
-      /* (1) 브랜드와 제목 사이 간격 = 기존 28px의 절반 */
+      /* 브랜드와 제목 사이 간격(요청: 절반) */
       margin-bottom:14px;
     }
     .hero{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center}
@@ -51,9 +51,7 @@
       transition:transform .06s ease, box-shadow .2s ease; width:100%;}
     .cta:hover{transform:translateY(-1px)} .cta:active{transform:translateY(1px)}
 
-    .small-muted{color:#8a8a8a; text-align:center; margin-top:6px; font-weight:700}
-
-    .share-row{display:flex; gap:16px; justify-content:center; margin-top:16px}
+    .share-row{display:flex; gap:16px; justify-content:center; margin-top:8px}
     .icon-btn{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; text-decoration:none; box-shadow:var(--shadow)}
     .icon-fb{background:#3b5998}
     .icon-x{background:#1da1f2}
@@ -66,7 +64,7 @@
     .progress{height:8px; background:#eee; border-radius:999px; overflow:hidden; margin:6px 0 18px}
     .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-700));}
 
-    /* (4) 질문 글자 살짝 작고 덜 굵게 */
+    /* 질문 글자: 작고 덜 굵게 */
     .q-title{font-size:15px; font-weight:600; margin:0 0 18px; letter-spacing:.05px; line-height:1.65}
     .q-block{margin-bottom:32px}
     .likert{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin-bottom:18px}
@@ -81,7 +79,7 @@
 
     /* Result */
     .result-title{font-size:28px; font-weight:900; margin:0 0 8px; color:var(--accent-700); text-align:center}
-    .result-title.smaller{font-size:26px;} /* (6) 3주차만 살짝 작게 */
+    .result-title.smaller{font-size:26px;} /* 3주차만 살짝 작게 */
     .sup{color:#767676; text-align:center; font-weight:700; margin-bottom:6px}
     .result-hero{width:280px; height:280px; object-fit:cover; border-radius:16px; display:block; margin:0 auto 6px; box-shadow:var(--shadow)}
     .divider{height:6px; width:56px; background:var(--accent-100); border-radius:999px; margin:18px auto}
@@ -110,10 +108,7 @@
         <img id="coverImg" src="./cover.png" alt="표지 이미지" />
         <button class="cta" id="startBtn">시작하기</button>
 
-        <!-- (2) 실제 참여자 수 -->
-        <div class="small-muted" id="counter">지금까지 0명이 참여했어요!</div>
-
-        <!-- 아이콘 -->
+        <!-- 공유 아이콘 -->
         <div class="share-row" aria-label="공유 버튼">
           <a class="icon-btn icon-fb" href="#" id="shareFb" aria-label="Facebook 공유" title="Facebook">
             <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.2V12h2.2V9.8c0-2.2 1.3-3.5 3.3-3.5.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 2.9h-1.9v7A10 10 0 0 0 22 12"/></svg>
@@ -124,8 +119,12 @@
           <a class="icon-btn icon-kk" href="#" id="shareKt" aria-label="카카오 공유" title="KakaoTalk">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
           </a>
+          <!-- (2) 링크 아이콘 교체: 보다 심플한 체인 아이콘 -->
           <a class="icon-btn icon-link" href="#" id="shareLink" aria-label="링크 복사" title="링크 복사">
-            <svg viewBox="0 0 24 24"><path d="M3.9 12a4.9 4.9 0 0 1 4.9-4.9h3v2h-3a2.9 2.9 0 1 0 0 5.8h3v2h-3A4.9 4.9 0 0 1 3.9 12Zm6.3 1h3.6v-2h-3.6v2Zm5-5h3a4.9 4.9 0 0 1 0 9.8h-3v-2h3a2.9 2.9 0 1 0 0-5.8h-3v-2Z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M9.17 7.17a4 4 0 0 1 5.66 0l1.01 1.01a4 4 0 0 1 0 5.66l-2.12 2.12a4 4 0 0 1-5.66 0l-.58-.58a1 1 0 1 1 1.41-1.41l.58.58a2 2 0 0 0 2.83 0l2.12-2.12a2 2 0 0 0 0-2.83l-1.01-1.01a2 2 0 0 0-2.83 0 1 1 0 1 1-1.41-1.41Z"/>
+              <path d="M7.17 9.17a4 4 0 0 1 0-5.66l2.12-2.12a4 4 0 0 1 5.66 0l.58.58a1 1 0 1 1-1.41 1.41l-.58-.58a2 2 0 0 0-2.83 0L8.59 4.51a2 2 0 0 0 0 2.83l1.01 1.01a1 1 0 1 1-1.41 1.41l-1.01-1.01Z" opacity=".95"/>
+            </svg>
           </a>
         </div>
       </div>
@@ -166,7 +165,11 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
         </a>
         <a class="icon-btn icon-link" href="#" id="shareLink2" aria-label="링크 복사" title="링크 복사">
-          <svg viewBox="0 0 24 24"><path d="M3.9 12a4.9 4.9 0 0 1 4.9-4.9h3v2h-3a2.9 2.9 0 1 0 0 5.8h3v2h-3A4.9 4.9 0 0 1 3.9 12Zm6.3 1h3.6v-2h-3.6v2Zm5-5h3a4.9 4.9 0 0 1 0 9.8h-3v-2h3a2.9 2.9 0 1 0 0-5.8h-3v-2Z"/></svg>
+          <!-- 동일한 체인 아이콘 재사용 -->
+          <svg viewBox="0 0 24 24">
+            <path d="M9.17 7.17a4 4 0 0 1 5.66 0l1.01 1.01a4 4 0 0 1 0 5.66l-2.12 2.12a4 4 0 0 1-5.66 0l-.58-.58a1 1 0 1 1 1.41-1.41l.58.58a2 2 0 0 0 2.83 0l2.12-2.12a2 2 0 0 0 0-2.83l-1.01-1.01a2 2 0 0 0-2.83 0 1 1 0 1 1-1.41-1.41Z"/>
+            <path d="M7.17 9.17a4 4 0 0 1 0-5.66l2.12-2.12a4 4 0 0 1 5.66 0l.58.58a1 1 0 1 1-1.41 1.41l-.58-.58a2 2 0 0 0-2.83 0L8.59 4.51a2 2 0 0 0 0 2.83l1.01 1.01a1 1 0 1 1-1.41 1.41l-1.01-1.01Z" opacity=".95"/>
+          </svg>
         </a>
       </div>
     </div>
@@ -229,7 +232,7 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
     ];
 
     /* 상태 */
-    let step = 0; // 0~3
+    let step = 0;
     const answers = [ [null,null], [null,null], [null,null], [null,null] ];
 
     const intro = document.getElementById('screen-intro');
@@ -260,37 +263,7 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
     ['shareKt','shareKt2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();openKT();}));
     ['shareLink','shareLink2'].forEach(id=> document.getElementById(id).addEventListener('click',(e)=>{e.preventDefault();copyLink();}));
 
-    /* (2) 실제 참여자 수 – CountAPI */
-    const COUNTER_NS = 'ens-youngseo-2025';   // 원하는 값으로 바꿔도 OK
-    const COUNTER_KEY = 'ens-quiz-result-count';
-    const counterEl = document.getElementById('counter');
-
-    async function updateCounterText(value){
-      const safe = Number(value||0);
-      counterEl.textContent = `지금까지 ${safe.toLocaleString()}명이 참여했어요!`;
-    }
-    async function fetchCount(){
-      try{
-        const r = await fetch(`https://api.countapi.xyz/get/${COUNTER_NS}/${COUNTER_KEY}`);
-        const data = await r.json();
-        await updateCounterText(data.value);
-      }catch(e){
-        // 실패해도 숫자 형식 유지 (0으로 표시)
-        await updateCounterText(0);
-      }
-    }
-    async function hitCount(){
-      try{
-        const r = await fetch(`https://api.countapi.xyz/hit/${COUNTER_NS}/${COUNTER_KEY}`);
-        const data = await r.json();
-        await updateCounterText(data.value);
-      }catch(e){
-        // 실패해도 화면 숫자는 그대로 둠
-      }
-    }
-    fetchCount();
-
-    /* 시작/네비 */
+    /* 네비게이션 */
     document.getElementById('startBtn').addEventListener('click', ()=>{
       intro.style.display='none';
       quiz.style.display='block';
@@ -369,14 +342,11 @@ ENS 2주차 프로젝트에 적합한 인재입니다`,
       resultSub.textContent = def.sub;
       resultDesc.textContent = def.desc;
 
-      // (6) 3주차일 때만 제목 크기 축소
+      // 3주차일 때만 제목 크기 축소
       resultType.classList.toggle('smaller', winner === 2);
 
       quiz.style.display='none';
       result.style.display='block';
-
-      // (2) 결과 도출 시 카운터 +1
-      hitCount();
     }
 
     // 다시하기 → 첫 화면
