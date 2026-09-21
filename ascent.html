@@ -35,7 +35,8 @@
   --dim:#6E6E78;
 
   --ff:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
-  --ff-hw:'Hanwha Gothic','HanwhaGothic','한화고딕','Hanwha','한화',var(--ff);
+  /* 굵기 축 : 300 Light · 400 Regular · 500 Medium · 600 SemiBold · 700 Bold · 800 ExtraBold */
+  --w-light:300; --w-reg:400; --w-med:500; --w-semi:600; --w-bold:700; --w-xbold:800;
 
   /* ---- 반경 ---- */
   --r:14px; --r2:18px; --r3:24px;
@@ -50,8 +51,8 @@ body{
   color:var(--txt);font-family:var(--ff);-webkit-font-smoothing:antialiased;
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 12px}
 
-.hw{font-family:var(--ff-hw);font-feature-settings:"ss01";letter-spacing:-.01em}
-span.hw{display:inline;font-family:var(--ff-hw)}
+.hw{font-family:var(--ff);letter-spacing:-.01em}
+span.hw{display:inline;font-family:var(--ff)}
 
 /* ---------- 디바이스 ---------- */
 .device{width:390px;height:844px;max-width:100%;border-radius:40px;position:relative;overflow:hidden;
@@ -98,15 +99,16 @@ span.hw{display:inline;font-family:var(--ff-hw)}
 .nav .bk:active{background:var(--s2)}
 .nav h2{font-size:17px;font-weight:700;letter-spacing:-.03em}
 .hi{font-size:14px;font-weight:600;color:var(--amb2);letter-spacing:-.02em;flex:none}
-.hname{font-size:27px;font-weight:700;letter-spacing:-.04em;line-height:1.32;margin:8px 0 20px;flex:none}
+.hname{font-size:27px;font-weight:800;letter-spacing:-.04em;line-height:1.32;margin:8px 0 20px;flex:none}
 .hname em{font-style:normal;color:var(--amb2)}
 .h1{font-size:26px;font-weight:700;letter-spacing:-.04em;line-height:1.35;margin-bottom:10px}
 .h1.sm{font-size:22px}
-.sub{font-size:15px;font-weight:400;color:var(--mut);line-height:1.72;margin-bottom:24px;
+.sub{font-size:15px;font-weight:350;color:var(--mut);line-height:1.72;margin-bottom:24px;
   letter-spacing:-.02em;flex:none}
 .sub b{color:var(--amb2);font-weight:600}
-.hint{font-size:13.5px;color:var(--dim);line-height:1.7;letter-spacing:-.02em}
-.lead{font-size:15px;color:var(--mut);line-height:1.8;margin-bottom:24px;flex:none;letter-spacing:-.02em}
+.hint{font-size:13.5px;font-weight:350;color:var(--dim);line-height:1.7;letter-spacing:-.02em}
+.lead{font-size:15px;font-weight:350;color:var(--mut);line-height:1.8;margin-bottom:24px;flex:none;
+  letter-spacing:-.02em}
 .spacer{flex:1;min-height:12px}
 .sec{display:flex;align-items:baseline;gap:7px;font-size:17px;font-weight:700;letter-spacing:-.035em;
   color:var(--txt);margin:32px 0 14px;flex:none}
@@ -127,7 +129,8 @@ span.hw{display:inline;font-family:var(--ff-hw)}
 
 .card{background:var(--s1);border-radius:var(--r2);padding:18px;margin-bottom:10px;flex:none}
 .card b{font-size:15px;display:block;margin-bottom:8px;font-weight:700;letter-spacing:-.03em}
-.card span{font-size:14px;color:var(--mut);line-height:1.75;display:block;letter-spacing:-.02em}
+.card span{font-size:14px;font-weight:350;color:var(--mut);line-height:1.75;display:block;
+  letter-spacing:-.02em}
 
 .chip{display:inline-block;font-size:13px;font-weight:600;color:var(--vio);letter-spacing:-.02em;
   background:var(--vio-dim);border-radius:8px;padding:6px 11px}
@@ -157,7 +160,7 @@ span.hw{display:inline;font-family:var(--ff-hw)}
 .lockup{width:150px;margin:24px auto 0;flex:none}
 .lockup img{width:100%;display:block}
 .lgtop{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:20px}
-.lgmark{font-size:44px;font-weight:700;letter-spacing:-.05em;color:var(--amb);text-align:center;line-height:1}
+.lgmark{font-size:44px;font-weight:800;letter-spacing:-.05em;color:var(--amb);text-align:center;line-height:1}
 .lgmark span{color:var(--txt);font-size:17px;font-weight:600;display:block;
   letter-spacing:-.035em;margin-top:18px}
 .lglink{display:inline;background:none;border:none;color:var(--vio);
@@ -199,7 +202,7 @@ span.hw{display:inline;font-family:var(--ff-hw)}
 #s-intro{background:var(--bg);align-items:center;justify-content:center;padding:0}
 .icap{position:absolute;left:32px;right:32px;top:50%;transform:translateY(-50%);text-align:center;z-index:5;
   pointer-events:none}
-.icap p{font-size:21px;font-weight:700;letter-spacing:-.04em;line-height:1.62;color:#fff;
+.icap p{font-size:21px;font-weight:800;letter-spacing:-.04em;line-height:1.62;color:#fff;
   opacity:0;transform:translateY(12px)}
 .icap p.show{animation:capIn 3.2s ease forwards}
 @keyframes capIn{12%{opacity:1;transform:none}76%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-10px)}}
@@ -212,9 +215,10 @@ span.hw{display:inline;font-family:var(--ff-hw)}
 .wel .ln{opacity:0;transform:translateY(14px);animation:rise .6s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes rise{to{opacity:1;transform:none}}
 .welhi{font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--amb2)}
-.welttl{font-size:28px;font-weight:700;letter-spacing:-.045em;line-height:1.38;margin:12px 0 24px}
+.welttl{font-size:28px;font-weight:800;letter-spacing:-.045em;line-height:1.38;margin:12px 0 24px}
 .welttl em{font-style:normal;color:var(--amb2)}
-.welp{font-size:15px;color:var(--mut);line-height:1.78;margin-bottom:18px;letter-spacing:-.025em}
+.welp{font-size:15px;font-weight:350;color:var(--mut);line-height:1.78;margin-bottom:18px;
+  letter-spacing:-.025em}
 .welbox{display:flex;gap:14px;align-items:center;background:var(--s1);
   border-radius:var(--r2);padding:16px;margin-bottom:10px}
 .welbox .ic{width:44px;height:44px;border-radius:12px;flex:none;display:flex;align-items:center;
@@ -427,7 +431,8 @@ span.hw{display:inline;font-family:var(--ff-hw)}
   background:var(--vio2)}
 .roomcard span{display:block;font-size:13px;font-weight:700;letter-spacing:-.02em;
   color:rgba(255,255,255,.72)}
-.roomcard b{display:block;font-size:38px;font-weight:700;letter-spacing:-.045em;margin:10px 0 8px}
+.roomcard b{display:block;font-size:38px;font-weight:800;letter-spacing:-.045em;margin:10px 0 8px;
+  font-variant-numeric:tabular-nums}
 .roomcard em{font-style:normal;font-size:13.5px;color:rgba(255,255,255,.78);letter-spacing:-.02em}
 .mapempty{background:var(--s1);border-radius:var(--r3);
   padding:40px 22px;text-align:center;flex:none;margin-bottom:8px}
@@ -500,8 +505,8 @@ span.hw{display:inline;font-family:var(--ff-hw)}
 .tl p{font-size:16px;font-weight:700;margin-bottom:6px;line-height:1.4;letter-spacing:-.035em}
 .tl p em{font-style:normal;color:var(--vio);font-size:13px;font-weight:700;display:block;margin-bottom:3px}
 .tl span{font-size:13.5px;color:var(--mut);line-height:1.6;letter-spacing:-.02em}
-.maplead{font-size:20px;font-weight:700;letter-spacing:-.04em;line-height:1.48;margin-bottom:20px;flex:none}
-.maplead b{color:var(--amb2);font-weight:700}
+.maplead{font-size:20px;font-weight:300;letter-spacing:-.04em;line-height:1.48;margin-bottom:20px;flex:none}
+.maplead b{color:var(--amb2);font-weight:600}
 .mapwrap{position:relative;border-radius:var(--r3);overflow:hidden;flex:none;
   background:var(--s1);padding:8px}
 .mapwrap svg{display:block;width:100%;height:auto;border-radius:var(--r2)}
