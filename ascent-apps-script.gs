@@ -79,6 +79,26 @@ function doPost(e) {
       return json_({ ok: true });
     }
 
+    if (body.action === 'edit' && body.id && body.patch) {
+      var lastE = sh.getLastRow();
+      if (lastE > 1) {
+        var idsE = sh.getRange(2, 1, lastE - 1, 1).getValues();
+        for (var k = 0; k < idsE.length; k++) {
+          if (String(idsE[k][0]) === String(body.id)) {
+            var row = k + 2;
+            if (body.patch.text !== undefined) {
+              sh.getRange(row, HEAD.indexOf('text') + 1).setValue(body.patch.text);
+            }
+            if (body.patch.title !== undefined) {
+              sh.getRange(row, HEAD.indexOf('title') + 1).setValue(body.patch.title);
+            }
+            break;
+          }
+        }
+      }
+      return json_({ ok: true });
+    }
+
     if (body.action === 'del' && body.id) {
       var last = sh.getLastRow();
       if (last > 1) {
