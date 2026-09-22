@@ -940,11 +940,10 @@ body{
           </div>
           <div id="roomPlan"></div>
           <div class="mh-leg">
-            <span><i style="background:#8E8E98"></i>벽</span>
-            <span><i style="background:#5B8DEF"></i>창문</span>
-            <span><i style="background:#FF8A45"></i>출입구</span>
-            <span><i style="background:#FF6B1A"></i>리더</span>
-            <span><i style="background:#fff"></i>내 자리</span>
+            <span><i style="background:#8B62E8"></i>그룹미팅룸</span>
+            <span><i style="background:#FF6B1A"></i>강연</span>
+            <span><i style="background:#3DD68C"></i>네트워킹</span>
+            <span><i style="background:#fff"></i>내 방</span>
           </div>
         </div>
         <div class="sec">같은 방 동료 <b id="mateN">0</b></div>
@@ -1129,7 +1128,7 @@ const TL=[
    비워두면 아래 내장 명단을 사용합니다. 로그인 화면의 「데이터 연결」로도 지정 가능. */
 const SHEET_CSV_URL='https://docs.google.com/spreadsheets/d/1-Kyx83Bhb3DVuUF93hjbgMm6lBefNUagZozNtLduPZw/edit?gid=39990875#gid=39990875';
 const SHEET_KEY='ascent_sheet_url';
-const ROOMS=['G401','G402','G301','G302','F301','F201'];
+const ROOMS=['F201','F301','G301','G302','G401','G402'];
 
 const DEFAULT_CSV=`아이디,비밀번호,이름,회사명,직위,구분,GIVE,GET,배정된 방,도착여부
 ascent,0912,김한화,한화손해보험,브랜드 전략,멘티,브랜딩|오프라인 팝업,인사/채용|해외확장,G402,
@@ -2080,40 +2079,32 @@ let mkMode='give',mkKey=null;
 function peopleFor(key,mode){
   return ALL().filter(function(p){return (mode==='give'?p.give:p.get||[]).indexOf(key)>=0;});
 }
-/* ================= 행사장 도면 =================
-   side 는 방의 한 변, from/to 는 그 변에서의 위치(0~1)입니다.
-   G401 · G402 는 실측 도면 기준이고, 나머지 방은 같은 규격으로 잡아둔 값입니다. */
-const ROOMDATA={
-  /* side · from · to 는 방의 한 변과 그 변에서의 위치(0~1)입니다.
-     furn 은 방 안쪽 비율 좌표 [x,y,w,h,라벨], tc 는 원탁 중심입니다. */
-  'G401':{floor:4,w:11.4,h:9.0,
-          win:[['right',.06,.30],['right',.60,.86]],
-          door:[['left',.38,.62]],
-          furn:[],tc:[.5,.5],tag:'아치창 + 커튼 · 벽난로'},
-  'G402':{floor:4,w:8.4,h:13.2,
-          win:[],
-          door:[['bottom',.38,.62]],
-          furn:[],tc:[.5,.5],tag:'다크 톤 마감(벽·천장)'},
-  'G302':{floor:3,w:11.5,h:9.0,
-          win:[],
-          door:[['top',.42,.60]],
-          furn:[[.04,.10,.13,.78,'바 카운터']],tc:[.62,.5],
-          tag:'우드슬랫 벽 · 테라코타 벽 · 출입구 커튼'},
-  'G301':{floor:3,w:11.4,h:9.0,
-          win:[],
-          door:[['bottom',.40,.60]],
-          furn:[[.09,.12,.37,.18,'카운터'],[.55,0,.02,.55,''],[.86,.78,.10,.14,'싱크']],
-          tc:[.48,.66],tag:'칸막이벽 · 벽 선반 · 우드 패널'},
-  'F301':{floor:3,w:10.4,h:13.0,
-          win:[['top',.38,.58],['right',.08,.28]],
-          door:[['bottom',.40,.60]],
-          furn:[[.02,.22,.14,.70,'바 카운터']],tc:[.58,.55],
-          tag:'세로 창 · 암막 커튼 · 낮은 벽'},
-  'F201':{floor:2,w:9.5,h:14.9,
-          win:[['left',.08,.92],['right',.08,.92]],
-          door:[['bottom',.40,.60]],
-          furn:[],tc:[.5,.5],tag:'시어커튼 양측 벽 · 뒤에 창 추정'}
+/* ================= 행사장 건물 도면 =================
+   F동 · G동 두 동을 층별로 세웁니다. 쓰임이 정해진 공간만 색을 입히고,
+   나머지(스탭룸 · 미사용 층)는 자리만 잡아 둡니다. */
+const USE={
+  mtg :{fill:'rgba(139,98,232,.20)', line:'#8B62E8', text:'#C9B4F7', name:'그룹미팅룸'},
+  talk:{fill:'rgba(255,107,26,.20)', line:'#FF6B1A', text:'#FFB183', name:'강연'},
+  net :{fill:'rgba(61,214,140,.18)', line:'#3DD68C', text:'#8FE9BF', name:'네트워킹'},
+  none:{fill:'rgba(255,255,255,.03)',line:'#2E2E36', text:'#5A5A64', name:''}
 };
+const BUILDING=[
+  {fl:'5F', f:[{use:'none'}],
+            g:[{id:'G501',label:'런치 · 디너',sub:'네트워킹',use:'net'}]},
+  {fl:'4F', f:[{use:'none'}],
+            g:[{id:'G401',label:'그룹미팅룸 5',use:'mtg'},
+               {id:'G402',label:'그룹미팅룸 6',use:'mtg'}]},
+  {fl:'3F', f:[{id:'F301',label:'그룹미팅룸 2',use:'mtg'}],
+            g:[{id:'G301',label:'그룹미팅룸 3',use:'mtg'},
+               {id:'G302',label:'그룹미팅룸 4',use:'mtg'}]},
+  {fl:'2F', f:[{id:'F201',label:'강연',sub:'· 그룹미팅 1',use:'talk',door:true}],
+            g:[{use:'none'}]}
+];
+const ROOMFLOOR={G501:5,G401:4,G402:4,F401:4,F301:3,G301:3,G302:3,F201:2};
+const ROOMUSE={F201:'강연 · 그룹미팅 1',F301:'그룹미팅룸 2',G301:'그룹미팅룸 3',
+               G302:'그룹미팅룸 4',G401:'그룹미팅룸 5',G402:'그룹미팅룸 6',
+               G501:'런치 · 디너 네트워킹'};
+
 /* 방 하나에 리더 1명 + 멘티 9명, 원탁에 둘러앉습니다 */
 function roomSeats(room){
   const mates=ALL().filter(function(x){return x.room===room;});
@@ -2121,78 +2112,64 @@ function roomSeats(room){
   const mentee=mates.filter(function(x){return !isLeader(x);}).slice(0,9);
   return (lead?[lead]:[]).concat(mentee);
 }
-function renderRoomPlan(room){
+function renderBuildingPlan(mine){
   const host=document.getElementById('roomPlan');if(!host)return;
-  const d=ROOMDATA[room];
-  if(!d){
-    host.innerHTML='<div class="mapempty"><div class="ic">&#128506;</div>'+
-      '<p>도면 준비 중입니다</p><span>배정된 방이 정해지면<br>이곳에 도면이 표시됩니다</span></div>';
-    return;
-  }
-  /* 방 비율을 유지한 채 그리기 영역에 맞춥니다 */
-  const W=350,PAD=30,LBL=16;
-  const availW=W-PAD*2, maxH=250;
-  let rw=availW, rh=rw*d.h/d.w;
-  if(rh>maxH){rh=maxH;rw=rh*d.w/d.h;}
-  const x0=(W-rw)/2, y0=LBL+10, H=y0+rh+38;
-  const T=7;                                   /* 벽 두께 */
-  const seats=roomSeats(room);
-
-  function seg(side,from,to){                  /* 변 위의 구간을 좌표로 */
-    if(side==='top')   return [x0+rw*from,y0,x0+rw*to,y0];
-    if(side==='bottom')return [x0+rw*from,y0+rh,x0+rw*to,y0+rh];
-    if(side==='left')  return [x0,y0+rh*from,x0,y0+rh*to];
-    return [x0+rw,y0+rh*from,x0+rw,y0+rh*to];
-  }
+  const W=350, LX=30, GAP=7, HEAD=20, RH=62, RGAP=9;
+  const FW=100, GX=LX+FW+GAP*2, GW=W-GX-4;
+  const H=HEAD+BUILDING.length*(RH+RGAP)+30;
   let s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
-  /* 바닥 + 벽 */
-  s+='<rect x="'+x0+'" y="'+y0+'" width="'+rw+'" height="'+rh+'" fill="#101014"/>';
-  s+='<rect x="'+x0+'" y="'+y0+'" width="'+rw+'" height="'+rh+'" fill="none" '+
-     'stroke="#8E8E98" stroke-width="'+T+'"/>';
-  /* 창문 */
-  d.win.forEach(function(w){
-    const c=seg(w[0],w[1],w[2]);
-    s+='<line x1="'+c[0].toFixed(1)+'" y1="'+c[1].toFixed(1)+'" x2="'+c[2].toFixed(1)+
-       '" y2="'+c[3].toFixed(1)+'" stroke="#5B8DEF" stroke-width="'+(T+2)+'" stroke-linecap="butt"/>';
-  });
-  /* 출입구 : 벽을 끊고 열린 문을 그립니다 */
-  d.door.forEach(function(w){
-    const c=seg(w[0],w[1],w[2]);
-    s+='<line x1="'+c[0].toFixed(1)+'" y1="'+c[1].toFixed(1)+'" x2="'+c[2].toFixed(1)+
-       '" y2="'+c[3].toFixed(1)+'" stroke="#101014" stroke-width="'+(T+3)+'"/>'+
-       '<line x1="'+c[0].toFixed(1)+'" y1="'+c[1].toFixed(1)+'" x2="'+c[2].toFixed(1)+
-       '" y2="'+c[3].toFixed(1)+'" stroke="#FF8A45" stroke-width="3" stroke-linecap="round"/>';
-  });
-  /* 원탁 + 좌석 */
-  /* 가구 */
-  (d.furn||[]).forEach(function(f){
-    const fx=x0+rw*f[0], fy=y0+rh*f[1], fw=rw*f[2], fh=rh*f[3];
-    s+='<rect x="'+fx.toFixed(1)+'" y="'+fy.toFixed(1)+'" width="'+fw.toFixed(1)+
-       '" height="'+fh.toFixed(1)+'" rx="3" fill="#2B2519" stroke="#7A6A46" stroke-width="1"/>';
-    if(f[4]){
-      const mx=(fx+fw/2).toFixed(1), my=(fy+fh/2).toFixed(1);
-      /* 세로로 긴 가구는 라벨을 눕힙니다 */
-      const vert=fw<fh*0.7;
-      s+='<text x="'+mx+'" y="'+(fy+fh/2+3.2).toFixed(1)+'" text-anchor="middle" font-size="9" '+
-         'fill="#B9A97A"'+(vert?' transform="rotate(-90 '+mx+' '+my+')"':'')+'>'+f[4]+'</text>';
+
+  /* 동 이름 */
+  s+='<text x="'+(LX+FW/2)+'" y="12" text-anchor="middle" font-size="10" font-weight="700" '+
+     'letter-spacing="1.5" fill="rgba(255,255,255,.4)">F동</text>'+
+     '<text x="'+(GX+GW/2)+'" y="12" text-anchor="middle" font-size="10" font-weight="700" '+
+     'letter-spacing="1.5" fill="rgba(255,255,255,.4)">G동</text>';
+
+  function cell(x,y,w,h,c){
+    const u=USE[c.use]||USE.none, me=(c.id&&c.id===mine);
+    s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="9" fill="'+u.fill+'" '+
+       'stroke="'+(me?'#fff':u.line)+'" stroke-width="'+(me?2:1)+'"/>';
+    if(me)s+='<rect x="'+(x+3.5)+'" y="'+(y+3.5)+'" width="'+(w-7)+'" height="'+(h-7)+
+       '" rx="6" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1"/>';
+    const cx=x+w/2;
+    if(c.note){
+      s+='<text x="'+cx+'" y="'+(y+h/2+3)+'" text-anchor="middle" font-size="9" '+
+         'fill="'+u.text+'">'+c.note+'</text>';
+      return;
+    }
+    if(!c.id&&!c.label)return;
+    /* 방 번호 · 용도 · (내 방 표시) */
+    let ty=y+h/2;
+    if(c.label)ty-=(c.sub?15:9);else ty-=1;
+    if(c.id)s+='<text x="'+cx+'" y="'+ty+'" text-anchor="middle" font-size="10" '+
+       'font-weight="700" letter-spacing=".4" fill="'+(c.use==='none'?u.text:'rgba(255,255,255,.62)')+'">'+
+       c.id+'</text>';
+    if(c.label)s+='<text x="'+cx+'" y="'+(ty+15)+'" text-anchor="middle" font-size="11.5" '+
+       'font-weight="700" letter-spacing="-.3" fill="'+u.text+'">'+c.label+'</text>';
+    if(c.sub)s+='<text x="'+cx+'" y="'+(ty+29)+'" text-anchor="middle" font-size="10" '+
+       'fill="'+u.text+'" fill-opacity=".85">'+c.sub+'</text>';
+    if(me)s+='<text x="'+cx+'" y="'+(y+h-7)+'" text-anchor="middle" font-size="8.5" '+
+       'font-weight="700" letter-spacing=".6" fill="#fff">MY ROOM</text>';
+  }
+
+  BUILDING.forEach(function(row,i){
+    const y=HEAD+i*(RH+RGAP);
+    s+='<text x="'+(LX-8)+'" y="'+(y+RH/2+4)+'" text-anchor="end" font-size="10.5" '+
+       'font-weight="700" fill="rgba(255,255,255,.45)">'+row.fl+'</text>';
+    cell(LX,y,FW,RH,row.f[0]);
+    const n=row.g.length, gw=(GW-GAP*(n-1))/n;
+    row.g.forEach(function(c,k){cell(GX+k*(gw+GAP),y,gw,RH,c);});
+    /* 주 출입구 : 도면 아래에서 F201 로 들어옵니다 */
+    if(row.f[0].door){
+      const dx=LX+FW/2, dy=y+RH;
+      s+='<path d="M'+dx+' '+(dy+17)+' V'+(dy+6)+'" stroke="#fff" stroke-width="1.6" '+
+         'stroke-linecap="round"/>'+
+         '<path d="M'+(dx-4.5)+' '+(dy+10)+' l4.5 -4.5 4.5 4.5" fill="none" stroke="#fff" '+
+         'stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>'+
+         '<text x="'+(dx+11)+'" y="'+(dy+17)+'" font-size="9.5" font-weight="700" '+
+         'letter-spacing="-.2" fill="#fff">주 출입구</text>';
     }
   });
-  const cx=x0+rw*((d.tc&&d.tc[0])||.5), cy=y0+rh*((d.tc&&d.tc[1])||.5);
-  const trx=rw*0.17, tryy=rh*0.14;          /* 원탁 */
-  const srx=rw*0.31, sry=rh*0.26;           /* 좌석이 도는 반경 */
-  s+='<ellipse cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" rx="'+trx.toFixed(1)+
-     '" ry="'+tryy.toFixed(1)+'" fill="#241A3D" stroke="#8B62E8" stroke-width="1.5"/>';
-  for(let i=0;i<10;i++){
-    const a=(-90+36*i)*Math.PI/180;
-    const sx=cx+srx*Math.cos(a), sy=cy+sry*Math.sin(a);
-    const p=seats[i], lead=p&&isLeader(p), me=p&&ME&&p.id===ME.id;
-    s+='<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="'+(me?12.5:11)+'" '+
-       'fill="'+(lead?'#FF6B1A':me?'#8B62E8':'#33333C')+'" '+
-       (me?'stroke="#fff" stroke-width="2.2"':lead?'':'stroke="#45454F" stroke-width="1"')+'/>';
-    if(p)s+='<text x="'+sx.toFixed(1)+'" y="'+(sy+0.5).toFixed(1)+'" text-anchor="middle" '+
-       'dominant-baseline="central" font-size="8" font-weight="700" letter-spacing="-.5" '+
-       'fill="#fff" fill-opacity="'+(lead||me?'.95':'.72')+'">'+monogram(p.n)+'</text>';
-  }
   s+='</svg>';
   host.innerHTML='<div class="mapwrap">'+s+'</div>';
 }
@@ -2209,16 +2186,15 @@ function renderRoomMates(room){
       '<div class="ar">&#8250;</div></button>';
   }).join('');
 }
-
 function renderMap(){
   const r=document.getElementById('mapRoom'),w=document.getElementById('mapWho');
   const room=(ME&&ME.room)||'';
   if(r)r.textContent=room||'배정 예정';
   if(w){
-    const d=ROOMDATA[room];
-    w.textContent=d?(d.floor+'층 · 원탁 10석'):'배정 예정';
+    const fl=ROOMFLOOR[room];
+    w.textContent=fl?(fl+'층 · '+(ROOMUSE[room]||'')):'배정 예정';
   }
-  renderRoomPlan(room);
+  renderBuildingPlan(room);
   renderRoomMates(room);
 }
 function renderMindmap(){
