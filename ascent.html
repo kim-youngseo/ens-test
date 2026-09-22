@@ -166,34 +166,52 @@ body{
 .talk b{color:var(--txt);font-weight:600}
 
 /* ---------- 로그인 ---------- */
-.loginwrap{position:absolute;inset:0;display:flex;flex-direction:column;padding:0 24px 28px;background:var(--bg)}
-.lockup{width:150px;margin:24px auto 0;flex:none}
+.loginwrap{position:absolute;inset:0;display:flex;flex-direction:column;padding:0 24px 28px;
+  overflow:hidden;background:
+    radial-gradient(126% 60% at 50% -14%,
+      #F7C2F3 0%, #DFA6E6 10%, #B681D4 22%, #8258B0 36%, #513A7C 52%, rgba(22,18,32,0) 74%),
+    linear-gradient(180deg,#221B34 0%,#17131F 28%,#100E15 56%,var(--bg) 80%)}
+/* 아래에서 천천히 도는 보랏빛 */
+.loginwrap::before{content:"";position:absolute;left:-30%;right:-30%;top:34%;height:52%;
+  pointer-events:none;
+  background:radial-gradient(52% 50% at 50% 50%,rgba(155,108,245,.26),transparent 70%);
+  animation:lgDrift 14s ease-in-out infinite alternate}
+@keyframes lgDrift{from{transform:translate3d(-5%,0,0) scale(1)}
+                   to{transform:translate3d(5%,-4%,0) scale(1.12)}}
+.lockup{width:150px;margin:24px auto 0;flex:none;position:relative;z-index:2;
+  animation:lgIn .8s cubic-bezier(.2,.8,.3,1) .05s both}
 .lockup img{width:100%;display:block}
 .lgtop{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding-bottom:64px}
-.lgmark{font-size:44px;font-weight:800;letter-spacing:-.05em;color:var(--amb);text-align:center;line-height:1}
-.lgmark span{color:var(--txt);font-size:17px;font-weight:600;display:block;
-  letter-spacing:-.035em;margin-top:18px}
+  padding-bottom:58px;position:relative;z-index:2;
+  animation:lgIn .9s cubic-bezier(.2,.8,.3,1) .18s both}
+@keyframes lgIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.lgmark{font-size:56px;font-weight:800;letter-spacing:-.055em;color:var(--amb);text-align:center;
+  line-height:1;text-shadow:0 0 52px rgba(255,107,26,.42),0 2px 26px rgba(0,0,0,.5)}
+.lgmark span{color:rgba(255,255,255,.9);font-size:14px;font-weight:600;display:block;
+  letter-spacing:.24em;margin-top:22px;text-indent:.24em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
 .lglink{display:inline;background:none;border:none;color:#3E3E48;
   font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;padding:0;
   letter-spacing:-.02em}
-.field{background:var(--s1);border:1.5px solid transparent;border-radius:var(--r);
-  padding:12px 16px;margin-bottom:10px;flex:none;transition:border-color .15s}
+.field{background:rgba(22,20,28,.72);border:1.5px solid rgba(255,255,255,.08);
+  border-radius:var(--r);backdrop-filter:blur(12px);position:relative;z-index:2;
+  padding:12px 16px;margin-bottom:10px;flex:none;transition:border-color .15s;
+  animation:lgIn .8s cubic-bezier(.2,.8,.3,1) .3s both}
 .field:focus-within{border-color:var(--vio)}
 .field label{display:block;font-size:12px;font-weight:600;letter-spacing:-.02em;color:var(--dim);
   margin-bottom:3px}
 .field input{width:100%;background:none;border:none;outline:none;color:var(--txt);
   font-family:inherit;font-size:16px;font-weight:500;letter-spacing:-.02em}
 .field input::placeholder{color:var(--dim);font-weight:400}
-.remember{display:flex;align-items:center;gap:10px;margin:16px 0 20px;cursor:pointer;flex:none}
+.remember{display:flex;align-items:center;gap:10px;margin:16px 0 20px;cursor:pointer;flex:none;
+  position:relative;z-index:2;animation:lgIn .8s cubic-bezier(.2,.8,.3,1) .36s both}
 .remember .box{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--line2);flex:none;
   display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:.15s}
 .remember.on .box{background:var(--amb);border-color:var(--amb);color:#fff}
 .remember p{font-size:14.5px;color:var(--mut);letter-spacing:-.02em}
 .lgerr{font-size:13.5px;color:var(--err);text-align:center;height:18px;margin-bottom:8px;flex:none;
-  letter-spacing:-.02em}
+  letter-spacing:-.02em;position:relative;z-index:2}
 .lgnote{font-size:12px;color:#3E3E48;text-align:center;line-height:1.7;margin-top:22px;flex:none;
-  letter-spacing:-.02em}
+  letter-spacing:-.02em;position:relative;z-index:2}
 
 /* ---------- 진입 · 포스터 ---------- */
 #s-cover{background:var(--bg);justify-content:flex-start}
@@ -415,6 +433,11 @@ body{
 .coach .hole{position:absolute;border-radius:var(--r2);
   box-shadow:0 0 0 9999px rgba(0,0,0,.84);
   transition:.4s cubic-bezier(.3,0,.2,1)}
+.coach .hole.noanim,.coach .tip.noanim,.coach .hand.noanim{transition:none}
+.coach.on .hole{animation:coachIn .42s cubic-bezier(.2,.8,.3,1) both}
+.coach.on .tip{animation:tipIn .42s cubic-bezier(.2,.8,.3,1) .06s both}
+@keyframes coachIn{from{opacity:0}to{opacity:1}}
+@keyframes tipIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .coach .tip{position:absolute;left:var(--gut);right:var(--gut);background:#fff;color:#111114;
   border-radius:var(--r2);padding:18px;transition:.4s cubic-bezier(.3,0,.2,1);
   box-shadow:0 20px 50px rgba(0,0,0,.5)}
@@ -749,7 +772,8 @@ body{
             <input id="lgPw" type="password" placeholder="전달받은 비밀번호" autocomplete="current-password"></div>
           <div class="remember" id="lgRemember"><span class="box">&#10003;</span><p>이 기기 기억하기</p></div>
           <div class="lgerr" id="lgErr"></div>
-          <button class="btn a" id="lgBtn">들어가기</button>
+          <button class="btn a" id="lgBtn" style="position:relative;z-index:2;
+          animation:lgIn .8s cubic-bezier(.2,.8,.3,1) .42s both">들어가기</button>
           <p class="lgnote">
             <button class="lglink" id="sheetBtn">명단 연결</button> &nbsp;·&nbsp;
             <button class="lglink" id="postBtn">글 저장 연결</button></p>
@@ -887,7 +911,6 @@ body{
       <!-- ========== 참가자의 한 마디 ========== -->
       <section class="screen" id="s-voices">
         <div class="nav"><button class="bk" data-back>&#8592;</button><h2>참가자의 한 마디</h2></div>
-        <div class="sub" style="margin-bottom:14px">이 사람들과 <span class="as">Ascént</span>에서 만나기까지</div>
         <div id="voiceComposer"></div>
         <div id="voiceList"></div>
         <div class="spacer"></div>
@@ -2858,7 +2881,7 @@ function paintCoach(st,i){
   document.getElementById('coachNext').textContent=(i===STEPS.length-1)?'시작하기':'다음';
 
   /* 설명은 구멍 아래 → 위 → 화면 하단 순으로 자리를 찾습니다 */
-  tip.style.bottom='';tip.style.top='0px';
+  tip.style.bottom='';
   const th=tip.offsetHeight, gap=16;
   let ty;
   if(hy+hh+gap+th<=H-edge) ty=hy+hh+gap;
@@ -2873,8 +2896,16 @@ function paintCoach(st,i){
   hand.style.top=(hy+hh-6)+'px';
 }
 function openCoach(){
-  ci=0;document.getElementById('coach').classList.add('on');
-  requestAnimationFrame(function(){showCoach(0);});
+  ci=0;
+  document.getElementById('coach').classList.add('on');
+  /* 첫 화면은 제자리에서 떠오르게 하고, 이후 단계부터 자리 이동을 보여줍니다 */
+  const parts=['coachHole','coachTip','coachHand'].map(function(id){
+    return document.getElementById(id);});
+  parts.forEach(function(el){el.classList.add('noanim');});
+  requestAnimationFrame(function(){
+    showCoach(0);
+    setTimeout(function(){parts.forEach(function(el){el.classList.remove('noanim');});},120);
+  });
 }
 function closeCoach(){document.getElementById('coach').classList.remove('on');}
 document.getElementById('coachX').addEventListener('click',closeCoach);
