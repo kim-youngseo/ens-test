@@ -853,8 +853,11 @@ body{
 
 /* ---------- 한화 서체 (브랜드명 전용) ----------
    .card span, .dday span 처럼 특이도가 같은 규칙에 밀리지 않도록 맨 뒤에 둡니다. */
-.hw,span.hw,b .hw,p .hw{display:inline;font-family:var(--ff-hw);color:inherit;font-size:inherit;
-  font-weight:500;font-style:normal;font-synthesis:none;line-height:inherit;letter-spacing:0;flex:none;margin:0}
+/* 다른 규칙(예: 「… span{display:block}」)에 밀려 줄이 바뀌지 않도록 못 박아 둡니다 */
+.hw,span.hw,b .hw,p .hw{display:inline!important;font-family:var(--ff-hw)!important;color:inherit!important;
+  font-size:inherit!important;font-weight:500!important;font-style:normal;font-synthesis:none;
+  line-height:inherit!important;letter-spacing:0!important;flex:none;margin:0!important;padding:0!important;
+  background:none!important}
 .as,span.as,b .as,p .as{display:inline;color:var(--amb2);font-style:normal;font-size:inherit;
   font-weight:inherit;line-height:inherit;letter-spacing:inherit;flex:none;margin:0}
 /* 배지 : 목록 안의 span 규칙에 밀리지 않도록 맨 뒤에 둡니다 */
@@ -974,7 +977,10 @@ body{
         <div id="voiceHead">
           <div class="sec rise" style="animation-delay:.26s">참가자의 한 마디 <b id="voiceN">0</b></div>
           <p class="hint rise" style="margin:-6px 0 14px;animation-delay:.3s">Ascént에 참가하게 된 여러분의 한 마디를 남겨주세요</p>
-          <button class="btn o rise" id="voiceWriteBtn" data-ctoggle="cmp-voice" style="animation-delay:.34s;margin-bottom:12px">&#9998; 한 마디 남기기</button>
+          <button class="writebtn rise" id="voiceWriteBtn" data-ctoggle="cmp-voice" style="animation-delay:.34s">
+            <span class="ic">&#128172;</span>
+            <span><b>한 마디 남기기</b><em>Ascént에 대한 기대평을 남겨보세요</em></span>
+            <i>&#8250;</i></button>
         </div>
         <div id="voiceComposer"></div>
         <div id="voiceList"></div>
