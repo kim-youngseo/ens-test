@@ -977,12 +977,8 @@ body{
         <div id="voiceHead">
           <div class="sec rise" style="animation-delay:.26s">참가자의 한 마디 <b id="voiceN">0</b></div>
           <p class="hint rise" style="margin:-6px 0 14px;animation-delay:.3s">Ascént에 참가하게 된 여러분의 한 마디를 남겨주세요</p>
-          <button class="writebtn rise" id="voiceWriteBtn" data-ctoggle="cmp-voice" style="animation-delay:.34s">
-            <span class="ic">&#128172;</span>
-            <span><b>한 마디 남기기</b><em>Ascént에 대한 기대평을 남겨보세요</em></span>
-            <i>&#8250;</i></button>
+          <div id="voiceComposer"></div>
         </div>
-        <div id="voiceComposer"></div>
         <div id="voiceList"></div>
         <div class="spacer"></div>
       </section>
@@ -2850,7 +2846,7 @@ function voiceCard(box,vid,p,text,base,mineFlag,ts){
 }
 function renderVoices(){
   mountComposer('voiceComposer','cmp-voice',
-    {ph:'Ascént에 대한 기대평을 남겨주세요',send:'남기기'});
+    {ph:'Ascént에 대한 기대평을 남겨주세요',send:'남기기',always:true});
   const box=document.getElementById('voiceList');box.innerHTML='';
   postsOf('voice').forEach(function(p){
     const who=byId(p.author)||{tone:p.tone,n:p.name,role:p.role};
