@@ -1225,6 +1225,29 @@ body{
 .vwrite .go[disabled]{background:var(--s3);color:var(--dim);cursor:default}
 .vwrite .av{margin-bottom:2px}
 .cal b{background:#fff;color:#111}
+/* ---------- BY 한화손보 : 그라데이션을 걷고 사진 카드처럼 ---------- */
+.hwhero{background:var(--s1);box-shadow:none}
+.hwhero::before{display:none}
+.hwhero .mk{opacity:.08}
+.why{flex-direction:row-reverse;align-items:center;justify-content:space-between;gap:12px;
+  padding:20px 16px 20px 20px;min-height:128px;background:#17171A}
+.why>div{flex:1;min-width:0}
+.wobj{width:84px;height:84px;border-radius:50%;background:#212127}
+.wobj svg{width:58px;height:58px}
+.aboutc{display:grid;grid-template-columns:1fr 120px;gap:12px;align-items:center;background:#17171A;padding:20px 0 20px 20px;
+  overflow:hidden}
+.aboutc .abtx{min-width:0}
+.aboutc .aq{font-size:19px}
+.aboutc .prog{grid-column:1 / -1;margin:2px 20px 0 0}
+.abimg{width:120px;height:120px;object-fit:cover;object-position:50% 20%;border-radius:14px 0 0 14px;display:block}
+
+/* ---------- GIVE & GET ---------- */
+.tgl button.on.a{background:none;color:var(--txt);border-bottom-color:var(--amb)}
+#mkTgl button{font-size:15px;letter-spacing:.04em}
+.mmwrap{background:#151517;border-radius:20px;padding:6px 4px;margin-bottom:6px}
+.mmwrap .kw{cursor:pointer}
+.mkhint{text-align:center;padding:24px 0;line-height:1.75}
+#mkSec{margin-top:24px}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1410,8 +1433,8 @@ body{
       <section class="screen" id="s-market">
         <div class="nav"><button class="bk" data-back>&#8592;</button><h2>GIVE &amp; GET 마켓</h2></div>
         <div class="tgl" id="mkTgl">
-          <button class="on" data-mk="give">GIVE · 내가 줄 수 있는 것</button>
-          <button data-mk="get">GET · 내가 받고 싶은 것</button>
+          <button class="on" data-mk="give">GIVE</button>
+          <button data-mk="get">GET</button>
         </div>
         <div class="mmwrap" id="mmWrap"></div>
         <div class="sec amb" id="mkSec">키워드를 눌러보세요</div>
@@ -1507,8 +1530,9 @@ body{
 
         <div class="hwsec">About <span class="as">Ascént</span></div>
         <div class="aboutc">
-          <p class="aq">여성 창업가를 위한<br><em>밀도 높은 연결의 장</em></p>
-          <span>서로의 경계를 허물고, 마주 앉아 함께 성장합니다.</span>
+          <div class="abtx"><p class="aq">여성 창업가를 위한<br><em>밀도 높은 연결의 장</em></p>
+          <span>서로의 경계를 허물고,<br>마주 앉아 함께 성장합니다.</span></div>
+          <img class="abimg" id="aboutImg" alt="">
           <div class="prog"><i>실전 강연</i><i>GIVE &amp; GET</i><i>젠가 토크</i><i>협업 미션</i></div>
         </div>
 
@@ -2288,8 +2312,9 @@ const KEYS=['브랜딩','마케팅','데이터','투자유치','재무','인사/
 const CURATION=[
  {id:'C0',cat:'리서치',report:true,src:'hanwha',ts:Date.UTC(2026,9,5,1),
   t:'2026 대한민국 여성 보고서',d:'한국 여성의 삶과 웰니스 니즈를 들여다본 조사연구',
-  body:'한국 여성은 웰니스를 어떻게 돌보고 있을까요? 조사 결과, 한국 여성은 웰니스를 대하는 방식에 따라 네 갈래, 열두 가지 유형으로 나뉩니다.<br><br>'+
-   '나는 어떤 유형에 가까울까요? 유형별 자세한 이야기는 곧 공개됩니다.'},
+  body:'한국 여성은 웰니스를 어떻게 바라보고 있을까요? 조사 결과, 한국 여성은 웰니스를 대하는 방식에 따라 네 갈래, 열두 가지 유형으로 나뉘는 것으로 나타났습니다.<br><br>'+
+   '나는 어떤 유형에 가까울까요? 또, 내 고객들은 어떤 유형에 속할까요?<br><br>'+
+   '고객에 관한 인사이트를 얻고 싶은 <span class="as">Ascént</span> 참가자 여러분들께, 2026년 여성 보고서를 살며시 권합니다.'},
  {id:'C1',src:'folin',ts:Date.UTC(2026,9,4,1),cat:'재무',t:'초기 창업가를 위한 재무제표 읽는 법',d:'숫자에 약해도 매달 이 세 가지만은 보세요',
   body:'손익계산서에서는 매출보다 <b>매출총이익률</b>을, 현금흐름표에서는 <b>영업활동 현금흐름</b>을 먼저 봅니다. '+
    '장부상 이익이 나도 통장이 비는 이유는 대부분 매출채권과 재고에 묶인 돈 때문입니다. '+
@@ -2925,46 +2950,53 @@ function renderBuildingPlan(mine){
 }
 function renderMap(){renderBuildingPlan((ME&&ME.room)||'');}
 function renderMindmap(){
-  const W=350,H=348,cx=175,cy=174,RX=131,RY=113;
-  const acc=mkMode==='give'?'#9B74D0':'#F96E1B';
-  const accD=mkMode==='give'?'#6E4CA8':'#C25A1E';
-  /* 긴 라벨은 상·하단, 짧은 라벨은 좌·우 슬롯에 배치 */
-  /* 글자 수가 긴 키워드를 짝수 자리(바깥 링)에, 짧은 키워드를 홀수 자리(안쪽 링)에
-     번갈아 두어 이웃끼리 부딪히지 않게 합니다. */
+  const W=380,H=380,cx=190,cy=190,RX=140,RY=130;
+  const give=mkMode==='give';
+  const acc=give?'#8B62E8':'#FF6B1A',soft=give?'rgba(139,98,232,.16)':'rgba(255,107,26,.16)';
+  /* 긴 키워드는 바깥 링, 짧은 키워드는 안쪽 링에 번갈아 둡니다 */
   const SLOT=['오프라인 팝업','마케팅','인사/채용','데이터','투자유치','재무',
               '인플루언서','리더십','해외확장','법무','파트너십','브랜딩'];
-  let s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  let s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" '+
+        'font-family="Pretendard Variable,Pretendard,sans-serif">';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="128" fill="none" stroke="rgba(255,255,255,.05)"/>'+
+     '<circle cx="'+cx+'" cy="'+cy+'" r="82" fill="none" stroke="rgba(255,255,255,.05)"/>';
   const pos=SLOT.map(function(k,i){
-    const a=(-90+30*i)*Math.PI/180, f=(i%2?0.72:1.12);
-    const w=Math.max(54,k.length*13+24);
+    const a=(-90+30*i)*Math.PI/180,f=(i%2?0.62:1.08);
+    const n=peopleFor(k,mkMode).length;
+    const w=k.length*10.5+(n?44:28);
     let x=cx+RX*f*Math.cos(a);
-    x=Math.min(Math.max(x,w/2+5),W-w/2-5);
-    return {k:k,x:x,y:cy+RY*f*Math.sin(a),w:w,n:peopleFor(k,mkMode).length};
+    x=Math.min(Math.max(x,w/2+4),W-w/2-4);
+    return {k:k,x:x,y:cy+RY*f*Math.sin(a),w:w,n:n};
   });
   pos.forEach(function(p){
     s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p.x.toFixed(1)+'" y2="'+p.y.toFixed(1)+
-       '" stroke="rgba(255,255,255,.08)" stroke-width="1"/>';
+       '" stroke="rgba(255,255,255,.07)" stroke-width="1" stroke-dasharray="2 4"/>';
   });
   pos.forEach(function(p){
-    const h=30,sel=(mkKey===p.k),dim=(p.n===0);
-    s+='<g class="kw" data-kw="'+p.k+'">'+
-       '<rect class="bg" x="'+(p.x-p.w/2).toFixed(1)+'" y="'+(p.y-h/2).toFixed(1)+'" width="'+p.w.toFixed(1)+'" height="'+h+
-       '" rx="15" fill="'+(sel?accD:'rgba(255,255,255,.055)')+'" stroke="'+(sel?acc:'rgba(255,255,255,.12)')+
-       '" stroke-width="1" opacity="'+(dim?'.45':'1')+'"/>'+
-       '<text x="'+p.x.toFixed(1)+'" y="'+(p.y+4.2).toFixed(1)+'" text-anchor="middle" font-size="11.5" '+
-       'font-weight="600" fill="'+(sel?'#fff':(dim?'rgba(255,255,255,.4)':'rgba(255,255,255,.78)'))+'">'+p.k+'</text></g>';
+    const h=32,sel=(mkKey===p.k),dim=(p.n===0),x0=p.x-p.w/2;
+    s+='<g class="kw" data-kw="'+p.k+'" opacity="'+(dim?'.4':'1')+'">'+
+       '<rect class="bg" x="'+x0.toFixed(1)+'" y="'+(p.y-h/2).toFixed(1)+'" width="'+p.w.toFixed(1)+'" height="'+h+
+       '" rx="16" fill="'+(sel?acc:'#202027')+'"'+(sel?'':' stroke="rgba(255,255,255,.06)"')+'/>'+
+       '<text x="'+(x0+14).toFixed(1)+'" y="'+(p.y+4.3).toFixed(1)+'" font-size="11.5" font-weight="600" '+
+       'letter-spacing="-.3" fill="'+(sel?'#fff':'#E4E4EA')+'">'+p.k+'</text>'+
+       (p.n?'<circle cx="'+(x0+p.w-15).toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="9" fill="'+(sel?'rgba(255,255,255,.25)':soft)+'"/>'+
+         '<text x="'+(x0+p.w-15).toFixed(1)+'" y="'+(p.y+3.8).toFixed(1)+'" text-anchor="middle" font-size="10.5" font-weight="700" '+
+         'fill="'+(sel?'#fff':acc)+'">'+p.n+'</text>':'')+'</g>';
   });
-  s+='<circle cx="'+cx+'" cy="'+cy+'" r="40" fill="'+accD+'" stroke="'+acc+'" stroke-width="1.5"/>'+
-     '<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" letter-spacing="1">'+
-     mkMode.toUpperCase()+'</text></svg>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="48" fill="'+soft+'"/>'+
+     '<circle cx="'+cx+'" cy="'+cy+'" r="38" fill="'+acc+'"/>'+
+     '<text x="'+cx+'" y="'+(cy+1)+'" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" letter-spacing=".5">'+
+     mkMode.toUpperCase()+'</text>'+
+     '<text x="'+cx+'" y="'+(cy+16)+'" text-anchor="middle" font-size="9.5" font-weight="600" fill="rgba(255,255,255,.85)">'+
+     (give?'줄 수 있어요':'받고 싶어요')+'</text></svg>';
   document.getElementById('mmWrap').innerHTML=s;
 }
 function renderMkList(){
   const box=document.getElementById('mkList');box.innerHTML='';
   const sec=document.getElementById('mkSec');
   if(!mkKey){sec.innerHTML='키워드를 눌러보세요';
-    box.innerHTML='<p class="hint" style="text-align:center;padding:22px 0">위 마인드맵에서 역량 키워드를 선택하면<br>해당 역량에 관한 '+
-      (mkMode==='give'?'경험을 나누어 줄 수 있는':'경험을 찾고 있는')+' 분들을 확인하실 수 있습니다.</p>';return;}
+    box.innerHTML='<p class="hint mkhint">마인드맵에서 역량 키워드를 선택하면<br>해당 역량에 관한 '+
+      (mkMode==='give'?'경험을 나누어 줄 수 있는':'경험을 찾고 있는')+' 분들을<br>확인하실 수 있습니다.</p>';return;}
   const list=peopleFor(mkKey,mkMode);
   sec.innerHTML=mkKey+' <b>'+list.length+'</b>';
   if(!list.length){box.innerHTML='<p class="hint" style="text-align:center;padding:22px 0">아직 등록된 분이 없습니다.</p>';return;}
@@ -3947,6 +3979,9 @@ document.getElementById('vwSend').addEventListener('click',function(){
     if(st==='offline')toast('연결이 끊겨 이 기기에만 저장했습니다',true);
   });
 });
+/* BY 한화손보 About 카드 : 홈 포스터의 리더 사진을 함께 씁니다 */
+(function(){const a=document.getElementById('aboutImg'),h=document.querySelector('#heroCard .bg');
+  if(a&&h)a.src=h.getAttribute('src');})();
 function renderAll(){
   renderTimeline();renderWay();renderFeed();renderRoster();renderLive();renderVoices();renderMe();renderDday();
   renderLeaderRail();renderLeader();renderMap();renderMindmap();renderMkList();
