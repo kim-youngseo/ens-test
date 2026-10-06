@@ -1211,6 +1211,20 @@ body{
 .dtag2.v{color:#B79BFF}
 .irow{gap:16px}
 .ipin{width:54px}
+/* 한 마디 입력칸 · 달력 날짜 */
+.vwrite{align-items:flex-end;cursor:default}
+.vwrite textarea{flex:1;min-width:0;resize:none;outline:none;background:var(--s1);border:1px solid var(--line2);
+  border-radius:20px;padding:9px 14px;font-family:inherit;font-size:14.5px;line-height:1.45;color:var(--txt);
+  letter-spacing:-.02em;max-height:140px;transition:border-color .15s}
+.vwrite textarea:focus{border-color:var(--vio)}
+.vwrite textarea::placeholder{color:var(--dim)}
+.vwbox{flex:1;min-width:0;position:relative;display:flex}
+.vwrite textarea{padding-right:44px;letter-spacing:-.03em;font-size:14px}
+.vwrite .go{position:absolute;right:5px;bottom:5px;width:30px;height:30px;border-radius:50%;border:none;padding:0;
+  background:var(--vio);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.vwrite .go[disabled]{background:var(--s3);color:var(--dim);cursor:default}
+.vwrite .av{margin-bottom:2px}
+.cal b{background:#fff;color:#111}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1321,10 +1335,10 @@ body{
 
         <div id="voiceHead">
           <div class="sec rise" style="animation-delay:.26s">참가자의 한 마디 <b id="voiceN">0</b></div>
-          <button class="vwrite rise" id="voiceWriteBtn" data-ctoggle="cmp-voice" style="animation-delay:.34s">
+          <div class="vwrite rise" id="voiceWriteBtn" style="animation-delay:.34s">
             <span class="av" id="vwAv"></span>
-            <span class="ph">Ascént에 대한 기대평을 남겨보세요</span>
-            <span class="go">남기기</span></button>
+            <span class="vwbox"><textarea id="vwTa" rows="1" maxlength="300" placeholder="Ascént에 대한 기대평을 남겨보세요"></textarea>
+            <button type="button" class="go" id="vwSend" disabled aria-label="남기기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg></button></span></div>
         </div>
         <div id="voiceComposer"></div>
         <div id="voiceList"></div>
@@ -3921,6 +3935,18 @@ function gotoPost(id){
   if(p.kind==='cur'){curF='all';renderFeed();jump('curations',['home','curations']);}
   else{renderVoices();jump('home',['home']);}
 }
+/* 한 마디 : 입력칸에 바로 쓰고 「남기기」 */
+function vwFit(){const t=document.getElementById('vwTa');t.style.height='';if(t.value)t.style.height=Math.min(t.scrollHeight+2,140)+'px';}
+document.getElementById('vwTa').addEventListener('input',function(){
+  vwFit();document.getElementById('vwSend').disabled=!this.value.trim();});
+document.getElementById('vwSend').addEventListener('click',function(){
+  const ta=document.getElementById('vwTa'),text=ta.value.trim();if(!text||!ME)return;
+  const btn=this;btn.disabled=true;
+  sendPost({kind:'voice',author:ME.id,name:ME.n,role:ME.role||ME.co,tone:ME.tone,text:text},function(st){
+    ta.value='';vwFit();renderVoices();refreshProfiles();
+    if(st==='offline')toast('연결이 끊겨 이 기기에만 저장했습니다',true);
+  });
+});
 function renderAll(){
   renderTimeline();renderWay();renderFeed();renderRoster();renderLive();renderVoices();renderMe();renderDday();
   renderLeaderRail();renderLeader();renderMap();renderMindmap();renderMkList();
