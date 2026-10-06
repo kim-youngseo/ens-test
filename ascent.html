@@ -1126,6 +1126,20 @@ body{
 .vcm>.composer{margin:10px 0 0;padding:12px}
 .vcm>.composer .chead{display:none}
 .vcm>.composer textarea{min-height:56px}
+/* 홈 포스터 : 카드를 키우고 글씨를 아래로 내려 리더 얼굴을 가리지 않게 */
+.hero{height:446px}
+.hero .sc{background:linear-gradient(180deg,rgba(11,11,13,0) 0%,rgba(11,11,13,0) 56%,rgba(11,11,13,.45) 68%,
+  rgba(11,11,13,.88) 80%,rgba(11,11,13,.99) 92%,var(--bg) 100%)}
+.hero .in{padding:0 20px 16px}
+.hero .t{margin-bottom:12px}
+.hero .row{padding-top:12px}
+
+/* BY 한화손보 아티클 : 더 보기 · 한 줄 버튼 */
+.fdmore2{display:inline-block;margin-top:6px;background:none;border:none;padding:2px 0;color:var(--mut);
+  font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.fdacts{padding:6px var(--gut) 10px;margin-left:calc(var(--gut) - 8px);padding-left:0}
+.vlink{margin-left:auto;text-decoration:none;color:var(--mut)}
+.fdcm{padding:0 var(--gut) 14px}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -2211,10 +2225,6 @@ const CURATION=[
  {id:'C0',cat:'리서치',report:true,src:'hanwha',ts:Date.UTC(2026,9,5,1),
   t:'한화손보 여성향 조사연구 보고서',d:'한국 여성의 삶과 웰니스 니즈를 들여다본 조사연구',
   body:'한국 여성은 웰니스를 어떻게 돌보고 있을까요? 조사 결과, 한국 여성은 웰니스를 대하는 방식에 따라 네 갈래, 열두 가지 유형으로 나뉩니다.<br><br>'+
-   '<b>유보형</b><br>무색무취 유랑자 : 여러 영역에 관심이 흩어져 있어 뚜렷한 우선순위가 아직 없는 유형<br><br>'+
-   '<b>몰입형</b><br>가족 수호자 · 미래자산 플래너 · 마음 충전가 · 신체 회복가 · 생활 안정 현실가 : 관계, 재무, 정신, 신체 가운데 한 영역에 깊이 집중하는 유형<br><br>'+
-   '<b>선택형</b><br>관계 확장 사교가 · 시간 조율자 · 커리어 개척자 · 생활 추격자 : 두세 가지 영역을 골라 우선순위를 두고 돌보는 유형<br><br>'+
-   '<b>균형형</b><br>라이프 밸런서 · 자기완성 확장가 : 모든 영역을 고르게 돌보며 행복감과 통제감이 모두 높은 유형<br><br>'+
    '나는 어떤 유형에 가까울까요? 유형별 자세한 이야기는 곧 공개됩니다.'},
  {id:'C1',src:'folin',ts:Date.UTC(2026,9,4,1),cat:'재무',t:'초기 창업가를 위한 재무제표 읽는 법',d:'숫자에 약해도 매달 이 세 가지만은 보세요',
   body:'손익계산서에서는 매출보다 <b>매출총이익률</b>을, 현금흐름표에서는 <b>영업활동 현금흐름</b>을 먼저 봅니다. '+
@@ -2654,7 +2664,7 @@ function renderFeed(){
     const hw=c.src==='hanwha';
     items.push({id:c.id,ts:c.ts||0,type:c.src,html:function(){
       return feedArticle({id:c.id,who:hw?{logo:true}:{folin:true},name:hw?'한화손보':'폴인',
-        sub:c.cat+' · '+ago(c.ts),title:c.t,text:(c.report?'':c.d+'<br><br>')+c.body,raw:true,rx:true,long:!!c.report,
+        sub:c.cat+' · '+ago(c.ts),title:c.t,text:(c.report?'':c.d+'<br><br>')+c.body,raw:true,rx:true,
         cover:c.report?'<div class="rpcover"><div class="rpc-top"><i>Korea Women’s Report 2026</i>'+
           '<em>Discovering New Ways of Life</em></div>'+
           '<b class="rpc-t">2026<br>대한민국 여성 보고서</b>'+
@@ -3511,6 +3521,23 @@ function feedArticle(o){
        '<button data-del="'+esc(o.id)+'">삭제</button></div>':'')+'</div>';
   if(o.img)h+='<div class="fdimg"><img src="'+o.img+'" alt=""></div>';
   if(o.cover)h+=o.cover;
+  if(o.compact){
+    /* 접힌 본문 · 더 보기 · (좋아요 · 댓글 · 원문) 한 줄, 댓글은 눌렀을 때만 */
+    const ls=postsOf('like',o.id),lm=!!(ME&&ls.some(function(l){return l.author===ME.id;}));
+    const nc=replyTotal(o.id),open=!!openCm[o.id];
+    h+='<div class="fdb clamp">'+(o.title?'<h4>'+esc(o.title)+'</h4>':'')+'<p>'+(o.raw?o.text:nl2br(o.text))+'</p>'+
+       '<button type="button" class="fdmore2" data-more>더 보기</button></div>'+
+       '<div class="vacts fdacts">'+
+       '<button type="button" class="vact'+(lm?' on':'')+'" data-like="'+esc(o.id)+'">'+
+         '<svg viewBox="0 0 24 24" width="17" height="17" fill="'+(lm?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>'+
+         '<span>'+((o.baseLike||0)+ls.length||'좋아요')+'</span></button>'+
+       '<button type="button" class="vact vcmb'+(open?' on':'')+'" data-vcm="'+esc(o.id)+'">'+
+         '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 5h14a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 19 17h-6l-4.5 3.5V17H5a1.5 1.5 0 0 1-1.5-1.5v-9A1.5 1.5 0 0 1 5 5z"/></svg>'+
+         '<span>'+(nc?'댓글 '+nc:'댓글')+'</span></button>'+
+       (o.link?'<a class="vact vlink" href="'+esc(o.link)+'" target="_blank" rel="noopener">원문 보기 &#8599;</a>':'')+
+       '</div><div class="vcm fdcm'+(open?' on':'')+'" data-vid="'+esc(o.id)+'">'+replyBlock(o.id,true)+'</div></article>';
+    return h;
+  }
   h+='<div class="fdb'+(o.long?' clamp':'')+'">'+(o.title?'<h4>'+esc(o.title)+'</h4>':'')+
      '<p>'+(o.raw?o.text:nl2br(o.text))+'</p>'+
      (o.long?'<button type="button" class="fdmore" data-more>펼치기</button>':'')+
@@ -3527,7 +3554,7 @@ function renderSigFeed(){
   const art=function(c,i){
     return feedArticle({id:'sig'+i,who:{logo:true},name:'Signature Library',
       sub:(c.by?c.by+' · ':'')+c.cat,title:c.t,text:c.d,img:c.img,
-      raw:true,long:true,link:c.url,baseLike:c.like||0});
+      raw:true,long:true,link:c.url,baseLike:c.like||0,compact:true});
   };
   let h='',fold='',n=0;
   SIGLIB.forEach(function(c,i){if(c.fold){fold+=art(c,i);n++;}else h+=art(c,i);});
@@ -3679,7 +3706,7 @@ document.addEventListener('click',function(e){
   if(gt){gotoPost(gt.dataset.goto);return;}
 
   const vcm=t.closest('[data-vcm]');
-  if(vcm){const id=vcm.dataset.vcm,box=vcm.closest('.vbody').querySelector('.vcm');
+  if(vcm){const id=vcm.dataset.vcm,box=vcm.closest('.vbody,.fd').querySelector('.vcm');
     const on=!box.classList.contains('on');box.classList.toggle('on',on);vcm.classList.toggle('on',on);
     if(on){openCm[id]=1;const ta=box.querySelector('.composer textarea');
       if(ta)setTimeout(function(){ta.focus({preventScroll:true});revealIn(ta);},40);}
@@ -3750,7 +3777,7 @@ document.addEventListener('click',function(e){
   const mo=t.closest('[data-more]');
   if(mo){const box=mo.closest('.fdb');
     const open=box.classList.toggle('open');
-    mo.textContent=open?'접기':'펼치기';return;}
+    mo.textContent=open?'접기':(mo.classList.contains('fdmore2')?'더 보기':'펼치기');return;}
 
   const lk=t.closest('[data-like]');
   if(lk){toggleLike(lk.dataset.like);return;}
