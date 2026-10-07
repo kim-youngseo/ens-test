@@ -1279,6 +1279,22 @@ body{
 .hwb>.fcard{margin-bottom:0}
 .hero .row small.hgo{flex:none;font-size:11.5px;font-weight:500;color:rgba(255,255,255,.62);letter-spacing:-.02em;margin-right:-7px}
 .hwart+.hwb{margin-top:26px}
+/* ---------- BY 한화손보 : 제목은 카드 밖, 내용만 카드 한 겹 ---------- */
+.hwb{margin:28px 0 0;padding:0;border:none;background:none}
+.hwart+.hwb{margin-top:26px}
+.hwb .hwsec{margin:0 0 10px 4px;font-size:17px}
+.hwbin{background:#141417;border-radius:20px;padding:18px}
+.hwb .whylist{gap:0}
+.hwb .why{background:none;border-radius:0;padding:16px 0;min-height:0;border-top:1px solid #26262C}
+.hwb .why:first-child{border-top:none;padding-top:4px}
+.hwb .why:last-child{padding-bottom:4px}
+.hwb .wobj{width:56px;height:56px;background:#222228}
+.hwb .wobj svg{width:36px;height:36px}
+.hwb .aboutc{background:none;padding:0;grid-template-columns:1fr 96px}
+.hwb .aboutc .abimg{width:96px;height:96px}
+.hwbin>.fcard{background:none;padding:0}
+.hwbin>.faq:first-child .fq{padding-top:4px}
+.hwbin>.roadlead{margin:0 0 16px}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1546,7 +1562,7 @@ body{
           <p><span class="hw">한화손보</span>가 여성 창업가분들과 함께합니다.</p>
         </div>
 
-        <div class="hwb"><div class="hwsec">왜 <span class="hw">한화손보</span>가 <span class="as">Ascént</span>를 기획했나요?</div>
+        <div class="hwb"><div class="hwsec">왜 <span class="hw">한화손보</span>가 <span class="as">Ascént</span>를 기획했나요?</div><div class="hwbin">
         <div class="whylist">
           <div class="why"><span class="wobj"><svg width="44" height="44" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="who" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB37C"/><stop offset="1" stop-color="#FF6B1A"/></linearGradient><linearGradient id="whp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C3A6FF"/><stop offset="1" stop-color="#7A4FE0"/></linearGradient></defs><path d="M24 41s-15-8.6-15-20.5A8.5 8.5 0 0 1 24 15a8.5 8.5 0 0 1 15 5.5C39 32.4 24 41 24 41z" fill="url(#who)"/><ellipse cx="16.5" cy="20" rx="3.4" ry="2.2" fill="#fff" opacity=".4" transform="rotate(-35 16.5 20)"/><circle cx="36" cy="13" r="7" fill="url(#whp)"/><path d="M36 9.5v7M32.5 13h7" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></span><div><i class="wn">01</i><b>여성을 가장 잘 아는 보험사</b>
             <span>여성의 건강과 생애 주기를 가장 가까이에서 들여다보며 상품을 설계해 왔습니다.</span></div></div>
@@ -1554,19 +1570,19 @@ body{
             <span>생애주기를 이해하는 것을 넘어, 여성 창업가가 더 크게 도전하고 오래 달릴 수 있도록 돕고자 합니다.</span></div></div>
           <div class="why"><span class="wobj"><svg width="44" height="44" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wpo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB37C"/><stop offset="1" stop-color="#FF6B1A"/></linearGradient><linearGradient id="wpp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C3A6FF"/><stop offset="1" stop-color="#7A4FE0"/></linearGradient></defs><circle cx="31" cy="15" r="6.5" fill="url(#wpp)"/><path d="M20 40c0-7 5-12 11-12s11 5 11 12z" fill="url(#wpp)"/><circle cx="18" cy="17" r="7.5" fill="url(#wpo)"/><path d="M5 42c0-8 6-13 13-13s13 5 13 13z" fill="url(#wpo)"/><ellipse cx="15.5" cy="14" rx="2.6" ry="1.6" fill="#fff" opacity=".35"/></svg></span><div><i class="wn">03</i><b>그 첫 번째 시도, <span class="as">Ascént</span></b>
             <span>서로에게 먼저 손을 내밀고 각자의 감각을 나누며 함께 성장하는 밀도 높은 시간을 준비했습니다.</span></div></div>
-        </div>
+        </div></div>
         </div>
 
-        <div class="hwb"><div class="hwsec">About <span class="as">Ascént</span></div>
+        <div class="hwb"><div class="hwsec">About <span class="as">Ascént</span></div><div class="hwbin">
         <div class="aboutc">
           <div class="abtx"><p class="aq">여성 창업가를 위한<br><em>밀도 높은 연결의 장</em></p>
           <span>서로의 경계를 허물고,<br>마주 앉아 함께 성장합니다.</span></div>
           <img class="abimg" id="aboutImg" alt="">
           <div class="prog"><i>실전 강연</i><i>GIVE &amp; GET</i><i>젠가 토크</i></div>
-        </div>
+        </div></div>
         </div>
 
-        <div class="hwb"><div class="hwsec">자주 묻는 질문</div>
+        <div class="hwb"><div class="hwsec">자주 묻는 질문</div><div class="hwbin">
         <div class="faq" data-faq="1">
           <button class="fq"><b class="qm">Q</b><span class="fqt"><span class="as">Ascént</span>는 어떤 프로그램인가요?</span><i>+</i></button>
           <div class="fa"><p><span class="hw">한화손보</span>가 제안하는 여성 창업가 네트워크입니다.</p>
@@ -1584,29 +1600,29 @@ body{
           <div class="fa"><p>웰니스 &amp; 뷰티 씬 동료들과 실전 비즈니스 제휴 기회를 발굴하고, 든든한 러닝메이트를 만납니다.</p>
             <p>현장에서 <span class="as">Ascént</span> 오프라인 플레이북을 채워나가며 내 비즈니스의 현재 좌표를 진단하고, 동료 창업가들의 솔루션에서 인사이트를 얻을 수 있습니다.</p>
             <p class="hl"><span class="as">Ascént</span>를 통해, 행사 후에도 참고할만한 성장 자산을 쌓을 수 있길 바랍니다.</p></div>
-        </div>
+        </div></div>
         </div>
 
-        <div class="hwb"><div class="hwsec">앞으로의 <span class="as">Ascént</span></div>
+        <div class="hwb"><div class="hwsec">앞으로의 <span class="as">Ascént</span></div><div class="hwbin">
         <p class="roadlead">Season 1 Wellness를 시작으로,<br>여성 창업가분들을 위한 네트워킹 공간을 확장할 예정입니다.</p>
         <div class="road">
           <div class="rs now"><i></i><div><em>NOW</em><b>Season 1 : Wellness</b></div></div>
           <div class="rs"><i></i><div><em>NEXT</em><b>리더-멘티 연결을 이어가는 애프터 프로그램</b></div></div>
           <div class="rs"><i></i><div><em>NEXT</em><b>다음 시즌 참여자 공개 모집</b></div></div>
-        </div>
+        </div></div>
         </div>
 
-        <div class="hwb"><div class="hwsec">유형 테스트</div>
+        <div class="hwb"><div class="hwsec">유형 테스트</div><div class="hwbin">
         <button class="fcard" data-toast="곧 열립니다 · 행사 당일 공개">
           <div class="fthumb" style="background:linear-gradient(150deg,#C25A1E,#6E3010)">&#129504;</div>
           <div class="fbody"><div class="fmeta"><b>유형 테스트</b><span>· 3분</span></div>
             <h4>나의 웰니스 유형은?</h4>
-            <p>12가지 여성 유형을 바탕으로 보는 나의 웰니스 습관</p></div></button>
+            <p>12가지 여성 유형을 바탕으로 보는 나의 웰니스 습관</p></div></button></div>
         </div>
 
-        <div class="hwb"><div class="hwsec">Signature Library</div>
+        <div class="hwb"><div class="hwsec">Signature Library</div><div class="hwbin">
         <p class="hint" style="margin:-4px 0 12px"><span class="hw">한화손보</span> 시그니처 라이브러리가 당신을 위해 엄선한 아티클</p>
-        <div class="feed" id="hwFeed"></div>
+        <div class="feed" id="hwFeed"></div></div>
         </div>
 
         <div class="spacer"></div>
