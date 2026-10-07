@@ -1295,6 +1295,8 @@ body{
 .hwbin>.fcard{background:none;padding:0}
 .hwbin>.faq:first-child .fq{padding-top:4px}
 .hwbin>.roadlead{margin:0 0 16px}
+.hwb .hwsub{margin:-4px 0 12px 4px;line-height:1.6}
+.fdn span.lb{margin-left:-.5em}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1620,8 +1622,8 @@ body{
             <p>12가지 여성 유형을 바탕으로 보는 나의 웰니스 습관</p></div></button></div>
         </div>
 
-        <div class="hwb"><div class="hwsec">Signature Library</div><div class="hwbin">
-        <p class="hint" style="margin:-4px 0 12px"><span class="hw">한화손보</span> 시그니처 라이브러리가 당신을 위해 엄선한 아티클</p>
+        <div class="hwb"><div class="hwsec">Signature Library</div>
+        <p class="hint hwsub"><span class="hw">한화손보</span> 시그니처 라이브러리가<br>당신을 위해 엄선한 아티클</p><div class="hwbin">
         <div class="feed" id="hwFeed"></div></div>
         </div>
 
@@ -3660,7 +3662,7 @@ function feedArticle(o){
   let h='<article class="fd">';
   const pa=pAttr(o.who&&o.who.id);
   h+='<div class="fdh"><div class="av"'+pa+'>'+avatarOf(o.who)+'</div>'+
-     '<div class="fdn"'+pa+'><b>'+esc(o.name)+'</b><span>'+esc(o.sub||'')+'</span></div>'+
+     '<div class="fdn"'+pa+'><b>'+esc(o.name)+'</b><span'+(/^『/.test(o.sub||'')?' class="lb"':'')+'>'+esc(o.sub||'')+'</span></div>'+
      (mine?'<div class="pact"><button data-edit="'+esc(o.id)+'">수정</button><i>·</i>'+
        '<button data-del="'+esc(o.id)+'">삭제</button></div>':'')+'</div>';
   if(o.img)h+='<div class="fdimg"><img src="'+o.img+'" alt=""></div>';
