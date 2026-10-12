@@ -1412,6 +1412,51 @@ body{
 .obct.a>i{color:var(--amb2)}
 .obct>div{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .obcta{flex:none;padding:10px var(--gut) calc(env(safe-area-inset-bottom) + 16px)}
+/* ---------- 프로필 설정 : 움직임 ---------- */
+/* 화면이 바뀌면 제목부터 차례로 떠오릅니다 */
+.obstep.on>*{animation:obrise .6s cubic-bezier(.2,.8,.2,1) both}
+.obstep.on>*:nth-child(2){animation-delay:.07s}
+.obstep.on>*:nth-child(3){animation-delay:.14s}
+.obstep.on>*:nth-child(4){animation-delay:.21s}
+.obstep.on>*:nth-child(5){animation-delay:.28s}
+@keyframes obrise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* 환영 화면 : 로고 뒤로 빛이 천천히 돕니다 */
+.obmark{position:relative;width:96px!important;height:96px!important;background:#141418!important;
+  box-shadow:0 20px 50px rgba(139,98,232,.28)!important;margin-bottom:30px!important}
+.obmark img{position:relative;z-index:1}
+.obglow{position:absolute;inset:-3px;border-radius:50%;z-index:0;
+  background:conic-gradient(from 0deg,var(--vio),var(--amb),#C3A6FF,var(--vio));animation:obspin 4s linear infinite;
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));
+          mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px))}
+.obmark::after{content:"";position:absolute;inset:-26px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(139,98,232,.35),transparent 65%);animation:obbreath 3.2s ease-in-out infinite}
+@keyframes obspin{to{transform:rotate(360deg)}}
+@keyframes obbreath{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
+.obstep[data-ob="0"] h1{font-size:28px}
+/* 단계 번호 : 작은 알약 */
+.obno{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--vio-dim);font-size:11.5px!important}
+.obno.a{background:var(--amb-dim)}
+/* 입력칸 : 고르면 은은하게 빛납니다 */
+.obin:focus,.obline:focus{box-shadow:0 0 0 4px rgba(139,98,232,.16)}
+.obfixed{background:linear-gradient(180deg,#19191E,#141417)!important;border:1px solid rgba(255,255,255,.05)}
+/* 키워드 : 누르면 톡 튀고 체크가 붙습니다 */
+.obkw button.on:not(.own)::before{content:"";width:12px;height:12px;margin-left:-2px;flex:none;
+  background:no-repeat center/12px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+.obkw button.on{animation:obchip .32s cubic-bezier(.2,1.6,.4,1);box-shadow:0 6px 16px rgba(139,98,232,.3)}
+.obkw.a button.on{box-shadow:0 6px 16px rgba(255,107,26,.28)}
+@keyframes obchip{0%{transform:scale(.9)}100%{transform:scale(1)}}
+/* 버튼 : 보라에서 주황으로 빛이 지나갑니다 */
+#obNext{position:relative;overflow:hidden;background:linear-gradient(100deg,var(--vio),#A274F0 55%,var(--vio));
+  box-shadow:0 10px 26px rgba(139,98,232,.32)}
+#obNext::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-50%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:obshine 3.4s ease-in-out infinite}
+@keyframes obshine{0%,60%{left:-50%}100%{left:120%}}
+/* 완료 : 체크가 그려지고 조각이 퍼집니다 */
+.obp{position:absolute;left:50%;top:50%;width:7px;height:7px;margin:-3.5px;border-radius:2px;background:var(--c);opacity:0}
+.obstep[data-ob="5"].on .obp{animation:obburst .9s cubic-bezier(.15,.7,.3,1) .45s forwards}
+@keyframes obburst{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(1)}
+  100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1*var(--d))) scale(.4) rotate(140deg)}}
+.obdone{width:92px!important;height:92px!important}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1771,7 +1816,7 @@ body{
         <div class="obsteps">
 
           <div class="obstep" data-ob="0">
-            <div class="obmark"><img id="obMark" alt=""></div>
+            <div class="obmark"><span class="obglow"></span><img id="obMark" alt=""></div>
             <h1 id="obHi"></h1>
           </div>
 
@@ -1802,7 +1847,7 @@ body{
           </div>
 
           <div class="obstep" data-ob="5">
-            <div class="obdone"><i></i><i></i><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <div class="obdone"><b class="obp" style="--a:0deg;--d:64px;--c:#8B62E8"></b><b class="obp" style="--a:37deg;--d:78px;--c:#FF6B1A"></b><b class="obp" style="--a:60deg;--d:92px;--c:#C3A6FF"></b><b class="obp" style="--a:97deg;--d:64px;--c:#FFB37C"></b><b class="obp" style="--a:120deg;--d:78px;--c:#8B62E8"></b><b class="obp" style="--a:157deg;--d:92px;--c:#FF6B1A"></b><b class="obp" style="--a:180deg;--d:64px;--c:#C3A6FF"></b><b class="obp" style="--a:217deg;--d:78px;--c:#FFB37C"></b><b class="obp" style="--a:240deg;--d:92px;--c:#8B62E8"></b><b class="obp" style="--a:277deg;--d:64px;--c:#FF6B1A"></b><b class="obp" style="--a:300deg;--d:78px;--c:#C3A6FF"></b><b class="obp" style="--a:337deg;--d:92px;--c:#FFB37C"></b><i></i><i></i><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
             <h2>프로필이<br>준비되었습니다</h2>
           </div>
 
@@ -3622,7 +3667,7 @@ function openOnb(){
   document.getElementById('obName').textContent=ME.n||'';
   document.getElementById('obCo').textContent=ME.co||'';
   document.getElementById('obPos').value=ME.pos||'';
-  const bz=document.getElementById('obBiz');bz.value=ME.biz||BIZ[ME.co]||'';
+  const bz=document.getElementById('obBiz');bz.value='';
   document.getElementById('obBizN').textContent=bz.value.length+'/300';
   OB.Give=(ME.give||[]).slice();OB.Get=(ME.get||[]).slice();
   obChips('Give');obChips('Get');
@@ -3657,7 +3702,7 @@ document.getElementById('obBiz').addEventListener('input',function(){
 document.getElementById('obNext').addEventListener('click',function(){
   if(OB.step<OB_LAST){obGo(OB.step+1);return;}
   ME.pos=document.getElementById('obPos').value.trim();
-  ME.biz=document.getElementById('obBiz').value.trim();
+  const nb=document.getElementById('obBiz').value.trim();if(nb)ME.biz=nb;
   ME.give=OB.Give.slice();ME.get=OB.Get.slice();
   const prof={pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get};
   saveUstate({prof:prof,onb:1});
