@@ -1516,6 +1516,36 @@ body{
   margin-right:7px;border-radius:50%;background:var(--amb);font-size:11px;font-weight:800;vertical-align:-2px}
 .obtoast.on{animation:obtoast 1.8s ease forwards}
 @keyframes obtoast{0%{opacity:0;transform:translate(-50%,8px)}12%,78%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-4px)}}
+/* ---------- 큐레이션 글쓰기 화면 ---------- */
+#s-curwrite{padding-top:0;padding-bottom:0!important}
+.cwtop{position:sticky;top:0;z-index:3;flex:none;display:flex;align-items:center;gap:8px;
+  margin:0 calc(-1*var(--gut));padding:calc(env(safe-area-inset-top) + 10px) var(--gut) 10px;background:var(--bg);
+  border-bottom:1px solid var(--line)}
+.cwx{width:36px;height:36px;margin-left:-8px;border:none;background:none;color:var(--txt);font-size:18px;cursor:pointer}
+.cwtop h2{flex:1;font-size:16px;font-weight:700;letter-spacing:-.03em;text-align:center}
+.cwsend{border:none;border-radius:999px;background:var(--vio);color:#fff;font-family:inherit;font-size:14px;font-weight:700;
+  padding:8px 16px;cursor:pointer;transition:opacity .2s}
+.cwsend[disabled]{opacity:.35;pointer-events:none}
+.cwhint{flex:none;font-size:13px;line-height:1.6;color:var(--dim);letter-spacing:-.02em;margin:16px 0 4px}
+#s-curwrite .composer{display:flex!important;flex-direction:column;flex:1;background:none;border:none;border-radius:0;
+  padding:14px 0 0;margin:0;box-shadow:none}
+#s-curwrite .composer .chead{margin-bottom:18px}
+#s-curwrite .composer .ctitle{background:none;border:none;border-radius:0;padding:4px 0 14px;font-size:22px;font-weight:800;
+  letter-spacing:-.04em;border-bottom:1px solid var(--line);caret-color:var(--vio)}
+#s-curwrite .composer .ctitle::placeholder{color:#3A3A42;font-weight:800}
+#s-curwrite .composer textarea{flex:1;min-height:240px;background:none;border:none;border-radius:0;padding:16px 0;
+  font-size:16px;line-height:1.75;letter-spacing:-.02em;caret-color:var(--vio);box-shadow:none;resize:none}
+#s-curwrite .composer textarea::placeholder{color:#4A4A52}
+#s-curwrite .composer .cprev{margin-bottom:8px}
+#s-curwrite .composer .cimg{order:10;position:sticky;bottom:0}
+#s-curwrite .composer .cfoot{order:11;position:sticky;bottom:0;margin:0 calc(-1*var(--gut));
+  padding:12px var(--gut) calc(env(safe-area-inset-bottom) + 12px);background:var(--bg);border-top:1px solid var(--line)}
+#s-curwrite .composer .cbtn{display:none}
+#s-curwrite .composer .cfoot .cimg{position:static;margin:0;padding:8px 13px;font-size:13px}
+#s-curwrite .composer .cfoot .cnt{text-align:right}
+#s-curwrite .composer .cfoot .cimg{order:-1;margin-right:auto}
+#s-curwrite .composer .cfoot .cnt{flex:none;order:2}
+#s-curwrite #curComposer{flex:1;display:flex;flex-direction:column}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1683,7 +1713,6 @@ body{
           <button type="button" data-curf="leader">리더</button>
           <button type="button" data-curf="mentee">참가자</button>
         </div>
-        <div id="curComposer"></div>
         <div class="feed" id="feedList"></div>
         <div class="spacer"></div>
       </section>
@@ -1940,6 +1969,17 @@ body{
 
         </div>
         <div class="obcta"><p class="obtoast" id="obToast">필수 답변 질문입니다</p><button class="btn o" id="obNext">다음</button></div>
+      </section>
+
+      <!-- ========== 큐레이션 글쓰기 ========== -->
+      <section class="screen" id="s-curwrite">
+        <div class="cwtop">
+          <button type="button" class="cwx" id="cwClose" aria-label="닫기">&#10005;</button>
+          <h2 id="cwTtl">큐레이션 쓰기</h2>
+          <button type="button" class="cwsend" id="cwSend" disabled>올리기</button>
+        </div>
+        <p class="cwhint">나만의 비즈니스 팁이 있다면? 동료들과 &lsquo;나만의 승부수&rsquo;를 나누어보세요!</p>
+        <div id="curComposer"></div>
       </section>
 
       <section class="screen" id="s-profedit">
@@ -2787,8 +2827,8 @@ const vp=document.getElementById('vp');
 vp.addEventListener('scroll',function(){if(vp.scrollLeft||vp.scrollTop){vp.scrollLeft=0;vp.scrollTop=0;}});
 let stack=['login'];
 const TABS=['home','event','map','hanwha','profile'];
-const CHROME_OFF=['login','welcome','intro','onboard'];
-const OWNER={home:'home',leaders:'home',market:'home',roster:'home',rosterlive:'home',curations:'home',info:'home',
+const CHROME_OFF=['login','welcome','intro','onboard','curwrite'];
+const OWNER={curwrite:'home',home:'home',leaders:'home',market:'home',roster:'home',rosterlive:'home',curations:'home',info:'home',
              person:'home',curation:'home',pass:'home',event:'event',map:'map',
              hanwha:'hanwha',profile:'profile',profedit:'profile',myposts:'profile'};
 function el(id){return document.getElementById('s-'+id);}
@@ -3077,6 +3117,30 @@ function feedCard(c){
     '<h4>'+c.t+'</h4><p>'+c.d+'</p></div>';
   return b;
 }
+/* 큐레이션은 별도 화면에서 씁니다 */
+function openCurWrite(){
+  renderFeed();
+  const c=document.getElementById('cmp-cur');if(!c)return;
+  c.classList.add('on');syncCurWrite();
+  /* 사진 첨부는 아래 막대 왼쪽, 글자 수는 오른쪽 */
+  const im=c.querySelector('.cimg'),ft=c.querySelector('.cfoot');
+  if(im&&ft&&im.parentNode!==ft)ft.insertBefore(im,ft.firstChild);
+  if(cur()!=='curwrite')go('curwrite');
+  setTimeout(function(){const f=c.querySelector('.ctitle');if(f&&!c.dataset.editing)f.focus({preventScroll:true});},420);
+}
+function syncCurWrite(){
+  const c=document.getElementById('cmp-cur');if(!c)return;
+  const sb=c.querySelector('[data-csend]'),top=document.getElementById('cwSend');
+  top.disabled=sb.disabled;top.textContent=c.classList.contains('sending')?'올리는 중…':c.dataset.editing?'수정':'올리기';
+  document.getElementById('cwTtl').textContent=c.dataset.editing?'큐레이션 수정':'큐레이션 쓰기';
+}
+document.getElementById('cwSend').addEventListener('click',function(){submitComposer('cmp-cur');});
+document.getElementById('cwClose').addEventListener('click',function(){
+  const c=document.getElementById('cmp-cur');
+  const dirty=c&&!c.dataset.editing&&((c.querySelector('textarea').value.trim())||(c.querySelector('.ctitle').value.trim())||c.dataset.img);
+  if(dirty&&!confirm('작성 중인 글이 사라집니다. 나가시겠어요?'))return;
+  closeComposer('cmp-cur');
+});
 function mountComposer(hostId,cmpId,opt){
   const host=document.getElementById(hostId);if(!host)return;
   const ex=document.getElementById(cmpId);
@@ -3918,6 +3982,7 @@ function closeComposer(id){
   delete c.dataset.img;
   const pv=c.querySelector('.cprev');if(pv){pv.innerHTML='';pv.classList.remove('on');}
   const fi=c.querySelector('.cfile');if(fi)fi.value='';
+  if(id==='cmp-cur'){syncCurWrite();if(cur()==='curwrite')back();}
 }
 function editPost(pid){
   const p=POSTS.find(function(x){return x.id===pid;});
@@ -3926,13 +3991,14 @@ function editPost(pid){
             p.kind==='reply'?'cmp-r-'+p.target:'cmp-q-'+p.target;
   /* 글이 놓인 화면으로 먼저 옮겨갑니다 */
   let moved=false;
-  const dest=p.kind==='voice'?'home':p.kind==='cur'?'curations':
+  const dest=p.kind==='voice'?'home':p.kind==='cur'?'curwrite':
              p.kind==='reply'?replyHome(p.target):'leaders';
   if(dest==='leaders'){
     const li=LEADERS.findIndex(function(x){return x.id===p.target;});
     if(li>=0){leaderIdx=li;renderLeaderRail();renderLeader();}
   }else{renderVoices();renderFeed();}
-  if(cur()!==dest){go(dest);moved=true;}
+  if(dest==='curwrite'){openCurWrite();moved=true;}
+  else if(cur()!==dest){go(dest);moved=true;}
   setTimeout(function(){fillComposer(cid,pid,p);},moved?430:0);
 }
 /* 댓글이 달린 글이 있는 화면 */
@@ -3961,6 +4027,7 @@ function fillComposer(cid,pid,p){
   }
   const sb=c.querySelector('[data-csend]');sb.textContent='수정하기';sb.disabled=false;
   c.classList.add('on');
+  if(cid==='cmp-cur')syncCurWrite();
   setTimeout(function(){ta.focus({preventScroll:true});revealIn(c);},60);
 }
 function updatePost(pid,patch,done){
@@ -4017,6 +4084,7 @@ document.addEventListener('input',function(e){
   n.textContent=len+' / '+CMAX;
   n.classList.toggle('over',len>CMAX);
   b.disabled=!(t.value.trim()&&(!ti||ti.value.trim())&&len<=CMAX);
+  if(c.id==='cmp-cur')syncCurWrite();
 });
 
 /* ================= 사진 첨부 =================
@@ -4255,10 +4323,7 @@ document.addEventListener('click',function(e){
   if(cs2){curS=cs2.dataset.cursort;menu.classList.remove('on');renderFeed();return;}
   const cf=t.closest('[data-curf]');
   if(cf){curF=cf.dataset.curf;renderFeed();return;}
-  if(t.closest('#curFab')){
-    const c=document.getElementById('cmp-cur');
-    if(c&&!c.classList.contains('on'))openComposer('cmp-cur');
-    el('curations').scrollTo({top:0,behavior:'smooth'});return;}
+  if(t.closest('#curFab')){openCurWrite();return;}
   const gt=t.closest('[data-goto]');
   if(gt){gotoPost(gt.dataset.goto);return;}
 
