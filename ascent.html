@@ -1298,14 +1298,14 @@ body{
 .hwb .hwsub{margin:-4px 0 12px 4px;line-height:1.6}
 .fdn span.lb{margin-left:-.5em}
 /* 타임라인 장소 */
-.tplace{display:flex;width:max-content;margin-top:7px;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mut);
+#tlList .ts .tc{flex:1;min-width:0}
+#tlList .ts .tc>p{width:100%;display:flex!important;align-items:center;justify-content:space-between;gap:10px}
+.tplace{flex:none;display:inline-flex;margin-left:auto;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mut);
   background:var(--s2);border-radius:999px;padding:3px 9px 3px 7px;letter-spacing:-.01em}
 .tplace svg{color:var(--amb2)}
 /* 프로필 확인 (처음 로그인) */
 .ednote{display:none;font-size:13.5px;line-height:1.65;color:var(--mut);background:var(--s1);border-radius:14px;
   padding:13px 15px;margin:0 0 18px;letter-spacing:-.02em;flex:none}
-#s-profedit.onb .ednote{display:block}
-#s-profedit.onb #edBack{display:none}
 .kwetc{margin-top:10px}
 .kwetc input{font-size:13.5px}
 /* BY 한화손보 : 글 머리와 구역 제목을 같은 선에 맞춥니다 */
@@ -1315,6 +1315,47 @@ body{
 .hwb .hwsec{margin-left:0}
 .hwb .hwsub{margin:-4px 0 12px 0}
 .hwbin:has(> .feed){padding-top:4px}
+.hwart+.hwb{padding-top:0}
+.hwbin>.feed>.fd:first-child{padding-top:6px}
+/* ---------- 첫 로그인 : 프로필 확인 ---------- */
+#s-onboard{padding-top:calc(env(safe-area-inset-top) + 28px);padding-bottom:0!important}
+.obhead{flex:none;margin-bottom:22px}
+.obhi{font-size:14px;font-weight:600;color:var(--amb2);letter-spacing:-.02em}
+.obhead h1{font-size:26px;font-weight:800;letter-spacing:-.05em;line-height:1.32;margin:8px 0 10px}
+.obnote{font-size:13.5px;line-height:1.6;color:var(--mut);letter-spacing:-.02em}
+.obme{flex:none;display:flex;align-items:center;gap:14px;background:var(--s1);border-radius:16px;padding:16px;margin-bottom:26px}
+.obph{position:relative;flex:none;cursor:pointer}
+.obme .av{width:56px;height:56px;flex:none}
+.obph i{position:absolute;right:-3px;bottom:-3px;width:24px;height:24px;border-radius:50%;background:var(--vio);
+  display:flex;align-items:center;justify-content:center;border:2.5px solid var(--s1)}
+.obphnote{flex:none;font-size:12px;color:var(--dim);margin:-18px 0 26px 4px;letter-spacing:-.01em}
+#tlList .ts .tc>p .tn{flex:1;min-width:0}
+.obme>div{flex:1;min-width:0}
+.obme b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.02em}
+.obme span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+.obme em{flex:none;font-style:normal;font-size:11px;color:var(--dim);border:1px solid var(--line2);border-radius:999px;padding:3px 8px}
+.obsec{flex:none;margin-bottom:26px}
+.obsec>label{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+.obsec>label i{margin-left:auto;font-style:normal;font-size:12px;font-weight:500;color:var(--dim);font-variant-numeric:tabular-nums}
+.obin{width:100%;background:var(--s1);border:1px solid transparent;border-radius:14px;color:var(--txt);font-family:inherit;
+  font-size:15px;letter-spacing:-.02em;padding:13px 15px;outline:none;transition:border-color .15s;resize:none;line-height:1.6}
+.obin:focus{border-color:var(--line2)}
+.obin::placeholder{color:var(--dim)}
+.obtag{font-size:11px;font-weight:800;letter-spacing:.06em;color:#fff;background:var(--vio);border-radius:6px;padding:3px 7px}
+.obtag.a{background:var(--amb)}
+.obkw{display:flex;flex-wrap:wrap;gap:8px}
+.obkw button{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line2);color:var(--mut);
+  font-family:inherit;font-size:13.5px;font-weight:500;letter-spacing:-.02em;border-radius:999px;padding:8px 13px;cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s}
+.obkw button.on{background:var(--vio-dim);border-color:var(--vio);color:#fff;font-weight:600}
+.obkw.a button.on{background:var(--amb-dim);border-color:var(--amb)}
+.obkw button i{font-style:normal;font-size:15px;line-height:1;opacity:.7}
+.obadd input{width:104px;background:none;border:1px dashed var(--line2);border-radius:999px;color:var(--txt);font-family:inherit;
+  font-size:13.5px;letter-spacing:-.02em;padding:8px 13px;outline:none}
+.obadd input:focus{width:150px;border-style:solid}
+.obadd input::placeholder{color:var(--dim)}
+.obcta{position:sticky;bottom:0;flex:none;padding:14px 0 calc(env(safe-area-inset-bottom) + 14px);
+  background:linear-gradient(180deg,rgba(11,11,13,0),var(--bg) 22px);margin-top:6px;padding-top:22px}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1664,9 +1705,36 @@ body{
       </section>
 
       <!-- ========== 프로필 수정 ========== -->
+      <!-- ========== 첫 로그인 : 프로필 확인 ========== -->
+      <section class="screen" id="s-onboard">
+        <div class="obhead">
+          <p class="obhi" id="obHi"></p>
+          <h1>내 프로필을<br>확인해 주세요</h1>
+          <p class="obnote">신청서에 적어 주신 내용으로 미리 채워 두었어요. 달라진 부분만 고쳐 주세요.</p>
+        </div>
+        <div class="obme"><label class="obph"><div class="av" id="obAv"></div><i>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></i>
+            <input type="file" accept="image/*" id="obFile" hidden></label>
+          <div><b id="obName"></b><span id="obCo"></span></div>
+          <em>이름 · 기업명 변경 불가</em></div>
+        <p class="obphnote">사진을 누르면 프로필 사진을 올릴 수 있어요</p>
+
+        <div class="obsec"><label for="obPos">직함</label>
+          <input id="obPos" class="obin" type="text" maxlength="30" placeholder="예) 대표, 공동창업자"></div>
+        <div class="obsec"><label for="obBiz">사업 소개<i id="obBizN">0/300</i></label>
+          <textarea id="obBiz" class="obin" rows="4" maxlength="300" placeholder="어떤 사업을 하고 있는지 짧게 소개해 주세요"></textarea></div>
+
+        <div class="obsec"><label><b class="obtag">GIVE</b>나눠 줄 수 있는 역량</label>
+          <div class="obkw" id="obGive"></div></div>
+        <div class="obsec"><label><b class="obtag a">GET</b>도움받고 싶은 역량</label>
+          <div class="obkw a" id="obGet"></div></div>
+
+        <div class="spacer"></div>
+        <div class="obcta"><button class="btn o" id="obSave">저장하고 시작하기</button></div>
+      </section>
+
       <section class="screen" id="s-profedit">
         <div class="nav"><button class="bk" id="edBack" data-back>&#8592;</button><h2 id="edTtl">프로필 수정</h2></div>
-        <p class="ednote" id="edNote">신청서에 적어 주신 내용을 바탕으로 미리 채워 두었습니다. 필요하시면 편하게 수정해 주세요.</p>
         <div class="field lock"><label>이름</label><input id="edName" type="text" readonly tabindex="-1"></div>
         <div class="field lock"><label>기업명</label><input id="edCo" type="text" readonly tabindex="-1"></div>
         <div class="field"><label>직함</label><input id="edPos" type="text" maxlength="30" placeholder="직함을 입력해 주세요"></div>
@@ -2322,6 +2390,7 @@ function applyUserState(){
     if(pr.get)ME.get=pr.get;
     if(typeof pr.biz==='string')ME.biz=pr.biz;
     if(typeof pr.pos==='string')ME.pos=pr.pos;
+    if(pr.ph){ME.ph=pr.ph;ME.fpos='50% 50%';}
   }
 }
 const PASTE_KEY='ascent_sheet_csv';
@@ -2508,7 +2577,7 @@ const vp=document.getElementById('vp');
 vp.addEventListener('scroll',function(){if(vp.scrollLeft||vp.scrollTop){vp.scrollLeft=0;vp.scrollTop=0;}});
 let stack=['login'];
 const TABS=['home','event','map','hanwha','profile'];
-const CHROME_OFF=['login','welcome','intro'];
+const CHROME_OFF=['login','welcome','intro','onboard'];
 const OWNER={home:'home',leaders:'home',market:'home',roster:'home',rosterlive:'home',curations:'home',info:'home',
              person:'home',curation:'home',pass:'home',event:'event',map:'map',
              hanwha:'hanwha',profile:'profile',profedit:'profile',myposts:'profile'};
@@ -2543,7 +2612,7 @@ function back(){
 function jump(id,st){const f=cur();stack=st?st.slice():[id];transition(f,id,'push');}
 function syncChrome(id){
   const tb=document.getElementById('tabbar'),dd=document.getElementById('dday');
-  const on=CHROME_OFF.indexOf(id)<0&&!(id==='profedit'&&ONB);
+  const on=CHROME_OFF.indexOf(id)<0;
   tb.classList.toggle('show',on);
   dd.classList.toggle('show',on);
   const owner=OWNER[id]||'home';
@@ -2635,7 +2704,7 @@ document.getElementById('lgBtn').addEventListener('click',function(){
     else localStorage.removeItem(DEVKEY);
   }catch(e){}
   /* 처음 들어오면 프로필부터 확인합니다 */
-  if(!ustate().onb){openEdit(true);jump('profedit',['profedit']);return;}
+  if(!ustate().onb){openOnb();jump('onboard',['onboard']);return;}
   startAfterLogin();
 });
 /* 초대 인사 · 환영 화면은 계정마다 처음 한 번만 보여 줍니다 */
@@ -2740,7 +2809,7 @@ function renderTimeline(){
     return '<div class="ts'+(r[4]==='meal'?' meal':'')+'">'+
       '<div class="rail"><i></i></div><div class="tc">'+
       '<div class="tt"><b>'+r[0]+' – '+r[1]+'</b></div>'+
-      '<p>'+r[2]+(r[3]?'<span class="tplace">'+TPIN+r[3].replace(/^([A-Z])(\d)/,'$1 $2')+'</span>':'')+'</p></div></div>';
+      '<p><span class="tn">'+r[2]+'</span>'+(r[3]?'<span class="tplace">'+TPIN+r[3].replace(/^([A-Z])(\d)/,'$1 $2')+'</span>':'')+'</p></div></div>';
   }).join('');
 }
 /* 오시는 길 : 한남사옥 주변을 한눈에 들어오게 줄여 그립니다 */
@@ -3403,13 +3472,8 @@ function renderMe(){
   const pn=document.getElementById('passName');if(pn)pn.textContent=ME.n;
   renderFavCount();
 }
-let ONB=false;
-function openEdit(onb){
+function openEdit(){
   if(!ME)return;
-  ONB=!!onb;
-  document.getElementById('s-profedit').classList.toggle('onb',ONB);
-  document.getElementById('edTtl').textContent=ONB?'프로필 확인':'프로필 수정';
-  document.getElementById('edSave').textContent=ONB?'저장하고 시작하기':'저장하기';
   document.getElementById('edName').value=ME.n;
   document.getElementById('edCo').value=ME.co||'';
   document.getElementById('edPos').value=ME.pos||'';
@@ -3432,10 +3496,85 @@ document.getElementById('edSave').addEventListener('click',function(){
   ME.pos=document.getElementById('edPos').value.trim();
   ME.biz=document.getElementById('edBiz').value.trim();
   ME.give=pick('Give');ME.get=pick('Get');
-  saveUstate({prof:{pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get},onb:1});
-  renderAll();
-  if(ONB){ONB=false;startAfterLogin();return;}
-  renderMe();back();toast('프로필이 저장되었습니다');
+  saveUstate({prof:{pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get}});
+  renderAll();renderMe();back();toast('프로필이 저장되었습니다');
+});
+
+/* ================= 첫 로그인 : 프로필 확인 =================
+   이름 · 기업명은 고정, 직함 · 사업 소개 · GIVE/GET 은 고칠 수 있습니다. 목록에 없는 역량은 「직접 입력」 */
+const OB={Give:[],Get:[]};
+function obChips(t){
+  const sel=OB[t],box=document.getElementById('ob'+t);
+  const extra=sel.filter(function(k){return KEYS.indexOf(k)<0;});
+  box.innerHTML=KEYS.map(function(k){
+      return '<button type="button" data-obkw="'+t+'|'+esc(k)+'" class="'+(sel.indexOf(k)>=0?'on':'')+'">'+esc(k)+'</button>';}).join('')+
+    extra.map(function(k){
+      return '<button type="button" class="on own" data-obdel="'+t+'|'+esc(k)+'">'+esc(k)+'<i>&times;</i></button>';}).join('')+
+    '<span class="obadd"><input type="text" maxlength="15" placeholder="+ 직접 입력" data-obin="'+t+'"></span>';
+}
+function openOnb(){
+  if(!ME)return;
+  document.getElementById('obHi').textContent=(ME.n||'')+' 님, 반가워요';
+  document.getElementById('obAv').innerHTML=avatarOf(ME);
+  document.getElementById('obName').textContent=ME.n||'';
+  document.getElementById('obCo').textContent=ME.co||'';
+  document.getElementById('obPos').value=ME.pos||'';
+  const bz=document.getElementById('obBiz');bz.value=ME.biz||BIZ[ME.co]||'';
+  document.getElementById('obBizN').textContent=bz.value.length+'/300';
+  OB.Give=(ME.give||[]).slice();OB.Get=(ME.get||[]).slice();OB.ph=ME.ph||'';
+  obChips('Give');obChips('Get');
+  document.getElementById('s-onboard').scrollTop=0;
+}
+function obAdd(inp){
+  const t=inp.dataset.obin,v=inp.value.trim();
+  if(v&&OB[t].indexOf(v)<0)OB[t].push(v);
+  obChips(t);
+  const n=document.querySelector('[data-obin="'+t+'"]');if(n)n.focus({preventScroll:true});
+}
+document.getElementById('s-onboard').addEventListener('click',function(e){
+  const k=e.target.closest('[data-obkw]'),d=e.target.closest('[data-obdel]');
+  const hit=k||d;if(!hit)return;
+  const v=(hit.dataset.obkw||hit.dataset.obdel).split('|'),t=v[0],w=v.slice(1).join('|'),a=OB[t],i=a.indexOf(w);
+  if(i>=0)a.splice(i,1);else a.push(w);
+  obChips(t);
+});
+document.getElementById('s-onboard').addEventListener('keydown',function(e){
+  const inp=e.target.closest('[data-obin]');
+  if(inp&&(e.key==='Enter'||e.key===',')){e.preventDefault();obAdd(inp);}
+});
+document.getElementById('s-onboard').addEventListener('focusout',function(e){
+  const inp=e.target.closest('[data-obin]');if(inp&&inp.value.trim())obAdd(inp);
+});
+/* 사진은 정사각형으로 잘라 작게 줄여 둡니다 */
+document.getElementById('obFile').addEventListener('change',function(){
+  const f=this.files&&this.files[0];this.value='';if(!f)return;
+  const rd=new FileReader();
+  rd.onload=function(){
+    const im=new Image();
+    im.onload=function(){
+      const n=Math.min(im.width,im.height),S=320,c=document.createElement('canvas');
+      c.width=c.height=S;
+      c.getContext('2d').drawImage(im,(im.width-n)/2,(im.height-n)/2,n,n,0,0,S,S);
+      OB.ph=c.toDataURL('image/jpeg',.85);
+      document.getElementById('obAv').innerHTML=avatarOf({ph:OB.ph,fpos:'50% 50%'});
+    };
+    im.onerror=function(){toast('사진을 불러오지 못했습니다',true);};
+    im.src=rd.result;
+  };
+  rd.readAsDataURL(f);
+});
+document.getElementById('obBiz').addEventListener('input',function(){
+  document.getElementById('obBizN').textContent=this.value.length+'/300';});
+document.getElementById('obSave').addEventListener('click',function(){
+  document.querySelectorAll('#s-onboard [data-obin]').forEach(function(i){
+    const v=i.value.trim(),t=i.dataset.obin;if(v&&OB[t].indexOf(v)<0)OB[t].push(v);});
+  ME.pos=document.getElementById('obPos').value.trim();
+  ME.biz=document.getElementById('obBiz').value.trim();
+  ME.give=OB.Give.slice();ME.get=OB.Get.slice();
+  const prof={pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get};
+  if(OB.ph&&OB.ph!==ME.ph){ME.ph=OB.ph;ME.fpos='50% 50%';prof.ph=OB.ph;}
+  saveUstate({prof:prof,onb:1});
+  renderAll();startAfterLogin();
 });
 
 /* ================= 글 저장소 =================
