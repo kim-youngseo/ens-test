@@ -1501,14 +1501,21 @@ body{
 .obstep[data-ob="7"].on .obspk>*:nth-child(4){animation-delay:1.4s}
 @keyframes obtw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.1)}}
 /* 필수 답변 안내 */
-.obreq{min-height:20px;font-size:13px;font-weight:600;color:#FF6B6B;margin-top:-6px;letter-spacing:-.02em}
-.obreq.on{animation:obshake .4s ease}
+#s-onboard [data-req].obshake{animation:obshake .4s ease!important}
 @keyframes obshake{0%,100%{transform:none}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.obstep[data-ob="3"] .obreq{margin-top:4px}
 /* BY 한화손보 : 첫머리와 첫 구역을 가깝게, 낱말이 중간에 끊기지 않게 */
 .hwart+.hwb{margin-top:30px!important}
 .hwart h1{margin-bottom:16px}
 .why span,.why b,.hwb p,.hwart{word-break:keep-all}
+/* 필수 답변 : 버튼 위에 잠깐 떴다 사라지는 작은 창 */
+.obcta{position:relative}
+.obtoast{position:absolute;left:50%;bottom:calc(100% + 4px);transform:translate(-50%,8px);white-space:nowrap;
+  background:rgba(40,40,46,.96);color:#fff;font-size:13px;font-weight:600;letter-spacing:-.02em;
+  padding:9px 16px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.4);opacity:0;pointer-events:none}
+.obtoast::before{content:"!";display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;
+  margin-right:7px;border-radius:50%;background:var(--amb);font-size:11px;font-weight:800;vertical-align:-2px}
+.obtoast.on{animation:obtoast 1.8s ease forwards}
+@keyframes obtoast{0%{opacity:0;transform:translate(-50%,8px)}12%,78%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-4px)}}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1876,21 +1883,18 @@ body{
             <h2>소속 기업을<br>알려주세요</h2>
             <p class="obname"><b id="obName"></b> 님</p>
             <input id="obCo" class="obline" type="text" maxlength="40" placeholder="기업명 입력" data-req="1">
-            <p class="obreq"></p>
           </div>
 
           <div class="obstep" data-ob="2">
             <em class="obno">02</em>
             <h2>직함을<br>알려주세요</h2>
             <input id="obPos" class="obline" type="text" maxlength="30" placeholder="직함 입력" data-req="1">
-            <p class="obreq"></p>
           </div>
 
           <div class="obstep" data-ob="3">
             <em class="obno">03</em>
             <h2>어떤 사업을<br>하고 계신가요?</h2>
             <textarea id="obBiz" class="obin obta" rows="5" maxlength="300" placeholder="사업 소개 입력" data-req="1"></textarea>
-            <p class="obreq"></p>
             <p class="obcnt" id="obBizN">0/300</p>
           </div>
 
@@ -1935,7 +1939,7 @@ body{
           </div>
 
         </div>
-        <div class="obcta"><button class="btn o" id="obNext">다음</button></div>
+        <div class="obcta"><p class="obtoast" id="obToast">필수 답변 질문입니다</p><button class="btn o" id="obNext">다음</button></div>
       </section>
 
       <section class="screen" id="s-profedit">
@@ -3783,9 +3787,6 @@ document.getElementById('s-onboard').addEventListener('keydown',function(e){
   if(inp&&(e.key==='Enter'||e.key===',')){e.preventDefault();obAdd(inp);}
 });
 document.getElementById('obPrev').addEventListener('click',function(){obGo(OB.step-1);});
-document.getElementById('s-onboard').addEventListener('input',function(e){
-  if(e.target.matches('[data-req]')){const m=e.target.parentNode.querySelector('.obreq');if(m){m.textContent='';m.classList.remove('on');}}
-});
 document.getElementById('obBiz').addEventListener('input',function(){
   document.getElementById('obBizN').textContent=this.value.length+'/300';});
 let obTimer=0;
@@ -3794,8 +3795,9 @@ document.getElementById('obNext').addEventListener('click',function(){
   /* 기업명 · 직함 · 사업 소개는 꼭 적어야 넘어갑니다 */
   const req=document.querySelector('#s-onboard .obstep.on [data-req]');
   if(req&&!req.value.trim()){
-    const m=req.parentNode.querySelector('.obreq');m.textContent='필수 답변 질문입니다';
-    m.classList.remove('on');void m.offsetWidth;m.classList.add('on');
+    const tt=document.getElementById('obToast');
+    tt.classList.remove('on');void tt.offsetWidth;tt.classList.add('on');
+    req.classList.remove('obshake');void req.offsetWidth;req.classList.add('obshake');
     req.focus({preventScroll:true});return;}
   if(OB.step<5){obGo(OB.step+1);return;}
   /* GET 까지 마치면 저장 → 준비 완료 → 환영 인사 */
