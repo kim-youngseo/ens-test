@@ -1464,6 +1464,41 @@ body{
 #s-onboard .obta{font-size:20px;line-height:1.55;min-height:180px}
 #s-onboard .obline::placeholder,#s-onboard .obta::placeholder{color:#3A3A42;font-weight:700}
 #s-onboard .obfixed{margin-bottom:26px}
+/* 프로필 설정 : 간격 · 환영 인사 */
+.obstep{padding-top:64px!important}
+.obstep h2{margin-bottom:46px!important}
+.obstep[data-ob="1"] h2{margin-bottom:22px!important}
+.obname{font-size:14px;color:var(--mut);margin-bottom:30px}
+.obname b{color:var(--txt);font-weight:700}
+#s-onboard .obline{margin-top:0;margin-bottom:18px}
+.obcta.hide{visibility:hidden}
+.obstep[data-ob="6"]{justify-content:center;padding-bottom:110px}
+.obstep[data-ob="6"]>*{animation:none!important}
+.obhey{width:170px;height:150px;margin-bottom:22px;opacity:0;transform:scale(.6)}
+.obsum{width:100%;height:100%;overflow:visible}
+.obheyt{font-size:26px!important;opacity:0;transform:translateY(12px)}
+.obnm{color:var(--amb2)}
+.obstep[data-ob="6"].on .obhey{animation:obpop .7s cubic-bezier(.2,1.5,.4,1) .1s forwards!important}
+.obstep[data-ob="6"].on .obheyt{animation:obup .55s ease .55s forwards!important}
+.obmtn{transform-origin:50% 100%;transform:scaleY(.2)}
+.obstep[data-ob="6"].on .obmtn.b{animation:obgrow .6s cubic-bezier(.2,1.3,.4,1) .25s forwards}
+.obstep[data-ob="6"].on .obmtn.f{animation:obgrow .6s cubic-bezier(.2,1.3,.4,1) .35s forwards}
+@keyframes obgrow{to{transform:none}}
+.obflag{transform-origin:94px 40px;transform:scaleY(0)}
+.obstep[data-ob="6"].on .obflag{animation:obgrow .4s cubic-bezier(.2,1.6,.4,1) .7s forwards}
+.obfl{transform-origin:95px 23px}
+.obstep[data-ob="6"].on .obfl{animation:obwave 1.4s ease-in-out 1.1s infinite}
+@keyframes obwave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-6deg) scaleX(.9)}}
+.obrays path{stroke-dasharray:14;stroke-dashoffset:14;opacity:.9}
+.obstep[data-ob="6"].on .obrays path{animation:obray .5s ease .85s forwards}
+@keyframes obray{to{stroke-dashoffset:0}}
+.obspk>*{transform-box:fill-box;transform-origin:center;opacity:0}
+.obstep[data-ob="6"].on .obspk>*{animation:obtw 1.8s ease-in-out infinite}
+.obstep[data-ob="6"].on .obspk>*:nth-child(1){animation-delay:.9s}
+.obstep[data-ob="6"].on .obspk>*:nth-child(2){animation-delay:1.2s}
+.obstep[data-ob="6"].on .obspk>*:nth-child(3){animation-delay:1.05s}
+.obstep[data-ob="6"].on .obspk>*:nth-child(4){animation-delay:1.4s}
+@keyframes obtw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.1)}}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1830,7 +1865,8 @@ body{
           <div class="obstep" data-ob="1">
             <em class="obno">01</em>
             <h2>소속과 직함을<br>확인해 주세요</h2>
-            <div class="obfixed"><b id="obName"></b><span id="obCo"></span></div>
+            <p class="obname"><b id="obName"></b> 님</p>
+            <input id="obCo" class="obline" type="text" maxlength="40" placeholder="기업명 입력">
             <input id="obPos" class="obline" type="text" maxlength="30" placeholder="직함 입력">
           </div>
 
@@ -1851,6 +1887,29 @@ body{
             <em class="obno a">04</em>
             <h2><b class="obg a">GET</b><br><span class="as">Ascént</span>에서 받고 싶은 조언</h2>
             <div class="obkw a" id="obGet"></div>
+          </div>
+
+          <div class="obstep" data-ob="6">
+            <div class="obhey"><svg class="obsum" viewBox="0 0 160 140" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="obmA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C3A6FF"/><stop offset="1" stop-color="#6B45D6"/></linearGradient>
+                <linearGradient id="obmB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB37C"/><stop offset="1" stop-color="#FF6B1A"/></linearGradient>
+              </defs>
+              <g class="obrays" stroke="#C3A6FF" stroke-width="3" stroke-linecap="round">
+                <path d="M80 10v12"/><path d="M48 20l6 9"/><path d="M112 20l-6 9"/><path d="M28 42l10 5"/><path d="M132 42l-10 5"/>
+              </g>
+              <path class="obmtn b" d="M8 128L58 58l22 28 14-16 58 58z" fill="url(#obmA)"/>
+              <path class="obmtn f" d="M34 128L94 40l58 88z" fill="url(#obmB)"/>
+              <path d="M94 40l-13 19 7 3 6-6 6 6 7-3z" fill="#fff" opacity=".92"/>
+              <g class="obflag"><path d="M94 40V16" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <path class="obfl" d="M95 17h22l-5 6 5 6H95z" fill="#fff"/></g>
+              <g class="obspk" fill="#FFD7B5">
+                <path d="M22 70l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z"/>
+                <path d="M140 74l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z"/>
+                <circle cx="128" cy="30" r="3"/><circle cx="34" cy="28" r="2.4"/>
+              </g>
+            </svg></div>
+            <h2 class="obheyt">반가워요, <span class="obnm" id="obHeyName"></span>님!</h2>
           </div>
 
           <div class="obstep" data-ob="5">
@@ -2519,6 +2578,7 @@ function applyUserState(){
     if(pr.get)ME.get=pr.get;
     if(typeof pr.biz==='string')ME.biz=pr.biz;
     if(typeof pr.pos==='string')ME.pos=pr.pos;
+    if(pr.co)ME.co=pr.co;
     if(pr.ph){ME.ph=pr.ph;ME.fpos='50% 50%';}
   }
 }
@@ -3632,7 +3692,7 @@ document.getElementById('edSave').addEventListener('click',function(){
 /* ================= 첫 로그인 : 프로필 설정 =================
    한 화면에 한 가지씩 확인합니다. 이름 · 기업명은 고정, 나머지는 고칠 수 있습니다 */
 const OB={Give:[],Get:[],ph:'',step:0};
-const OB_LAST=5;
+const OB_LAST=6;
 function obPhotoHtml(){
   return OB.ph?avatarOf({ph:OB.ph,fpos:'50% 50%'}):avatarOf(ME);
 }
@@ -3659,10 +3719,12 @@ function obGo(n){
   OB.step=Math.max(0,Math.min(OB_LAST,n));
   document.querySelectorAll('#s-onboard .obstep').forEach(function(p){
     const i=+p.dataset.ob;p.classList.toggle('on',i===OB.step);p.classList.toggle('past',i<OB.step);});
-  let dots='';for(let i=0;i<=OB_LAST;i++)dots+='<i class="'+(i===OB.step?'on':i<OB.step?'done':'')+'"></i>';
-  document.getElementById('obDots').innerHTML=dots;
-  document.getElementById('obPrev').classList.toggle('on',OB.step>0);
-  document.getElementById('obNext').textContent=OB.step===0?'시작하기':OB.step===OB_LAST?'Ascént 시작하기':'다음';
+  let dots='';for(let i=0;i<=4;i++)dots+='<i class="'+(i===OB.step?'on':i<OB.step?'done':'')+'"></i>';
+  document.getElementById('obDots').innerHTML=OB.step<5?dots:'';
+  document.getElementById('obPrev').classList.toggle('on',OB.step>0&&OB.step<5);
+  const nx=document.getElementById('obNext');
+  nx.textContent=OB.step===0?'시작하기':OB.step===OB_LAST?'Ascént 시작하기':'다음';
+  nx.parentNode.classList.toggle('hide',OB.step===5);
 
   document.getElementById('s-onboard').scrollTop=0;
 }
@@ -3672,7 +3734,7 @@ function openOnb(){
   OB.ph=ME.ph||'';
   const mk=document.getElementById('obMark');if(!mk.src)mk.src=triSrc();
   document.getElementById('obName').textContent=ME.n||'';
-  document.getElementById('obCo').textContent=ME.co||'';
+  document.getElementById('obCo').value=ME.co||'';
   document.getElementById('obPos').value=ME.pos||'';
   const bz=document.getElementById('obBiz');bz.value='';
   document.getElementById('obBizN').textContent=bz.value.length+'/300';
@@ -3706,14 +3768,22 @@ document.getElementById('s-onboard').addEventListener('keydown',function(e){
 document.getElementById('obPrev').addEventListener('click',function(){obGo(OB.step-1);});
 document.getElementById('obBiz').addEventListener('input',function(){
   document.getElementById('obBizN').textContent=this.value.length+'/300';});
+let obTimer=0;
 document.getElementById('obNext').addEventListener('click',function(){
-  if(OB.step<OB_LAST){obGo(OB.step+1);return;}
+  if(OB.step===OB_LAST){clearTimeout(obTimer);startAfterLogin();return;}
+  if(OB.step<4){obGo(OB.step+1);return;}
+  /* GET 까지 마치면 저장 → 준비 완료 → 환영 인사 */
+  obFlush();
+  const nc=document.getElementById('obCo').value.trim();if(nc)ME.co=nc;
   ME.pos=document.getElementById('obPos').value.trim();
   const nb=document.getElementById('obBiz').value.trim();if(nb)ME.biz=nb;
   ME.give=OB.Give.slice();ME.get=OB.Get.slice();
-  const prof={pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get};
+  const prof={co:ME.co,pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get};
   saveUstate({prof:prof,onb:1});
-  renderAll();startAfterLogin();
+  renderAll();
+  document.getElementById('obHeyName').textContent=ME.n||'';
+  obGo(5);
+  clearTimeout(obTimer);obTimer=setTimeout(function(){if(cur()==='onboard')obGo(6);},2100);
 });
 
 /* ================= 글 저장소 =================
