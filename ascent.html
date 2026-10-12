@@ -1336,16 +1336,16 @@ body{
 .obdots i.done{background:rgba(139,98,232,.55)}
 .obdots i.on{width:22px;background:var(--vio)}
 .obsteps{flex:1;position:relative;overflow:hidden}
-.obstep{position:absolute;inset:0;overflow-y:auto;padding:36px 28px 24px;display:flex;flex-direction:column;align-items:center;
-  text-align:center;opacity:0;transform:translateX(36px);pointer-events:none;
+.obstep{position:absolute;inset:0;overflow-y:auto;padding:30px var(--gut) 24px;display:flex;flex-direction:column;align-items:flex-start;
+  text-align:left;opacity:0;transform:translateX(36px);pointer-events:none;
   transition:opacity .3s ease,transform .42s cubic-bezier(.32,.72,0,1)}
 .obstep.past{transform:translateX(-36px)}
 .obstep.on{opacity:1;transform:none}
 #s-onboard.active .obstep.on{pointer-events:auto}
-.obstep[data-ob="0"]{justify-content:center;padding-bottom:60px}
-.obmark{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+.obstep[data-ob="0"]{padding-top:60px}
+.obmark{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:24px;
   background:radial-gradient(circle at 50% 35%,#2A2238,#151519);box-shadow:0 0 0 1px rgba(139,98,232,.35),0 18px 40px rgba(139,98,232,.25)}
-.obmark img{width:46px;height:46px;object-fit:contain}
+.obmark img{width:40px;height:40px;object-fit:contain}
 .obstep h1{font-size:27px;font-weight:800;letter-spacing:-.05em;line-height:1.3;margin:0 0 12px}
 .obstep h2{font-size:24px;font-weight:800;letter-spacing:-.05em;line-height:1.38;margin:0 0 30px}
 .oblead{font-size:16px;line-height:1.65;color:rgba(255,255,255,.82);letter-spacing:-.03em}
@@ -1355,21 +1355,20 @@ body{
 .obno.a{color:var(--amb2)}
 .obg{font-weight:800;color:#B79BFF;letter-spacing:.02em}
 .obg.a{color:var(--amb2)}
-.obfixed{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--s1);border-radius:18px;
-  padding:16px 24px;margin-bottom:28px;min-width:200px}
+.obfixed{display:flex;flex-direction:column;gap:3px;width:100%;margin-bottom:14px;padding:0 2px}
 .obfixed b{font-size:18px;font-weight:700;letter-spacing:-.03em}
 .obfixed span{font-size:14px;color:var(--mut)}
-.obline{width:100%;max-width:300px;background:none;border:none;border-bottom:2px solid var(--line2);color:var(--txt);
-  font-family:inherit;font-size:22px;font-weight:700;letter-spacing:-.04em;text-align:center;padding:10px 4px;outline:none;
-  border-radius:0;transition:border-color .2s}
-.obline:focus{border-bottom-color:var(--vio)}
+.obline{width:100%;background:var(--s1);border:1.5px solid transparent;color:var(--txt);
+  font-family:inherit;font-size:17px;font-weight:600;letter-spacing:-.03em;padding:15px 16px;outline:none;
+  border-radius:16px;transition:border-color .2s}
+.obline:focus{border-color:var(--vio)}
 .obline::placeholder{color:var(--dim);font-weight:500}
 .obin{width:100%;background:var(--s1);border:1.5px solid transparent;border-radius:18px;color:var(--txt);font-family:inherit;
-  font-size:15.5px;letter-spacing:-.02em;padding:18px;outline:none;transition:border-color .15s;resize:none;line-height:1.7;text-align:center}
+  font-size:15.5px;letter-spacing:-.02em;padding:18px;outline:none;transition:border-color .15s;resize:none;line-height:1.7}
 .obin:focus{border-color:var(--vio)}
 .obin::placeholder{color:var(--dim)}
-.obcnt{font-size:12px;color:var(--dim);margin-top:10px;font-variant-numeric:tabular-nums}
-.obkw{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.obcnt{align-self:flex-end;font-size:12px;color:var(--dim);margin-top:10px;font-variant-numeric:tabular-nums}
+.obkw{display:flex;flex-wrap:wrap;gap:8px}
 .obkw button{display:inline-flex;align-items:center;gap:6px;background:var(--s1);border:1.5px solid transparent;color:var(--mut);
   font-family:inherit;font-size:14px;font-weight:500;letter-spacing:-.02em;border-radius:999px;padding:10px 15px;cursor:pointer;
   transition:background .15s,color .15s,border-color .15s,transform .15s}
@@ -1378,11 +1377,26 @@ body{
 .obkw.a button.on{background:var(--amb)}
 .obkw button i{font-style:normal;font-size:15px;line-height:1;opacity:.8}
 .obadd input{width:112px;background:none;border:1.5px dashed var(--line2);border-radius:999px;color:var(--txt);font-family:inherit;
-  font-size:14px;letter-spacing:-.02em;padding:10px 15px;outline:none;text-align:center}
+  font-size:14px;letter-spacing:-.02em;padding:10px 15px;outline:none}
 .obadd input:focus{width:160px;border-style:solid}
 .obadd input::placeholder{color:var(--dim)}
-.obdone{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--vio),var(--amb));display:flex;
-  align-items:center;justify-content:center;margin:10px 0 22px;box-shadow:0 14px 34px rgba(139,98,232,.35)}
+.obstep[data-ob="5"]{align-items:center;justify-content:center;text-align:center;padding-bottom:90px}
+.obstep[data-ob="5"] h2{margin:0}
+.obdone{position:relative;width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--vio),var(--amb));display:flex;
+  align-items:center;justify-content:center;margin-bottom:26px;box-shadow:0 16px 40px rgba(139,98,232,.4);transform:scale(.4);opacity:0}
+.obdone svg{position:relative;z-index:1;width:38px;height:38px}
+.obdone svg path{stroke-dasharray:24;stroke-dashoffset:24}
+.obdone i{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(183,155,255,.55);opacity:0}
+.obstep[data-ob="5"] h2{opacity:0;transform:translateY(10px)}
+.obstep[data-ob="5"].on .obdone{animation:obpop .55s cubic-bezier(.2,1.4,.4,1) .12s forwards}
+.obstep[data-ob="5"].on .obdone svg path{animation:obtick .4s ease .5s forwards}
+.obstep[data-ob="5"].on .obdone i{animation:obring 1.6s ease-out .55s infinite}
+.obstep[data-ob="5"].on .obdone i+i{animation-delay:1.35s}
+.obstep[data-ob="5"].on h2{animation:obup .5s ease .45s forwards}
+@keyframes obpop{to{transform:scale(1);opacity:1}}
+@keyframes obtick{to{stroke-dashoffset:0}}
+@keyframes obring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.9);opacity:0}}
+@keyframes obup{to{opacity:1;transform:none}}
 .obcard{width:100%;background:var(--s1);border-radius:22px;padding:22px 20px;display:flex;flex-direction:column;align-items:center}
 .obch{display:flex;flex-direction:column;align-items:center;gap:10px}
 .obbig{display:block;width:56px;height:56px;border-radius:50%;overflow:hidden}
@@ -1758,8 +1772,6 @@ body{
           <div class="obstep" data-ob="0">
             <div class="obmark"><img id="obMark" alt=""></div>
             <h1 id="obHi"></h1>
-            <p class="oblead">본격적으로 시작하기 전에<br>프로필을 함께 확인하겠습니다.</p>
-            <p class="obinfo">프로필 내용은 참가 신청서에 기재해 주신 정보를 바탕으로 작성되었습니다.<br>변경이 필요한 항목은 다음 단계에서 수정하실 수 있습니다.</p>
           </div>
 
           <div class="obstep" data-ob="1">
@@ -1784,14 +1796,13 @@ body{
 
           <div class="obstep" data-ob="4">
             <em class="obno a">04</em>
-            <h2><b class="obg a">GET</b><br>도움받고 싶은 역량</h2>
+            <h2><b class="obg a">GET</b><br><span class="as">Ascént</span>에서 받고 싶은 조언</h2>
             <div class="obkw a" id="obGet"></div>
           </div>
 
           <div class="obstep" data-ob="5">
-            <div class="obdone"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <div class="obdone"><i></i><i></i><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
             <h2>프로필이<br>준비되었습니다</h2>
-            <div class="obcard" id="obCard"></div>
           </div>
 
         </div>
@@ -3599,7 +3610,7 @@ function obGo(n){
   document.getElementById('obDots').innerHTML=dots;
   document.getElementById('obPrev').classList.toggle('on',OB.step>0);
   document.getElementById('obNext').textContent=OB.step===0?'시작하기':OB.step===OB_LAST?'Ascént 시작하기':'다음';
-  if(OB.step===OB_LAST)obCard();
+
   document.getElementById('s-onboard').scrollTop=0;
 }
 function openOnb(){
