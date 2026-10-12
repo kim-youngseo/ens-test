@@ -1457,6 +1457,13 @@ body{
 @keyframes obburst{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(1)}
   100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1*var(--d))) scale(.4) rotate(140deg)}}
 .obdone{width:92px!important;height:92px!important}
+/* 프로필 설정 작성란 : 상자 없이 큰 글씨로 */
+#s-onboard .obline,#s-onboard .obta{background:none!important;border:none!important;box-shadow:none!important;border-radius:0;
+  caret-color:var(--vio);padding:6px 0;color:var(--txt);font-weight:700;letter-spacing:-.04em}
+#s-onboard .obline{text-align:center!important;font-size:26px;margin-top:10px}
+#s-onboard .obta{font-size:20px;line-height:1.55;min-height:180px}
+#s-onboard .obline::placeholder,#s-onboard .obta::placeholder{color:#3A3A42;font-weight:700}
+#s-onboard .obfixed{margin-bottom:26px}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1824,13 +1831,13 @@ body{
             <em class="obno">01</em>
             <h2>소속과 직함을<br>확인해 주세요</h2>
             <div class="obfixed"><b id="obName"></b><span id="obCo"></span></div>
-            <input id="obPos" class="obline" type="text" maxlength="30" placeholder="직함">
+            <input id="obPos" class="obline" type="text" maxlength="30" placeholder="직함 입력">
           </div>
 
           <div class="obstep" data-ob="2">
             <em class="obno">02</em>
             <h2>어떤 사업을<br>하고 계신가요?</h2>
-            <textarea id="obBiz" class="obin" rows="6" maxlength="300" placeholder="사업 소개"></textarea>
+            <textarea id="obBiz" class="obin obta" rows="5" maxlength="300" placeholder="사업 소개 입력"></textarea>
             <p class="obcnt" id="obBizN">0/300</p>
           </div>
 
