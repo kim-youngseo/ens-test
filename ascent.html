@@ -1297,6 +1297,24 @@ body{
 .hwbin>.roadlead{margin:0 0 16px}
 .hwb .hwsub{margin:-4px 0 12px 4px;line-height:1.6}
 .fdn span.lb{margin-left:-.5em}
+/* 타임라인 장소 */
+.tplace{display:flex;width:max-content;margin-top:7px;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mut);
+  background:var(--s2);border-radius:999px;padding:3px 9px 3px 7px;letter-spacing:-.01em}
+.tplace svg{color:var(--amb2)}
+/* 프로필 확인 (처음 로그인) */
+.ednote{display:none;font-size:13.5px;line-height:1.65;color:var(--mut);background:var(--s1);border-radius:14px;
+  padding:13px 15px;margin:0 0 18px;letter-spacing:-.02em;flex:none}
+#s-profedit.onb .ednote{display:block}
+#s-profedit.onb #edBack{display:none}
+.kwetc{margin-top:10px}
+.kwetc input{font-size:13.5px}
+/* BY 한화손보 : 글 머리와 구역 제목을 같은 선에 맞춥니다 */
+.hwart p{margin-top:12px}
+.hwart+.hwb{margin-top:20px}
+.hwb{margin-top:24px}
+.hwb .hwsec{margin-left:0}
+.hwb .hwsub{margin:-4px 0 12px 0}
+.hwbin:has(> .feed){padding-top:4px}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -1647,16 +1665,19 @@ body{
 
       <!-- ========== 프로필 수정 ========== -->
       <section class="screen" id="s-profedit">
-        <div class="nav"><button class="bk" data-back>&#8592;</button><h2>프로필 수정</h2></div>
+        <div class="nav"><button class="bk" id="edBack" data-back>&#8592;</button><h2 id="edTtl">프로필 수정</h2></div>
+        <p class="ednote" id="edNote">신청서에 적어 주신 내용을 바탕으로 미리 채워 두었습니다. 필요하시면 편하게 수정해 주세요.</p>
         <div class="field lock"><label>이름</label><input id="edName" type="text" readonly tabindex="-1"></div>
         <div class="field lock"><label>기업명</label><input id="edCo" type="text" readonly tabindex="-1"></div>
-        <div class="field lock"><label>직함</label><input id="edPos" type="text" readonly tabindex="-1"></div>
+        <div class="field"><label>직함</label><input id="edPos" type="text" maxlength="30" placeholder="직함을 입력해 주세요"></div>
         <div class="sec">사업 소개</div>
         <div class="field"><textarea id="edBiz" rows="5" maxlength="300" placeholder="어떤 사업을 하고 있는지 소개해 주세요"></textarea></div>
         <div class="sec">GIVE · 줄 수 있어요</div>
         <div class="kwpick" id="edGive"></div>
+        <div class="field kwetc"><input id="edGiveEtc" type="text" maxlength="40" placeholder="기타 · 목록에 없는 역량은 직접 적어 주세요 (쉼표로 구분)"></div>
         <div class="sec amb">GET · 받고 싶어요</div>
         <div class="kwpick a" id="edGet"></div>
+        <div class="field kwetc"><input id="edGetEtc" type="text" maxlength="40" placeholder="기타 · 목록에 없는 역량은 직접 적어 주세요 (쉼표로 구분)"></div>
         <div class="spacer"></div>
         <button class="btn o" id="edSave" style="margin-top:20px">저장하기</button>
       </section>
@@ -2300,6 +2321,7 @@ function applyUserState(){
     if(pr.give)ME.give=pr.give;
     if(pr.get)ME.get=pr.get;
     if(typeof pr.biz==='string')ME.biz=pr.biz;
+    if(typeof pr.pos==='string')ME.pos=pr.pos;
   }
 }
 const PASTE_KEY='ascent_sheet_csv';
@@ -2521,7 +2543,7 @@ function back(){
 function jump(id,st){const f=cur();stack=st?st.slice():[id];transition(f,id,'push');}
 function syncChrome(id){
   const tb=document.getElementById('tabbar'),dd=document.getElementById('dday');
-  const on=CHROME_OFF.indexOf(id)<0;
+  const on=CHROME_OFF.indexOf(id)<0&&!(id==='profedit'&&ONB);
   tb.classList.toggle('show',on);
   dd.classList.toggle('show',on);
   const owner=OWNER[id]||'home';
@@ -2612,10 +2634,15 @@ document.getElementById('lgBtn').addEventListener('click',function(){
       localStorage.setItem(DEVKEY,me.id);
     else localStorage.removeItem(DEVKEY);
   }catch(e){}
-  /* 초대 인사 · 환영 화면은 계정마다 처음 한 번만 보여 줍니다 */
+  /* 처음 들어오면 프로필부터 확인합니다 */
+  if(!ustate().onb){openEdit(true);jump('profedit',['profedit']);return;}
+  startAfterLogin();
+});
+/* 초대 인사 · 환영 화면은 계정마다 처음 한 번만 보여 줍니다 */
+function startAfterLogin(){
   if(ustate().intro){renderVoices();jump('home',['home']);}
   else{saveUstate({intro:1});playIntro();}
-});
+}
 document.getElementById('logoutBtn').addEventListener('click',function(){
   try{localStorage.removeItem(DEVKEY);}catch(e){}
   AUTH=false;closeCoach();
@@ -2701,6 +2728,7 @@ document.getElementById('s-intro').addEventListener('click',function(e){
 /* ================= 렌더 ================= */
 let tlDay=1;
 const DAYHEAD={1:['DAY 1','10/31(토)','10:00 – 20:00'],2:['DAY 2','11/1(일)','09:30 – 17:00']};
+const TPIN='<svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 22s-7-6.4-7-12a7 7 0 0 1 14 0c0 5.6-7 12-7 12zm0-9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>';
 function renderTimeline(){
   const box=document.getElementById('tlList');if(!box)return;
   const rows=tlDay===2?TL2:TL1;
@@ -2712,7 +2740,7 @@ function renderTimeline(){
     return '<div class="ts'+(r[4]==='meal'?' meal':'')+'">'+
       '<div class="rail"><i></i></div><div class="tc">'+
       '<div class="tt"><b>'+r[0]+' – '+r[1]+'</b></div>'+
-      '<p>'+r[2]+'</p></div></div>';
+      '<p>'+r[2]+(r[3]?'<span class="tplace">'+TPIN+r[3].replace(/^([A-Z])(\d)/,'$1 $2')+'</span>':'')+'</p></div></div>';
   }).join('');
 }
 /* 오시는 길 : 한남사옥 주변을 한눈에 들어오게 줄여 그립니다 */
@@ -3375,8 +3403,13 @@ function renderMe(){
   const pn=document.getElementById('passName');if(pn)pn.textContent=ME.n;
   renderFavCount();
 }
-function openEdit(){
+let ONB=false;
+function openEdit(onb){
   if(!ME)return;
+  ONB=!!onb;
+  document.getElementById('s-profedit').classList.toggle('onb',ONB);
+  document.getElementById('edTtl').textContent=ONB?'프로필 확인':'프로필 수정';
+  document.getElementById('edSave').textContent=ONB?'저장하고 시작하기':'저장하기';
   document.getElementById('edName').value=ME.n;
   document.getElementById('edCo').value=ME.co||'';
   document.getElementById('edPos').value=ME.pos||'';
@@ -3386,14 +3419,22 @@ function openEdit(){
     box.innerHTML=KEYS.map(function(k){
       return '<button type="button" data-kwpick="'+t+'|'+k+'" class="'+(sel.indexOf(k)>=0?'on':'')+'">'+k+'</button>';
     }).join('');
+    document.getElementById('ed'+t+'Etc').value=sel.filter(function(k){return KEYS.indexOf(k)<0;}).join(', ');
   });
 }
 document.getElementById('edSave').addEventListener('click',function(){
   /* 이름 · 기업명은 바꾸지 않습니다 */
+  const pick=function(t){
+    const on=[].slice.call(document.querySelectorAll('#ed'+t+' button.on')).map(function(b){return b.textContent;});
+    document.getElementById('ed'+t+'Etc').value.split(/[,，]/).forEach(function(v){
+      v=v.trim();if(v&&on.indexOf(v)<0)on.push(v);});
+    return on;};
+  ME.pos=document.getElementById('edPos').value.trim();
   ME.biz=document.getElementById('edBiz').value.trim();
-  ME.give=[].slice.call(document.querySelectorAll('#edGive button.on')).map(function(b){return b.textContent;});
-  ME.get=[].slice.call(document.querySelectorAll('#edGet button.on')).map(function(b){return b.textContent;});
-  saveUstate({prof:{biz:ME.biz,give:ME.give,get:ME.get}});
+  ME.give=pick('Give');ME.get=pick('Get');
+  saveUstate({prof:{pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get},onb:1});
+  renderAll();
+  if(ONB){ONB=false;startAfterLogin();return;}
   renderMe();back();toast('프로필이 저장되었습니다');
 });
 
