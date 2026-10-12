@@ -1323,75 +1323,79 @@ body{
 .hwart+.hwb{padding-top:0}
 .hwbin>.feed>.fd:first-child{padding-top:6px}
 #tlList .ts .tc>p .tn{flex:1;min-width:0}
-/* ---------- 첫 로그인 : 프로필 설정 (단계별) ---------- */
-#s-onboard{padding:0!important;overflow:hidden}
+/* ---------- 첫 로그인 : 프로필 설정 (단계별 · 가운데 정렬) ---------- */
+#s-onboard{padding:0!important;overflow:hidden;
+  background:radial-gradient(120% 60% at 50% 0%,rgba(139,98,232,.16),transparent 60%),var(--bg)}
 .obtop{flex:none;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 14px) var(--gut) 6px;height:58px}
 .obprev{width:32px;height:32px;margin-left:-6px;border:none;background:none;color:var(--txt);font-size:20px;cursor:pointer;
   visibility:hidden}
 .obprev.on{visibility:visible}
-.obbar{flex:1;height:4px;border-radius:4px;background:var(--s2);overflow:hidden}
-.obbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--vio),var(--amb));border-radius:4px;
-  transition:width .45s cubic-bezier(.32,.72,0,1)}
-.obcount{width:32px;text-align:right;font-size:12px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums}
+.obcount{width:32px}
+.obdots{flex:1;display:flex;justify-content:center;gap:6px}
+.obdots i{width:6px;height:6px;border-radius:3px;background:var(--s2);transition:width .35s cubic-bezier(.32,.72,0,1),background .3s}
+.obdots i.done{background:rgba(139,98,232,.55)}
+.obdots i.on{width:22px;background:var(--vio)}
 .obsteps{flex:1;position:relative;overflow:hidden}
-.obstep{position:absolute;inset:0;overflow-y:auto;padding:22px var(--gut) 24px;display:flex;flex-direction:column;
-  opacity:0;transform:translateX(36px);pointer-events:none;transition:opacity .3s ease,transform .42s cubic-bezier(.32,.72,0,1)}
+.obstep{position:absolute;inset:0;overflow-y:auto;padding:36px 28px 24px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;opacity:0;transform:translateX(36px);pointer-events:none;
+  transition:opacity .3s ease,transform .42s cubic-bezier(.32,.72,0,1)}
 .obstep.past{transform:translateX(-36px)}
 .obstep.on{opacity:1;transform:none}
 #s-onboard.active .obstep.on{pointer-events:auto}
-.obstep h1{font-size:28px;font-weight:800;letter-spacing:-.05em;line-height:1.3;margin:6px 0 10px}
-.obstep h2{font-size:25px;font-weight:800;letter-spacing:-.05em;line-height:1.34;margin:0 0 8px}
-.obsub{font-size:14px;color:var(--mut);letter-spacing:-.02em;line-height:1.6;margin-bottom:26px}
-.obeyebrow{font-size:13px;font-weight:700;color:var(--mut);letter-spacing:-.01em;margin-top:24px}
-.oblead{font-size:16px;line-height:1.65;color:rgba(255,255,255,.86);letter-spacing:-.03em}
-.obwave{display:flex;justify-content:flex-start;margin-top:12px}
-.obbig{display:block;width:88px;height:88px;border-radius:50%;overflow:hidden;flex:none;
-  box-shadow:0 0 0 4px var(--bg),0 0 0 6px rgba(139,98,232,.45)}
-.obbig.sm{width:48px;height:48px;box-shadow:none}
-.obbig svg,.obbig img{width:100%;height:100%;display:block}
-.obinfo{margin-top:auto;background:var(--s1);border-radius:16px;padding:16px 18px}
-.obinfo b{display:block;font-size:12px;font-weight:700;color:var(--amb2);letter-spacing:.02em;margin-bottom:6px}
-.obinfo p{font-size:13.5px;line-height:1.7;color:var(--mut);letter-spacing:-.02em}
-.obpick{position:relative;align-self:center;margin-top:18px;cursor:pointer}
-.obpick .obbig{width:148px;height:148px;box-shadow:0 0 0 6px var(--bg),0 0 0 8px rgba(139,98,232,.4)}
-.obpick i{position:absolute;right:4px;bottom:4px;width:42px;height:42px;border-radius:50%;background:var(--vio);color:#fff;
-  display:flex;align-items:center;justify-content:center;border:4px solid var(--bg)}
-.obpicknote{align-self:center;font-size:13px;color:var(--dim);margin-top:18px}
-.obfixed{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}
-.obfixed>div{background:var(--s1);border-radius:14px;padding:12px 14px}
-.obfixed i{display:block;font-style:normal;font-size:11.5px;color:var(--dim);margin-bottom:4px}
-.obfixed b{display:block;font-size:15px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.oblbl{font-size:13px;font-weight:700;color:var(--mut);margin:0 0 8px 2px}
-.obin{width:100%;background:var(--s1);border:1.5px solid transparent;border-radius:14px;color:var(--txt);font-family:inherit;
-  font-size:16px;letter-spacing:-.02em;padding:15px 16px;outline:none;transition:border-color .15s;resize:none;line-height:1.6}
+.obstep[data-ob="0"]{justify-content:center;padding-bottom:60px}
+.obmark{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+  background:radial-gradient(circle at 50% 35%,#2A2238,#151519);box-shadow:0 0 0 1px rgba(139,98,232,.35),0 18px 40px rgba(139,98,232,.25)}
+.obmark img{width:46px;height:46px;object-fit:contain}
+.obstep h1{font-size:27px;font-weight:800;letter-spacing:-.05em;line-height:1.3;margin:0 0 12px}
+.obstep h2{font-size:24px;font-weight:800;letter-spacing:-.05em;line-height:1.38;margin:0 0 30px}
+.oblead{font-size:16px;line-height:1.65;color:rgba(255,255,255,.82);letter-spacing:-.03em}
+.obinfo{margin-top:30px;font-size:13px;line-height:1.75;color:var(--dim);letter-spacing:-.02em;
+  padding-top:22px;border-top:1px solid var(--line);max-width:300px}
+.obno{font-style:normal;font-size:13px;font-weight:800;letter-spacing:.08em;color:#B79BFF;margin-bottom:12px}
+.obno.a{color:var(--amb2)}
+.obg{font-weight:800;color:#B79BFF;letter-spacing:.02em}
+.obg.a{color:var(--amb2)}
+.obfixed{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--s1);border-radius:18px;
+  padding:16px 24px;margin-bottom:28px;min-width:200px}
+.obfixed b{font-size:18px;font-weight:700;letter-spacing:-.03em}
+.obfixed span{font-size:14px;color:var(--mut)}
+.obline{width:100%;max-width:300px;background:none;border:none;border-bottom:2px solid var(--line2);color:var(--txt);
+  font-family:inherit;font-size:22px;font-weight:700;letter-spacing:-.04em;text-align:center;padding:10px 4px;outline:none;
+  border-radius:0;transition:border-color .2s}
+.obline:focus{border-bottom-color:var(--vio)}
+.obline::placeholder{color:var(--dim);font-weight:500}
+.obin{width:100%;background:var(--s1);border:1.5px solid transparent;border-radius:18px;color:var(--txt);font-family:inherit;
+  font-size:15.5px;letter-spacing:-.02em;padding:18px;outline:none;transition:border-color .15s;resize:none;line-height:1.7;text-align:center}
 .obin:focus{border-color:var(--vio)}
 .obin::placeholder{color:var(--dim)}
-.obcnt{align-self:flex-end;font-size:12px;color:var(--dim);margin-top:8px;font-variant-numeric:tabular-nums}
-.obtag{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.08em;color:#fff;background:var(--vio);border-radius:6px;
-  padding:4px 8px;margin-bottom:12px}
-.obtag.a{background:var(--amb)}
-.obkw{display:flex;flex-wrap:wrap;gap:8px}
+.obcnt{font-size:12px;color:var(--dim);margin-top:10px;font-variant-numeric:tabular-nums}
+.obkw{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .obkw button{display:inline-flex;align-items:center;gap:6px;background:var(--s1);border:1.5px solid transparent;color:var(--mut);
   font-family:inherit;font-size:14px;font-weight:500;letter-spacing:-.02em;border-radius:999px;padding:10px 15px;cursor:pointer;
-  transition:background .15s,color .15s,border-color .15s}
-.obkw button.on{background:var(--vio-dim);border-color:var(--vio);color:#fff;font-weight:600}
-.obkw.a button.on{background:var(--amb-dim);border-color:var(--amb)}
-.obkw button i{font-style:normal;font-size:15px;line-height:1;opacity:.7}
+  transition:background .15s,color .15s,border-color .15s,transform .15s}
+.obkw button:active{transform:scale(.96)}
+.obkw button.on{background:var(--vio);color:#fff;font-weight:600}
+.obkw.a button.on{background:var(--amb)}
+.obkw button i{font-style:normal;font-size:15px;line-height:1;opacity:.8}
 .obadd input{width:112px;background:none;border:1.5px dashed var(--line2);border-radius:999px;color:var(--txt);font-family:inherit;
-  font-size:14px;letter-spacing:-.02em;padding:10px 15px;outline:none}
+  font-size:14px;letter-spacing:-.02em;padding:10px 15px;outline:none;text-align:center}
 .obadd input:focus{width:160px;border-style:solid}
 .obadd input::placeholder{color:var(--dim)}
-.obcard{background:var(--s1);border-radius:20px;padding:18px}
-.obch{display:flex;align-items:center;gap:12px}
-.obch b{display:block;font-size:16px;font-weight:700;letter-spacing:-.02em}
-.obch span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+.obdone{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--vio),var(--amb));display:flex;
+  align-items:center;justify-content:center;margin:10px 0 22px;box-shadow:0 14px 34px rgba(139,98,232,.35)}
+.obcard{width:100%;background:var(--s1);border-radius:22px;padding:22px 20px;display:flex;flex-direction:column;align-items:center}
+.obch{display:flex;flex-direction:column;align-items:center;gap:10px}
+.obbig{display:block;width:56px;height:56px;border-radius:50%;overflow:hidden}
+.obbig svg,.obbig img{width:100%;height:100%;display:block}
+.obch b{display:block;font-size:17px;font-weight:700;letter-spacing:-.03em}
+.obch span{display:block;font-size:13px;color:var(--mut);margin-top:3px}
 .obch em{font-style:normal;margin-left:6px;color:var(--dim)}
-.obcard>p{font-size:14px;line-height:1.65;color:rgba(255,255,255,.82);margin:14px 0 4px;letter-spacing:-.02em}
+.obcard>p{font-size:14px;line-height:1.65;color:rgba(255,255,255,.82);margin:14px 0 2px;letter-spacing:-.02em}
 .obcard>p:empty{display:none}
-.obct{display:flex;gap:10px;align-items:flex-start;margin-top:12px}
-.obct>i{flex:none;font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#B79BFF;width:30px;margin-top:6px}
+.obct{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px}
+.obct>i{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.08em;color:#B79BFF}
 .obct.a>i{color:var(--amb2)}
-.obct>div{display:flex;flex-wrap:wrap;gap:6px}
+.obct>div{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .obcta{flex:none;padding:10px var(--gut) calc(env(safe-area-inset-bottom) + 16px)}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
@@ -1746,65 +1750,47 @@ body{
       <section class="screen flush" id="s-onboard">
         <div class="obtop">
           <button type="button" class="obprev" id="obPrev" aria-label="이전">&#8592;</button>
-          <div class="obbar"><i id="obProg"></i></div>
-          <span class="obcount" id="obCount"></span>
+          <div class="obdots" id="obDots"></div>
+          <span class="obcount"></span>
         </div>
         <div class="obsteps">
 
           <div class="obstep" data-ob="0">
-            <div class="obwave"><span class="obbig" id="obAv0"></span></div>
-            <p class="obeyebrow"><span class="as">Ascént</span> 프로필 설정</p>
+            <div class="obmark"><img id="obMark" alt=""></div>
             <h1 id="obHi"></h1>
             <p class="oblead">본격적으로 시작하기 전에<br>프로필을 함께 확인하겠습니다.</p>
-            <div class="obinfo">
-              <b>안내</b>
-              <p>프로필 내용은 참가 신청서에 기재해 주신 정보를 바탕으로 작성되었습니다. 변경이 필요한 항목은 다음 단계에서 수정하실 수 있습니다.</p>
-            </div>
+            <p class="obinfo">프로필 내용은 참가 신청서에 기재해 주신 정보를 바탕으로 작성되었습니다.<br>변경이 필요한 항목은 다음 단계에서 수정하실 수 있습니다.</p>
           </div>
 
           <div class="obstep" data-ob="1">
-            <h2>프로필 사진을<br>등록해 주세요</h2>
-            <p class="obsub">다른 참가자에게 보이는 사진입니다.</p>
-            <label class="obpick">
-              <span class="obbig" id="obAv1"></span>
-              <i><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></i>
-              <input type="file" accept="image/*" id="obFile" hidden>
-            </label>
-            <p class="obpicknote" id="obPickNote">사진을 눌러 선택해 주세요</p>
+            <em class="obno">01</em>
+            <h2>소속과 직함을<br>확인해 주세요</h2>
+            <div class="obfixed"><b id="obName"></b><span id="obCo"></span></div>
+            <input id="obPos" class="obline" type="text" maxlength="30" placeholder="직함">
           </div>
 
           <div class="obstep" data-ob="2">
-            <h2>소속과 직함을<br>확인해 주세요</h2>
-            <p class="obsub">이름과 기업명은 신청서 기준으로 고정됩니다.</p>
-            <div class="obfixed"><div><i>이름</i><b id="obName"></b></div><div><i>기업명</i><b id="obCo"></b></div></div>
-            <label class="oblbl" for="obPos">직함</label>
-            <input id="obPos" class="obin" type="text" maxlength="30" placeholder="예) 대표, 공동창업자">
-          </div>
-
-          <div class="obstep" data-ob="3">
+            <em class="obno">02</em>
             <h2>어떤 사업을<br>하고 계신가요?</h2>
-            <p class="obsub">프로필 상단에 소개 문구로 보입니다.</p>
-            <textarea id="obBiz" class="obin" rows="6" maxlength="300" placeholder="어떤 사업을 하고 있는지 짧게 소개해 주세요"></textarea>
+            <textarea id="obBiz" class="obin" rows="6" maxlength="300" placeholder="사업 소개"></textarea>
             <p class="obcnt" id="obBizN">0/300</p>
           </div>
 
-          <div class="obstep" data-ob="4">
-            <span class="obtag">GIVE</span>
-            <h2>나눠 줄 수 있는<br>역량을 골라 주세요</h2>
-            <p class="obsub">여러 개 고를 수 있어요. 목록에 없다면 직접 입력해 주세요.</p>
+          <div class="obstep" data-ob="3">
+            <em class="obno">03</em>
+            <h2><b class="obg">GIVE</b><br>나눠 줄 수 있는 역량</h2>
             <div class="obkw" id="obGive"></div>
           </div>
 
-          <div class="obstep" data-ob="5">
-            <span class="obtag a">GET</span>
-            <h2>도움받고 싶은<br>역량을 골라 주세요</h2>
-            <p class="obsub">여러 개 고를 수 있어요. 목록에 없다면 직접 입력해 주세요.</p>
+          <div class="obstep" data-ob="4">
+            <em class="obno a">04</em>
+            <h2><b class="obg a">GET</b><br>도움받고 싶은 역량</h2>
             <div class="obkw a" id="obGet"></div>
           </div>
 
-          <div class="obstep" data-ob="6">
+          <div class="obstep" data-ob="5">
+            <div class="obdone"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
             <h2>프로필이<br>준비되었습니다</h2>
-            <p class="obsub">다른 참가자에게 이렇게 보여요.</p>
             <div class="obcard" id="obCard"></div>
           </div>
 
@@ -3582,7 +3568,7 @@ document.getElementById('edSave').addEventListener('click',function(){
 /* ================= 첫 로그인 : 프로필 설정 =================
    한 화면에 한 가지씩 확인합니다. 이름 · 기업명은 고정, 나머지는 고칠 수 있습니다 */
 const OB={Give:[],Get:[],ph:'',step:0};
-const OB_LAST=6;
+const OB_LAST=5;
 function obPhotoHtml(){
   return OB.ph?avatarOf({ph:OB.ph,fpos:'50% 50%'}):avatarOf(ME);
 }
@@ -3609,11 +3595,10 @@ function obGo(n){
   OB.step=Math.max(0,Math.min(OB_LAST,n));
   document.querySelectorAll('#s-onboard .obstep').forEach(function(p){
     const i=+p.dataset.ob;p.classList.toggle('on',i===OB.step);p.classList.toggle('past',i<OB.step);});
-  document.getElementById('obProg').style.width=(OB.step/OB_LAST*100)+'%';
-  document.getElementById('obCount').textContent=OB.step&&OB.step<OB_LAST?OB.step+' / '+(OB_LAST-1):'';
+  let dots='';for(let i=0;i<=OB_LAST;i++)dots+='<i class="'+(i===OB.step?'on':i<OB.step?'done':'')+'"></i>';
+  document.getElementById('obDots').innerHTML=dots;
   document.getElementById('obPrev').classList.toggle('on',OB.step>0);
   document.getElementById('obNext').textContent=OB.step===0?'시작하기':OB.step===OB_LAST?'Ascént 시작하기':'다음';
-  if(OB.step===1)document.getElementById('obAv1').innerHTML=obPhotoHtml();
   if(OB.step===OB_LAST)obCard();
   document.getElementById('s-onboard').scrollTop=0;
 }
@@ -3621,13 +3606,12 @@ function openOnb(){
   if(!ME)return;
   document.getElementById('obHi').textContent=(ME.n||'')+' 님, 환영합니다';
   OB.ph=ME.ph||'';
-  document.getElementById('obAv0').innerHTML=obPhotoHtml();
+  const mk=document.getElementById('obMark');if(!mk.src)mk.src=triSrc();
   document.getElementById('obName').textContent=ME.n||'';
   document.getElementById('obCo').textContent=ME.co||'';
   document.getElementById('obPos').value=ME.pos||'';
   const bz=document.getElementById('obBiz');bz.value=ME.biz||BIZ[ME.co]||'';
   document.getElementById('obBizN').textContent=bz.value.length+'/300';
-  document.getElementById('obPickNote').textContent=ME.ph?'사진을 누르면 바꿀 수 있어요':'사진을 눌러 선택해 주세요';
   OB.Give=(ME.give||[]).slice();OB.Get=(ME.get||[]).slice();
   obChips('Give');obChips('Get');
   obGo(0);
@@ -3656,25 +3640,6 @@ document.getElementById('s-onboard').addEventListener('keydown',function(e){
   if(inp&&(e.key==='Enter'||e.key===',')){e.preventDefault();obAdd(inp);}
 });
 document.getElementById('obPrev').addEventListener('click',function(){obGo(OB.step-1);});
-/* 사진은 정사각형으로 잘라 작게 줄여 둡니다 */
-document.getElementById('obFile').addEventListener('change',function(){
-  const f=this.files&&this.files[0];this.value='';if(!f)return;
-  const rd=new FileReader();
-  rd.onload=function(){
-    const im=new Image();
-    im.onload=function(){
-      const n=Math.min(im.width,im.height),S=320,c=document.createElement('canvas');
-      c.width=c.height=S;
-      c.getContext('2d').drawImage(im,(im.width-n)/2,(im.height-n)/2,n,n,0,0,S,S);
-      OB.ph=c.toDataURL('image/jpeg',.85);
-      document.getElementById('obAv1').innerHTML=obPhotoHtml();
-      document.getElementById('obPickNote').textContent='사진을 누르면 바꿀 수 있어요';
-    };
-    im.onerror=function(){toast('사진을 불러오지 못했습니다',true);};
-    im.src=rd.result;
-  };
-  rd.readAsDataURL(f);
-});
 document.getElementById('obBiz').addEventListener('input',function(){
   document.getElementById('obBizN').textContent=this.value.length+'/300';});
 document.getElementById('obNext').addEventListener('click',function(){
@@ -3683,8 +3648,6 @@ document.getElementById('obNext').addEventListener('click',function(){
   ME.biz=document.getElementById('obBiz').value.trim();
   ME.give=OB.Give.slice();ME.get=OB.Get.slice();
   const prof={pos:ME.pos,biz:ME.biz,give:ME.give,get:ME.get};
-  if(OB.ph&&OB.ph!==ME.ph){ME.ph=OB.ph;ME.fpos='50% 50%';}
-  if(OB.ph)prof.ph=OB.ph;
   saveUstate({prof:prof,onb:1});
   renderAll();startAfterLogin();
 });
