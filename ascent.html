@@ -1756,7 +1756,7 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
 .tlb>span i{width:3px;height:3px;border-radius:50%;background:var(--dim)}
 /* Ascént 맵 */
 .map2{position:relative;flex:none;border-radius:20px;overflow:hidden;background:#EFE7D6;margin-bottom:16px}
-.mapsc{overflow:auto;-webkit-overflow-scrolling:touch;max-height:420px;touch-action:pan-x pan-y}
+.mapsc{overflow:auto;-webkit-overflow-scrolling:touch;max-height:460px;touch-action:pan-x pan-y}
 .mapsc #roomPlan{width:100%;transition:width .25s}
 .mapsc svg{display:block;width:100%;height:auto}
 .mapzm{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.18)}
@@ -1766,7 +1766,28 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
 .maplg span{display:flex;align-items:center;gap:6px}
 .maplg i{width:12px;height:12px;border-radius:3px}
 .lg-wc{background:#7FA8CF}.lg-ev{background:#C9BFAE;box-shadow:inset 0 0 0 2px #3E2760}.lg-dr{background:#C9541A}
-.card.park.wc .wci{width:20px;height:20px;border-radius:6px;background:#7FA8CF;display:inline-block;vertical-align:-4px;margin-right:6px}
+.card.park.wc .wci{width:20px;height:20px;border-radius:6px;background:#FFD84D;display:inline-block;vertical-align:-4px;margin-right:6px}
+/* ================= 4차 피드백 ================= */
+/* GIVE & GET : 눌렀을 때 이름표가 제자리에서 부풀었다가 부드럽게 올라갑니다 */
+#s-market.tap .mpill:not(.sel){transition:opacity .45s ease,transform .45s ease!important;transform:scale(.92)!important}
+#s-market.tap .foam{transition:opacity .5s ease,transform .5s ease!important}
+#s-market.tap .mpill.sel{transition:none!important;animation:selgrow .75s cubic-bezier(.45,0,.2,1) forwards!important}
+@keyframes selgrow{0%{transform:none}28%{transform:scale(1.18)}100%{transform:translate(var(--tx),var(--ty)) scale(1.55)}}
+.ggsheet{transition:transform .65s cubic-bezier(.22,1,.36,1)!important}
+.gfield{height:390px!important}
+/* 타임라인 : 장소는 오른쪽 상자로 */
+.tl2{align-items:flex-start}
+.tlb b{white-space:normal;word-break:keep-all}
+.tlpl{flex:none;align-self:center;min-width:76px;text-align:center;font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:var(--txt);
+  background:var(--s1);border:1px solid var(--line2);border-radius:10px;padding:7px 10px}
+.tl2.meal .tlpl{border-color:rgba(255,107,26,.35);color:var(--amb2)}
+.tlpl.none{visibility:hidden}
+/* Ascént 맵 : 어두운 바탕 */
+.map2{background:#141417!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.maplg{display:none!important}
+.mapzm{box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.mapzm button{background:#232329!important;color:#fff!important}
+.mapzm button+button{border-top:1px solid #34343c!important}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -2012,11 +2033,9 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
       <!-- ========== 행사장 맵 ========== -->
       <section class="screen" id="s-map">
         <div class="hname"><span class="as">Ascént</span> 맵</div>
-        <p class="sub" style="margin:-4px 0 12px">행사가 열리는 2층부터 5층까지의 공간이에요.</p>
         <div class="map2 rise" style="animation-delay:.06s">
           <div class="mapsc" id="mapSc"><div id="roomPlan"></div></div>
           <div class="mapzm"><button type="button" data-mapz="1" aria-label="확대">+</button><button type="button" data-mapz="-1" aria-label="축소">&minus;</button></div>
-          <div class="maplg"><span><i class="lg-wc"></i>화장실</span><span><i class="lg-ev"></i>엘리베이터</span><span><i class="lg-dr"></i>출입구</span></div>
         </div>
         <div class="card park rise" style="animation-delay:.12s">
           <b><i>P</i>주차 안내</b>
@@ -3281,7 +3300,7 @@ function renderTimeline(){
   document.getElementById('dayHead').innerHTML='<div><i>'+dh[0]+'</i><b>'+dh[1]+'</b></div><span>'+dh[2]+'</span>';
   box.innerHTML=rows.map(function(r,i){
     return '<div class="tl2'+(r[4]==='meal'?' meal':'')+'"><span class="tlno">'+(i+1)+'</span><div class="tlb">'+
-      '<b>'+r[2]+'</b><span>'+r[0]+' – '+r[1]+(r[3]?'<i></i>'+r[3]:'')+'</span></div></div>';
+      '<b>'+r[2]+'</b><span>'+r[0]+' – '+r[1]+'</span></div><span class="tlpl'+(r[3]?'':' none')+'">'+(r[3]||'-')+'</span></div>';
   }).join('');
   document.getElementById('dayTgl').classList.toggle('d2',tlDay===2);
 }
@@ -3604,16 +3623,16 @@ function renderBuildingPlan(mine){
 }
 /* Ascént 맵 : 2~5층 단면도. 모든 참가자에게 같은 지도를 보여 줍니다 */
 const MAP2={
-  W:2000,FL:[{f:'5F',y:0,h:250},{f:'4F',y:250,h:280},{f:'3F',y:530,h:280},{f:'2F',y:810,h:300}],
+  W:2000,FL:[{f:'5F',y:0,h:300},{f:'4F',y:300,h:400},{f:'3F',y:700,h:400},{f:'2F',y:1100,h:420}],
   ROOMS:[
-    {id:'H501',f:'5F',x:1600,w:390,c:'#9DC2E3',d:'#7EA9CF',sub:''},
-    {id:'G401',f:'4F',x:660,w:325,c:'#F4B9CC',d:'#E59BB3',sub:'그룹미팅룸'},
-    {id:'G402',f:'4F',x:1065,w:395,c:'#A27DBA',d:'#8963A3',sub:'그룹미팅룸',light:1},
-    {id:'H401',f:'4F',x:1600,w:325,c:'#F2843F',d:'#D96A28',sub:'런치',light:1},
-    {id:'F301',f:'3F',x:90,w:460,c:'#D6D184',d:'#BDB866',sub:'그룹미팅룸'},
-    {id:'G301',f:'3F',x:660,w:325,c:'#9DC2E3',d:'#7EA9CF',sub:'그룹미팅룸'},
-    {id:'G302',f:'3F',x:1065,w:300,c:'#9DC2E3',d:'#7EA9CF',sub:'그룹미팅룸'},
-    {id:'H301',f:'3F',x:1545,w:445,c:'#D6D184',d:'#BDB866',sub:''},
+    {id:'H501',f:'5F',x:1600,w:390},
+    {id:'G401',f:'4F',x:660,w:325,c:'#F4AFC8',d:'#E58DAE',sub:'그룹미팅룸'},
+    {id:'G402',f:'4F',x:1065,w:395,c:'#9A6FC0',d:'#7F55A8',sub:'그룹미팅룸',light:1},
+    {id:'H401',f:'4F',x:1600,w:325,c:'#EC6F5C',d:'#D35644',sub:'런치',light:1},
+    {id:'F301',f:'3F',x:90,w:460,c:'#CFCB78',d:'#B6B25C',sub:'그룹미팅룸'},
+    {id:'G301',f:'3F',x:660,w:325,c:'#8FC0E8',d:'#6FA6D4',sub:'그룹미팅룸'},
+    {id:'G302',f:'3F',x:1065,w:300,c:'#B9A6F0',d:'#9D86DE',sub:'그룹미팅룸'},
+    {id:'H301',f:'3F',x:1545,w:445},
     {id:'F201',f:'2F',x:165,w:690,c:'#F2843F',d:'#D96A28',sub:'메인 홀',light:1}
   ],
   STAIRS:[{f:'4F',x:985,w:80},{f:'4F',x:1545,w:55},{f:'4F',x:1925,w:65},{f:'3F',x:550,w:110},{f:'3F',x:985,w:80}],
@@ -3625,57 +3644,63 @@ let mapZ=1;
 function renderMap(){
   const host=document.getElementById('roomPlan');if(!host)return;
   const M=MAP2,FY={};M.FL.forEach(function(f){FY[f.f]=f;});
-  const H=M.FL[M.FL.length-1].y+M.FL[M.FL.length-1].h, LX=90;
+  const H=M.FL[M.FL.length-1].y+M.FL[M.FL.length-1].h;
   const txt='font-family="Pretendard Variable,Pretendard,sans-serif"';
   let s='<svg viewBox="0 0 '+M.W+' '+(H+10)+'" xmlns="http://www.w3.org/2000/svg" '+txt+'>'+
-        '<rect width="'+M.W+'" height="'+(H+10)+'" fill="#EFE7D6"/>';
+        '<defs><linearGradient id="stg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4A4A55"/><stop offset="1" stop-color="#34343C"/></linearGradient></defs>'+
+        '<rect width="'+M.W+'" height="'+(H+10)+'" fill="#141417"/>';
   M.FL.forEach(function(f){
-    s+='<line x1="0" x2="'+M.W+'" y1="'+(f.y+f.h)+'" y2="'+(f.y+f.h)+'" stroke="#8F78A6" stroke-width="5"/>';
+    s+='<rect x="90" y="'+(f.y+6)+'" width="'+(M.W-100)+'" height="'+(f.h-12)+'" rx="10" fill="#1B1B20"/>'+
+       '<line x1="0" x2="'+M.W+'" y1="'+(f.y+f.h)+'" y2="'+(f.y+f.h)+'" stroke="#2C2C34" stroke-width="5"/>';
   });
-  /* 2층 복도 */
-  s+='<rect x="855" y="'+(FY['2F'].y+6)+'" width="'+(M.W-865)+'" height="'+(FY['2F'].h-12)+'" fill="#DDD3C2"/>';
+  const rr=function(x,y,w,h,fill){return '<rect x="'+(x+4)+'" y="'+y+'" width="'+(w-8)+'" height="'+h+'" rx="14" fill="'+fill+'"/>';};
   M.ROOMS.forEach(function(r){
-    const f=FY[r.f],y=f.y+6,h=f.h-12,used=!!r.sub,fc=used?r.c:'#E2DACB',dc=used?r.d:'#D3CAB8';
-    s+='<g class="mroom'+(used?' used':'')+'"><rect x="'+r.x+'" y="'+y+'" width="'+r.w+'" height="'+h+'" fill="'+fc+'"/>'+
-       '<rect x="'+(r.x+r.w*.62)+'" y="'+(y+h*.42)+'" width="'+(r.w*.22)+'" height="'+(h*.58)+'" fill="'+dc+'"/>';
-    if(used){
-      const col=r.light?'#fff':'#3E2760';
-      s+='<text x="'+(r.x+(r.id==='F301'?70:r.id==='F201'?40:28))+'" y="'+(y+94)+'" font-size="86" font-weight="800" fill="'+col+'" letter-spacing="-1">'+r.id+'</text>'+
-         '<text x="'+(r.x+(r.id==='F301'?72:r.id==='F201'?42:30))+'" y="'+(y+152)+'" font-size="48" font-weight="600" fill="'+col+'" opacity=".85">'+r.sub+'</text>';
-    }
-    s+='</g>';
+    const f=FY[r.f],y=f.y+10,h=f.h-20,used=!!r.sub;
+    if(!used){s+=rr(r.x,y,r.w,h,'#232329');return;}
+    s+=rr(r.x,y,r.w,h,r.c);
+    /* 문 : 오른쪽 아래, 글씨와 겹치지 않게 */
+    const dw=Math.min(70,r.w*.18),dh=h*.38,dx=r.x+r.w-dw-26,dy=y+h-dh;
+    s+='<path d="M'+dx+' '+(dy+dh)+'V'+(dy+dw/2)+'a'+(dw/2)+' '+(dw/2)+' 0 0 1 '+dw+' 0V'+(dy+dh)+'z" fill="'+r.d+'"/>';
+    const col=r.light?'#fff':'#2A1B42';
+    const lx=r.x+(r.id==='F201'?40:30);
+    s+='<text x="'+lx+'" y="'+(y+92)+'" font-size="84" font-weight="800" fill="'+col+'" letter-spacing="-1">'+r.id+'</text>'+
+       '<text x="'+(lx+2)+'" y="'+(y+150)+'" font-size="46" font-weight="600" fill="'+col+'" opacity=".85">'+r.sub+'</text>';
   });
-  M.STAIRS.forEach(function(t){
-    const f=FY[t.f],y=f.y+6,h=f.h-12,n=6;
-    s+='<rect x="'+t.x+'" y="'+y+'" width="'+t.w+'" height="'+h+'" fill="#D6CCBC"/>';
-    let p='M'+t.x+' '+(y+h);for(let i=0;i<n;i++){p+=' v-'+(h/n)+' h'+(t.w/n);}
-    s+='<path d="'+p+'" fill="none" stroke="#B3A791" stroke-width="4"/>';
-  });
+  /* 계단 : 칸마다 밝은 디딤면을 둔 층계 모양 */
+  const stair=function(x,y,w,h,base){
+    const n=7,sw=w/n,sh=h/n;let p='M'+x+' '+(y+h);
+    for(let i=0;i<n;i++){p+=' V'+(y+h-sh*(i+1))+' H'+(x+sw*(i+1));}
+    p+=' V'+(y+h)+' Z';
+    let e='';for(let i=0;i<n;i++)e+='<line x1="'+(x+sw*i)+'" x2="'+(x+sw*(i+1))+'" y1="'+(y+h-sh*(i+1))+'" y2="'+(y+h-sh*(i+1))+'" stroke="#6C6C78" stroke-width="5" stroke-linecap="round"/>';
+    return '<rect x="'+(x+3)+'" y="'+y+'" width="'+(w-6)+'" height="'+h+'" rx="10" fill="'+(base||'#1F1F25')+'"/>'+
+           '<path d="'+p+'" fill="url(#stg)"/>'+e;};
+  M.STAIRS.forEach(function(t){const f=FY[t.f];s+=stair(t.x,f.y+10,t.w,f.h-20);});
+  /* 화장실 : 눈에 띄는 노랑 */
   const wcIcon=function(cx,cy){
-    return '<g transform="translate('+(cx-34)+' '+(cy-36)+')" fill="#3E2760"><circle cx="16" cy="8" r="8"/><path d="M6 20h20l-3 26h-14z"/>'+
+    return '<g transform="translate('+(cx-34)+' '+(cy-40)+')" fill="#2A1B42"><circle cx="16" cy="8" r="8"/><path d="M6 20h20l-3 26h-14z"/>'+
       '<circle cx="52" cy="8" r="8"/><path d="M44 20h16v26h-16z"/><rect x="10" y="44" width="5" height="22"/><rect x="18" y="44" width="5" height="22"/>'+
       '<rect x="46" y="44" width="5" height="22"/><rect x="53" y="44" width="5" height="22"/></g>';};
   M.WC.forEach(function(w){
-    const f=FY[w.f];s+='<rect x="'+w.x+'" y="'+(f.y+6)+'" width="'+w.w+'" height="'+(f.h-12)+'" fill="#7FA8CF"/>'+wcIcon(w.x+w.w/2,f.y+f.h/2);});
-  /* 엘리베이터 : 2층에서 3층까지 */
+    const f=FY[w.f];s+=rr(w.x,f.y+10,w.w,f.h-20,'#FFD84D')+wcIcon(w.x+w.w/2,f.y+f.h/2-10)+
+      '<text x="'+(w.x+w.w/2)+'" y="'+(f.y+f.h-36)+'" text-anchor="middle" font-size="30" font-weight="800" fill="#2A1B42">WC</text>';});
+  /* 엘리베이터 : 2층 ~ 3층 */
   const e=M.EV,et=FY[e.top],eb=FY[e.bot];
-  s+='<rect x="'+e.x+'" y="'+(et.y+6)+'" width="'+e.w+'" height="'+(eb.y+eb.h-et.y-12)+'" fill="#C9BFAE"/>';
+  s+='<rect x="'+(e.x+4)+'" y="'+(et.y+10)+'" width="'+(e.w-8)+'" height="'+(eb.y+eb.h-et.y-20)+'" rx="14" fill="#2E2E36"/>';
   [et,eb].forEach(function(f){
-    const cx=e.x+e.w/2,y=f.y+f.h-120;
-    s+='<rect x="'+(cx-30)+'" y="'+y+'" width="60" height="110" rx="4" fill="#fff" stroke="#3E2760" stroke-width="5"/>'+
-       '<line x1="'+cx+'" x2="'+cx+'" y1="'+y+'" y2="'+(y+110)+'" stroke="#3E2760" stroke-width="4"/>'+
-       '<path d="M'+(cx-18)+' '+(y-24)+'l10-14 10 14zM'+(cx+8)+' '+(y-38)+'l10 14 10-14z" fill="#3E2760"/>';
+    const cx=e.x+e.w/2,y=f.y+f.h-130;
+    s+='<rect x="'+(cx-30)+'" y="'+y+'" width="60" height="110" rx="6" fill="#55555F"/>'+
+       '<line x1="'+cx+'" x2="'+cx+'" y1="'+(y+4)+'" y2="'+(y+106)+'" stroke="#2E2E36" stroke-width="4"/>'+
+       '<path d="M'+(cx-20)+' '+(y-22)+'l10-14 10 14zM'+(cx+4)+' '+(y-36)+'l10 14 10-14z" fill="#B9B9C4"/>';
   });
   /* 출입구 : 2층 왼쪽 계단 */
-  const d=M.DOOR,df=FY[d.f],dy=df.y+6,dh=df.h-12;
-  s+='<rect x="'+d.x+'" y="'+dy+'" width="'+d.w+'" height="'+dh+'" fill="#C9541A"/>';
-  let p='M'+d.x+' '+(dy+dh);for(let i=0;i<6;i++){p+=' v-'+(dh/6)+' h'+(d.w/6);}
-  s+='<path d="'+p+'" fill="none" stroke="#A9420F" stroke-width="4"/>'+
-     '<g transform="translate('+(d.x+d.w/2)+' '+(dy+dh/2)+')"><circle r="44" fill="#fff"/>'+
-     '<path d="M-14 -22h24v44h-24z" fill="none" stroke="#C9541A" stroke-width="6" stroke-linejoin="round"/>'+
-     '<path d="M-28 0h26M-12 -10l10 10-10 10" fill="none" stroke="#C9541A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>';
+  const d=M.DOOR,df=FY[d.f],dy=df.y+10,dh=df.h-20;
+  s+=stair(d.x,dy,d.w,dh,'#3A2418').replace('url(#stg)','#C9541A');
+  s+='<g transform="translate('+(d.x+d.w/2+4)+' '+(dy+dh*.45)+')"><circle r="40" fill="#FF6B1A"/>'+
+     '<path d="M-12 -20h22v40h-22z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>'+
+     '<path d="M-26 0h24M-11 -10l10 10-10 10" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>'+
+     '<text x="'+(d.x+d.w/2+4)+'" y="'+(dy+dh*.45+82)+'" text-anchor="middle" font-size="34" font-weight="800" fill="#FF8A45">입구</text>';
   M.FL.forEach(function(f){
-    s+='<text x="14" y="'+(f.y+86)+'" font-size="74" font-weight="800" fill="#5A3D78" stroke="#EFE7D6" stroke-width="12" paint-order="stroke">'+f.f+'</text>';});
+    s+='<text x="14" y="'+(f.y+86)+'" font-size="64" font-weight="800" fill="#8A8A96">'+f.f+'</text>';});
   s+='</svg>';
   host.innerHTML=s;
   host.style.width=(mapZ*100)+'%';
@@ -3717,28 +3742,27 @@ function renderMarket(){
        esc(k[0])+'<i>'+k[1]+'</i></button>';
   });
   f.innerHTML=h;
-  /* 거품을 가운데 두고 이름표를 둘레에 차곡차곡 붙입니다. 거품 가장자리와는 조금 겹쳐도 됩니다 */
-  const placed=[],ex=R0*.22;
-  let sd=5;const rnd=function(){sd=(sd*9301+49297)%233280;return sd/233280;};
+  /* 이름표를 영역 전체에 자유롭게 흩뿌립니다 : 후보 여러 곳 중 이웃과 가장 먼 자리를 고릅니다.
+     거품 가장자리와는 살짝 겹쳐도 되지만 글자를 가리지는 않습니다 */
+  const placed=[];
+  let sd=7;const rnd=function(){sd=(sd*9301+49297)%233280;return sd/233280;};
   f.querySelectorAll('.mpill').forEach(function(p,i){
-    const w=p.offsetWidth,hh=p.offsetHeight;let best=null;
-    for(let r=R0-ex;r<Math.max(W,H)&&!best;r+=5){
-      const a0=rnd()*Math.PI*2;
-      for(let k=0;k<36;k++){
-        const a=a0+k*Math.PI/18,x=cx+Math.cos(a)*(r+w*.32)-w/2,y=cy+Math.sin(a)*(r*.78+hh*.4)-hh/2;
-        if(x<2||x+w>W-2||y<2||y+hh>H-2)continue;
-        const box=[x-6,y-7,x+w+6,y+hh+7];
-        const dx=Math.max(box[0]-cx,0,cx-box[2]),dy=Math.max(box[1]-cy,0,cy-box[3]);
-        if(Math.hypot(dx,dy)<R0-ex)continue;
-        if(placed.some(function(q){return !(box[2]<q[0]||box[0]>q[2]||box[3]<q[1]||box[1]>q[3]);}))continue;
-        best=[x,y];break;
-      }
+    const w=p.offsetWidth,hh=p.offsetHeight;let best=null,bestD=-1;
+    for(let c=0;c<160;c++){
+      const x=4+rnd()*(W-w-8),y=4+rnd()*(H-hh-8);
+      const pc=[x+w/2,y+hh/2];
+      const dx=Math.max(x-cx,0,cx-(x+w)),dy=Math.max(y-cy,0,cy-(y+hh));
+      if(Math.hypot(dx,dy)<R0*.72)continue;
+      if(placed.some(function(q){return !(x+w+8<q[0]||x>q[2]+8||y+hh+8<q[1]||y>q[3]+8);}))continue;
+      let d=Math.hypot(pc[0]-cx,(pc[1]-cy)*1.25)*.35;
+      placed.forEach(function(q){d=Math.min(d,Math.hypot(pc[0]-(q[0]+q[2])/2,(pc[1]-(q[1]+q[3])/2)*1.4));});
+      if(d>bestD){bestD=d;best=[x,y];}
     }
     if(!best){p.remove();return;}
     placed.push([best[0],best[1],best[0]+w,best[1]+hh]);
     p.style.left=best[0]+'px';p.style.top=best[1]+'px';
-    p.style.setProperty('--dx',((cx-(best[0]+w/2))*.35)+'px');
-    p.style.setProperty('--dy',((cy-(best[1]+hh/2))*.35)+'px');
+    p.style.setProperty('--dx',((cx-(best[0]+w/2))*.18)+'px');
+    p.style.setProperty('--dy',((cy-(best[1]+hh/2))*.18)+'px');
     p.style.setProperty('--tx',(cx-(best[0]+w/2))+'px');
   });
 }
@@ -3746,7 +3770,8 @@ function pickMarket(k,btn){
   const scr=document.getElementById('s-market');if(scr.classList.contains('tap'))return;
   const list=peopleFor(k,mkMode),give=mkMode==='give';
   const sr=scr.getBoundingClientRect(),br=btn.getBoundingClientRect();
-  btn.style.setProperty('--ty',(sr.top+sr.height*.27-(br.top+br.height/2))+'px');
+  btn.style.setProperty('--ty',(sr.top+sr.height*.3-(br.top+br.height/2))+'px');
+  btn.style.setProperty('--tx',(sr.left+sr.width/2-(br.left+br.width/2))+'px');
   btn.classList.add('sel');scr.classList.add('tap');
   document.getElementById('mkSheetT').innerHTML='<em>'+esc(k)+'</em> '+(give?'경험을<br>나눠줄 수 있는 동료':'조언을<br>구하는 동료');
   document.getElementById('mkSheetN').textContent=list.length+'명';
@@ -3754,7 +3779,7 @@ function pickMarket(k,btn){
     return '<button type="button" class="mrow" data-person="'+esc(p.id)+'"><span class="av">'+avatarOf(p)+'</span>'+
       '<span class="mi"><b>'+esc(p.n)+(isLeader(p)?' <span class="badge ld">Leader</span>':'')+'</b><span>'+esc(p.co||'')+(p.pos?' · '+esc(p.pos):'')+'</span></span>'+
       '<i>&#8250;</i></button>';}).join(''):'<p class="hint" style="text-align:center;padding:24px 0">아직 등록된 분이 없어요.</p>';
-  setTimeout(function(){document.getElementById('mkSheet').classList.add('on');},380);
+  setTimeout(function(){document.getElementById('mkSheet').classList.add('on');},260);
 }
 /* GIVE ↔ GET : 누르거나 옆으로 밀어서 바꿉니다 */
 (function(){
