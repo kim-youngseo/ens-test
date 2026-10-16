@@ -3798,7 +3798,7 @@ function renderFeed(){
     if(c.test){
       items.push({id:c.id,ts:c.ts,type:'hanwha',html:function(){
         return feedArticle({id:c.id,who:{logo:true},name:'한화손보',sub:c.cat+' · 3분',title:c.t,text:c.body,raw:true,compact:true,
-          cover:ttCover(window.TTV||'1')});}});return;}
+          cover:ttCover(window.TTV||'7')});}});return;}
     items.push({id:c.id,ts:c.ts||0,type:c.src,html:function(){
       return feedArticle({id:c.id,who:hw?{logo:true}:{folin:true},name:hw?'한화손보':'폴인',
         sub:c.cat+' · '+ago(c.ts),title:c.t,text:(c.report||!c.d?'':c.d+'<br><br>')+c.body,raw:true,rx:true,compact:true,
