@@ -1950,6 +1950,23 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
 .gstar{position:absolute;font-style:normal;color:#FFE9A8;pointer-events:none;text-shadow:0 0 8px rgba(255,233,168,.8);animation:etwk 3.2s ease-in-out infinite}
 @keyframes etwk{0%,100%{opacity:.1;transform:scale(.6) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(20deg)}}
 #s-market.tap .gstar{opacity:.1!important}
+/* ===== 10차 : Ascént 맵 시안 (data-mv) ===== */
+.mtabs{display:flex;gap:6px;background:#1B1B20;border-radius:999px;padding:4px;margin:0 0 10px}
+.mtabs button{flex:1;border:none;background:none;color:var(--mut);font:inherit;font-size:14px;font-weight:800;padding:9px 0;border-radius:999px;cursor:pointer}
+.mtabs button.on{background:var(--vio);color:#fff;box-shadow:0 4px 14px rgba(139,98,232,.35)}
+.mlist{background:#17171B;border-radius:18px;padding:6px 14px;margin:0 0 10px}
+.mrow2{display:flex;gap:12px;padding:11px 0;align-items:flex-start}
+.mrow2+.mrow2{border-top:1px solid rgba(255,255,255,.07)}
+.mrow2 em{font-style:normal;font-weight:900;font-size:15px;color:#C9B6FF;width:26px;flex:none;padding-top:3px}
+.mrow2>div{display:flex;flex-wrap:wrap;gap:6px}
+.mch{display:inline-flex;align-items:center;gap:6px;background:#222228;border-radius:999px;padding:6px 11px 6px 8px;font-size:12.5px;color:var(--mut)}
+.mch i{width:10px;height:10px;border-radius:50%;flex:none}
+.mch b{color:#fff;font-weight:800}
+.mnowc{background:linear-gradient(120deg,#2A1C14,#1A1512);border:1px solid rgba(255,107,26,.35);border-radius:18px;padding:14px 16px;margin:0 0 10px;display:flex;flex-direction:column;gap:3px}
+.mnowc em{font-style:normal;font-size:12px;font-weight:800;color:var(--amb)}
+.mnowc b{font-size:16px;color:#fff}.mnowc span{font-size:13px;color:var(--mut)}
+.mnow{animation:mnowp 1.8s ease-in-out infinite}
+@keyframes mnowp{50%{stroke-opacity:.35}}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -2195,10 +2212,12 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
       <!-- ========== 행사장 맵 ========== -->
       <section class="screen" id="s-map">
         <div class="hname"><span class="as">Ascént</span> 맵</div>
+        <div id="mapTabs"></div>
         <div class="map2 rise" style="animation-delay:.06s">
           <div class="mapsc" id="mapSc"><div id="roomPlan"></div></div>
           <div class="mapzm"><button type="button" data-mapz="1" aria-label="확대">+</button><button type="button" data-mapz="-1" aria-label="축소">&minus;</button></div>
         </div>
+        <div id="mapList"></div>
         <div class="card park rise" style="animation-delay:.12s">
           <b><i>P</i>주차 안내</b>
           <span>건물 지하 주차장이 있으나 공간이 매우 협소합니다.<br>원활한 입장을 위해 가급적 대중교통을 이용해 주세요.</span></div>
@@ -3810,7 +3829,13 @@ const MAP2={
 let mapZ=1;
 function renderMap(){
   const host=document.getElementById('roomPlan');if(!host)return;
-  const M=MAP2,FY={};M.FL.forEach(function(f){FY[f.f]=f;});
+  const MV=(document.getElementById('s-map').dataset.mv)||'';
+  /* 시안별 층 높이 : 1 낮게, 2 5층 빼고, 3 한 층씩, 4 아주 낮게 + 층별 안내 */
+  const HT={'1':{'5F':220,'4F':520,'3F':520,'2F':520},'2':{'4F':540,'3F':540,'2F':540},'3':{'4F':980,'3F':980,'2F':980},'4':{'4F':430,'3F':430,'2F':430}}[MV];
+  let FLs=MAP2.FL;
+  if(HT){let y=0;FLs=MAP2.FL.filter(function(f){return HT[f.f]&&(MV!=='3'||f.f===mapFloor);}).map(function(f){const o={f:f.f,y:y,h:HT[f.f]};y+=o.h;return o;});}
+  const M=Object.assign({},MAP2,{FL:FLs}),FY={};M.FL.forEach(function(f){FY[f.f]=f;});
+  renderMapExtra(MV);
   const H=M.FL[M.FL.length-1].y+M.FL[M.FL.length-1].h;
   const txt='font-family="Pretendard Variable,Pretendard,sans-serif"';
   let s='<svg viewBox="0 0 '+M.W+' '+(H+10)+'" xmlns="http://www.w3.org/2000/svg" '+txt+'>'+
@@ -3822,6 +3847,7 @@ function renderMap(){
   });
   const rr=function(x,y,w,h,fill){return '<rect x="'+(x+4)+'" y="'+y+'" width="'+(w-8)+'" height="'+h+'" rx="14" fill="'+fill+'"/>';};
   M.ROOMS.forEach(function(r){
+    if(!FY[r.f])return;
     const f=FY[r.f],y=f.y+10,h=f.h-20,used=!!r.sub;
     if(!used){s+=rr(r.x,y,r.w,h,'#DCD2BF');return;}
     s+=rr(r.x,y,r.w,h,r.c);
@@ -3833,6 +3859,12 @@ function renderMap(){
     s+='<text x="'+lx+'" y="'+(y+104)+'" font-size="96" font-weight="800" fill="'+col+'" letter-spacing="-2">'+r.id+'</text>'+
        '<text x="'+(lx+2)+'" y="'+(y+104+fs+20)+'" font-size="'+fs+'" font-weight="800" fill="'+col+'">'+r.sub+'</text>';
   });
+  /* 시안 2 : 지금 진행 중인 곳을 표시 */
+  const NOW=mapNowSession();
+  if(MV==='2'&&NOW){const r=MAP2.ROOMS.find(function(x){return x.id===NOW[3];});
+    if(r&&FY[r.f]){const f=FY[r.f],y=f.y+10,h=f.h-20;
+      s+='<rect class="mnow" x="'+(r.x+4)+'" y="'+y+'" width="'+(r.w-8)+'" height="'+h+'" rx="14" fill="none" stroke="#FF6B1A" stroke-width="12"/>'+
+        '<g transform="translate('+(r.x+r.w/2)+' '+(y+h-90)+')"><rect x="-150" y="-52" width="300" height="104" rx="52" fill="#FF6B1A"/><text y="19" text-anchor="middle" font-size="56" font-weight="800" fill="#fff">지금 여기</text></g>';}}
   /* 계단 : 칸마다 밝은 디딤면을 둔 층계 모양 */
   const stair=function(x,y,w,h,base){
     const n=7,sw=w/n,sh=h/n;let p='M'+x+' '+(y+h);
@@ -3841,37 +3873,62 @@ function renderMap(){
     let e='';for(let i=0;i<n;i++)e+='<line x1="'+(x+sw*i)+'" x2="'+(x+sw*(i+1))+'" y1="'+(y+h-sh*(i+1))+'" y2="'+(y+h-sh*(i+1))+'" stroke="#F3ECDF" stroke-width="6" stroke-linecap="round"/>';
     return '<rect x="'+(x+3)+'" y="'+y+'" width="'+(w-6)+'" height="'+h+'" rx="10" fill="'+(base||'#E2D8C5')+'"/>'+
            '<path d="'+p+'" fill="url(#stg)"/>'+e;};
-  M.STAIRS.forEach(function(t){const f=FY[t.f];s+=stair(t.x,f.y+10,t.w,f.h-20);});
+  M.STAIRS.forEach(function(t){const f=FY[t.f];if(!f)return;s+=stair(t.x,f.y+10,t.w,f.h-20);});
   /* 화장실 : 눈에 띄는 노랑 */
   const wcIcon=function(cx,cy){
     return '<g transform="translate('+(cx-34)+' '+(cy-40)+')" fill="#2A1B42"><circle cx="16" cy="8" r="8"/><path d="M6 20h20l-3 26h-14z"/>'+
       '<circle cx="52" cy="8" r="8"/><path d="M44 20h16v26h-16z"/><rect x="10" y="44" width="5" height="22"/><rect x="18" y="44" width="5" height="22"/>'+
       '<rect x="46" y="44" width="5" height="22"/><rect x="53" y="44" width="5" height="22"/></g>';};
   M.WC.forEach(function(w){
-    const f=FY[w.f];s+=rr(w.x,f.y+10,w.w,f.h-20,'#FFD84D')+wcIcon(w.x+w.w/2,f.y+f.h/2-10)+
+    const f=FY[w.f];if(!f)return;s+=rr(w.x,f.y+10,w.w,f.h-20,'#FFD84D')+wcIcon(w.x+w.w/2,f.y+f.h/2-10)+
       '<text x="'+(w.x+w.w/2)+'" y="'+(f.y+f.h-36)+'" text-anchor="middle" font-size="30" font-weight="800" fill="#2A1B42">WC</text>';});
   /* 엘리베이터 : 2층 ~ 3층 */
-  const e=M.EV,et=FY[e.top],eb=FY[e.bot];
-  s+='<rect x="'+(e.x+4)+'" y="'+(et.y+10)+'" width="'+(e.w-8)+'" height="'+(eb.y+eb.h-et.y-20)+'" rx="14" fill="#D3C9B7"/>';
-  [et,eb].forEach(function(f){
-    const cx=e.x+e.w/2,y=f.y+f.h-130;
+  const e=M.EV,et=FY[e.top]||FY[e.bot],eb=FY[e.bot]||FY[e.top];
+  if(et)s+='<rect x="'+(e.x+4)+'" y="'+(et.y+10)+'" width="'+(e.w-8)+'" height="'+(eb.y+eb.h-et.y-20)+'" rx="14" fill="#D3C9B7"/>';
+  [FY[e.top],FY[e.bot]].forEach(function(f){
+    if(!f)return;const cx=e.x+e.w/2,y=f.y+f.h-130;
     s+='<rect x="'+(cx-30)+'" y="'+y+'" width="60" height="110" rx="6" fill="#fff" stroke="#3E2760" stroke-width="5"/>'+
        '<line x1="'+cx+'" x2="'+cx+'" y1="'+(y+4)+'" y2="'+(y+106)+'" stroke="#3E2760" stroke-width="4"/>'+
        '<path d="M'+(cx-20)+' '+(y-22)+'l10-14 10 14zM'+(cx+4)+' '+(y-36)+'l10 14 10-14z" fill="#3E2760"/>';
   });
   /* 출입구 : 2층 왼쪽 계단 */
-  const d=M.DOOR,df=FY[d.f],dy=df.y+10,dh=df.h-20;
+  const d=M.DOOR,df=FY[d.f];
+  if(df){const dy=df.y+10,dh=df.h-20;
   s+=stair(d.x,dy,d.w,dh,'#F6C9A8').replace('url(#stg)','#E0662A');
   s+='<g transform="translate('+(d.x+d.w/2+4)+' '+(dy+dh*.45)+')"><circle r="40" fill="#FF6B1A"/>'+
      '<path d="M-12 -20h22v40h-22z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>'+
      '<path d="M-26 0h24M-11 -10l10 10-10 10" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>'+
-     '<text x="'+(d.x+d.w/2+4)+'" y="'+(dy+dh*.45+82)+'" text-anchor="middle" font-size="34" font-weight="800" fill="#C9541A">입구</text>';
+     '<text x="'+(d.x+d.w/2+4)+'" y="'+(dy+dh*.45+82)+'" text-anchor="middle" font-size="34" font-weight="800" fill="#C9541A">입구</text>';}
   M.FL.forEach(function(f){
     s+='<text x="14" y="'+(f.y+86)+'" font-size="70" font-weight="800" fill="#5A3D78" stroke="#EFE7D6" stroke-width="12" paint-order="stroke">'+f.f+'</text>';});
   s+='</svg>';
   host.innerHTML=s;
   host.style.width=(mapZ*100)+'%';
 }
+let mapFloor='2F';
+function mapNowSession(){
+  const base=Date.UTC(2026,9,31,-9),now=Date.now(),mins=function(t){const a=t.split(':');return base+(+a[0]*60+ +a[1])*60000;};
+  let r=TL1.find(function(x){return now>=mins(x[0])&&now<mins(x[1]);});
+  if(!r&&now<mins(TL1[0][0]))r=TL1[0];
+  return r||null;
+}
+function renderMapExtra(MV){
+  const tabs=document.getElementById('mapTabs'),list=document.getElementById('mapList');if(!tabs)return;
+  tabs.innerHTML=MV==='3'?'<div class="mtabs">'+['4F','3F','2F'].map(function(f){return '<button type="button" class="'+(f===mapFloor?'on':'')+'" data-mapf="'+f+'">'+f+'</button>';}).join('')+'</div>':'';
+  if(MV==='2'){const n=mapNowSession(),r=n&&MAP2.ROOMS.find(function(x){return x.id===n[3];});
+    list.innerHTML=n?'<div class="mnowc"><em>'+(Date.now()<Date.UTC(2026,9,31,1)?'첫 일정':'지금 진행 중')+'</em><b>'+n[2]+'</b><span>'+n[0]+' – '+n[1]+(r?' · '+r.f+' '+r.id+' '+r.sub:'')+'</span></div>':'';return;}
+  if(MV!=='3'&&MV!=='4'){list.innerHTML='';return;}
+  const fl=MV==='3'?[mapFloor]:['4F','3F','2F'];
+  list.innerHTML='<div class="mlist">'+fl.map(function(f){
+    const rs=MAP2.ROOMS.filter(function(r){return r.f===f&&r.sub;});
+    const extra=f==='2F'?'<span class="mch"><i style="background:#FF6B1A"></i><b>입구</b>엘리베이터 · 계단</span>':'<span class="mch"><i style="background:#FFD84D"></i><b>WC</b>화장실</span>';
+    return '<div class="mrow2"><em>'+f+'</em><div>'+rs.map(function(r){return '<span class="mch"><i style="background:'+r.c+'"></i><b>'+r.id+'</b>'+r.sub+'</span>';}).join('')+extra+'</div></div>';
+  }).join('')+'</div>';
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest('[data-mapf]');if(!t)return;
+  mapFloor=t.dataset.mapf;renderMap();
+});
 document.addEventListener('click',function(e){
   const z=e.target.closest('[data-mapz]');if(!z)return;
   const sc=document.getElementById('mapSc'),old=mapZ;
@@ -3910,7 +3967,11 @@ function renderMarket(){
     '4':[['#6FD3C4','#7FC0EE','#9FB0F2'],['#F2CF5E','#F5A86A'],['#EE8A82','#F29DBD'],['#93D98D','#6FD3C4'],['#7FC0EE'],['#AE97EE'],['#F2CF5E']]};
   PALS.deep=[['#26A898','#3A8FD6','#6876DD'],['#D08A1E','#E2742E'],['#D9534D','#D25C94'],['#4AA64C','#26A898'],['#3A8FD6'],['#7F62D8'],['#D08A1E']];
   const FX=scr0.dataset.fx||'';
-  const PAL=(FX==='e1'||FX==='e3')?PALS.deep:(PALS[GV]||PALS['1']);
+  PALS.l1=[['#45BBAC','#56A6E3','#8790EA'],['#E6A93F','#EF8F55'],['#E8726C','#E37AAA'],['#6CBD69','#45BBAC'],['#56A6E3'],['#9A80E6'],['#E6A93F']];
+  PALS.l2=[['#62B9AE','#6EA5D8','#979DE2'],['#D9A955','#E0935F'],['#DD7D79','#D886AE'],['#7DB67B','#62B9AE'],['#6EA5D8'],['#A38EDD'],['#D9A955']];
+  PALS.l3=PALS.l1;
+  const LP=scr0.dataset.pal||'';
+  const PAL=(FX==='e3'&&PALS[LP])?PALS[LP]:(FX==='e1'||FX==='e3')?PALS.deep:(PALS[GV]||PALS['1']);
   const colorOf=function(k){for(let c=0;c<CL.length;c++){const j=CL[c].indexOf(k);if(j>=0)return PAL[c][j%PAL[c].length];}return '#B9A4F0';};
   const clOf=function(k){for(let c=0;c<CL.length;c++)if(CL[c].indexOf(k)>=0)return c;return -1;};
   const max=Math.max.apply(null,ks.map(function(k){return k[1];}).concat([1]));
@@ -3939,7 +4000,9 @@ function renderMarket(){
   L.forEach(function(l){const p=l[0],q=l[1],t=p.r/(p.r+q.r);
     svg+='<circle cx="'+(p.x+(q.x-p.x)*t).toFixed(1)+'" cy="'+(p.y+(q.y-p.y)*t).toFixed(1)+'" r="'+(Math.min(p.r,q.r)*.3).toFixed(1)+'" fill="'+mix(p.c,q.c)+'"/>';});
   const FXV=function(p){const a=p.i*2.39;return '--dl:'+(.08+p.i*.07).toFixed(2)+'s;--dx:'+(Math.cos(a)*9).toFixed(1)+'px;--dy:'+(Math.sin(a)*9).toFixed(1)+'px;--dur:'+(2.6+(p.i%4)*.45).toFixed(2)+'s';};
-  B.forEach(function(p){svg+='<circle class="gc" data-i="'+p.i+'" style="'+FXV(p)+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)+'" fill="'+p.c+'"/>';});
+  const lite=function(c,t){const h=function(i){return parseInt(c.slice(1+i*2,3+i*2),16);};return '#'+[0,1,2].map(function(i){return Math.round(h(i)+(255-h(i))*t).toString(16).padStart(2,'0');}).join('');};
+  if(LP==='l3'&&FX==='e3'){svg=svg.replace('</defs>',B.map(function(p){return '<radialGradient id="gg'+p.i+'" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="'+lite(p.c,.45)+'"/><stop offset=".55" stop-color="'+lite(p.c,.08)+'"/><stop offset="1" stop-color="'+p.c+'"/></radialGradient>';}).join('')+'</defs>');}
+  B.forEach(function(p){svg+='<circle class="gc" data-i="'+p.i+'" style="'+FXV(p)+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)+'" fill="'+((LP==='l3'&&FX==='e3')?'url(#gg'+p.i+')':p.c)+'"/>';});
   svg+='</g></svg>';
   let h='<div class="gwrap">'+svg;
   [[.06,.08,6],[.94,.1,8],[.05,.94,9],[.95,.96,5],[.97,.62,4],[.5,.97,5]].forEach(function(d,j){
