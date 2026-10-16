@@ -1841,6 +1841,27 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
 .mapzm{top:auto!important;bottom:10px!important;right:10px!important;flex-direction:row!important}
 .mapzm button+button{border-top:none!important;border-left:1px solid #E5DDCC!important}
 .dday .dtx>span{color:#fff}
+/* ================= 7차 : GIVE & GET 버블 차트 ================= */
+#s-market .sb,#s-market .spk{display:none!important}
+#s-market .gfield{height:min(500px,calc(100dvh - 330px))!important;min-height:400px!important}
+.mdot{position:absolute;border-radius:50%;opacity:.45;pointer-events:none;animation:mdotf 6s ease-in-out infinite alternate}
+@keyframes mdotf{from{translate:0 0}to{translate:3px -8px}}
+.mbub{position:absolute;border:none;border-radius:50%;padding:0;font-family:inherit;cursor:pointer;color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:.93;
+  box-shadow:0 10px 28px rgba(0,0,0,.28);-webkit-tap-highlight-color:transparent;
+  animation:mbin .6s cubic-bezier(.2,.9,.3,1.2) var(--d0) both,mbfloat 6s ease-in-out var(--bd) infinite alternate}
+.mbub b{font-weight:800;letter-spacing:-.03em;line-height:1.2;padding:0 8%}
+.mbub b span{white-space:nowrap;display:inline-block}
+.mbub i{font-style:normal;font-size:11.5px;font-weight:700;margin-top:3px;opacity:.85}
+.mbub.lt{color:#2A1A55}
+#s-market.get .mbub.lt{color:#5A2408}
+.mbub.dim{opacity:.5}
+.mbub:active{scale:.95}
+@keyframes mbin{from{opacity:0;transform:scale(.3)}to{opacity:.93;transform:none}}
+@keyframes mbfloat{from{translate:0 0}to{translate:0 -7px}}
+#s-market.tap .mbub:not(.sel),#s-market.tap .mdot{transition:opacity .45s ease,transform .45s ease;opacity:.12!important;transform:scale(.9);pointer-events:none}
+#s-market.tap .mbub.sel{animation:mbsel .7s cubic-bezier(.45,0,.2,1) forwards!important;z-index:5;pointer-events:none}
+@keyframes mbsel{0%{transform:none;opacity:.93}30%{transform:scale(1.12);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(1.15);opacity:1}}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -3790,33 +3811,43 @@ function renderMarket(){
   scr.classList.toggle('get',!give);scr.classList.remove('tap');sh.classList.remove('on');
   document.getElementById('mkSw').setAttribute('aria-checked',give?'false':'true');
   document.getElementById('mkLede').textContent=give?'버블을 눌러 경험을 나눠줄 동료를 만나보세요':'버블을 눌러 조언을 구하는 동료를 만나보세요';
-  const ks=mkKeys().slice(0,10),W=f.clientWidth||350,H=f.clientHeight||420;
-  /* 물방울 : 크기가 다른 비눗방울 몇 개가 천천히 떠다닙니다 */
-  const BUB=[[.54,.47,.27,0],[.16,.09,.085,1],[.86,.86,.12,2],[.12,.74,.045,3],[.9,.24,.035,4],[.36,.94,.03,5]];
+  const ks=mkKeys().slice(0,10),W=f.clientWidth||350,H=f.clientHeight||430;
+  /* 버블 차트 : 많이 고른 역량일수록 크고 진하게. 한 가지 색을 연한 정도로만 나눕니다 */
+  const PAL=give?['#6A3FD6','#7A51E0','#8B62E8','#9B78EC','#AA8DEF','#B8A0F2','#C5B2F5','#D1C2F7','#DBD0F9','#E5DDFB']
+                :['#F25A0A','#FF6B1A','#FF7D35','#FF8F4F','#FFA068','#FFB083','#FFBF9B','#FFCDB1','#FFD9C5','#FFE4D6'];
+  const max=Math.max.apply(null,ks.map(function(k){return k[1];}).concat([1]));
+  /* 크기 : 인원이 많고 순위가 높을수록 크게. 버블 넓이 합이 판의 약 40%가 되도록 맞춥니다 */
+  const wt=ks.map(function(k,i){return Math.max(.12,Math.pow(k[1]/max,1.6)*(1-i*.055));});
+  const sc=Math.sqrt(.4*W*H/Math.PI/wt.reduce(function(a,b){return a+b;},0));
+  /* 처음 자리 : 가장 큰 버블은 가운데, 나머지는 둘레에 */
+  const SEED=[[.5,.5],[.2,.27],[.8,.22],[.78,.7],[.25,.76],[.52,.12],[.5,.9],[.1,.52],[.92,.47],[.68,.04]];
+  const B=ks.map(function(k,i){
+    const r=Math.min(W*.24,Math.max(36,sc*Math.sqrt(wt[i])));
+    return {k:k[0],n:k[1],r:r,x:SEED[i][0]*W,y:SEED[i][1]*H,c:PAL[i],i:i};});
+  /* 겹치지 않게 살짝 밀어 냅니다 */
+  for(let it=0;it<240;it++){
+    for(let a=0;a<B.length;a++)for(let b=a+1;b<B.length;b++){
+      const p=B[a],q=B[b];let dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy)||1;const need=p.r+q.r+6;
+      if(d<need){const m=(need-d)/2;dx/=d;dy/=d;
+        const wa=a===0?.15:1,wb=1;p.x-=dx*m*wa;p.y-=dy*m*wa;q.x+=dx*m*wb;q.y+=dy*m*wb;}}
+    B.forEach(function(p){p.x=Math.max(p.r+2,Math.min(W-p.r-2,p.x));p.y=Math.max(p.r+2,Math.min(H-p.r-2,p.y));});
+  }
   let h='';
-  BUB.forEach(function(b){
-    const r=b[2]*W;
-    h+='<i class="sb s'+b[3]+'" style="left:'+(b[0]*W-r)+'px;top:'+(b[1]*H-r)+'px;width:'+(r*2)+'px;height:'+(r*2)+'px"></i>';});
-  for(let i=0;i<14;i++)h+='<i class="spk" style="left:'+((i*37)%97)+'%;top:'+((i*53)%91)+'%;animation-delay:'+(-i*.9)+'s"></i>';
-  /* 이름표 자리 : 왼쪽 · 오른쪽을 오가며 지그재그로 */
-  const SLOT=[[.40,.06],[.72,.16],[.24,.27],[.76,.37],[.20,.49],[.80,.58],[.30,.70],[.70,.79],[.22,.90],[.62,.98]];
-  ks.forEach(function(k,i){
-    h+='<button type="button" class="mpill'+(k[1]?'':' dim')+'" data-mkk="'+esc(k[0])+'" data-sl="'+i+'" style="--d0:'+(.2+i*.08).toFixed(2)+'s;--bd:'+(-(i*.7)).toFixed(2)+'s">'+
-       (i%2?esc(k[0])+'<i>'+k[1]+'</i>':'<i>'+k[1]+'</i>'+esc(k[0]))+'</button>';
+  /* 작은 장식 방울 */
+  [[.06,.08,7],[.94,.12,9],[.04,.93,10],[.95,.95,6],[.36,.33,5],[.66,.6,6],[.14,.4,4],[.86,.84,5]].forEach(function(d,j){
+    h+='<i class="mdot" style="left:'+(d[0]*W)+'px;top:'+(d[1]*H)+'px;width:'+(d[2]*2)+'px;height:'+(d[2]*2)+'px;background:'+PAL[3+(j%6)]+';animation-delay:'+(-j*.8)+'s"></i>';});
+  B.forEach(function(p){
+    const dark=p.i<5,ln=Math.max(2,Math.max.apply(null,p.k.split(" ").map(function(w){return w.length;}))),fs=Math.max(10.5,Math.min(22,p.r*.28,p.r*1.5/ln));
+    h+='<button type="button" class="mbub'+(p.n?'':' dim')+(dark?'':' lt')+'" data-mkk="'+esc(p.k)+'" style="left:'+(p.x-p.r).toFixed(1)+'px;top:'+(p.y-p.r).toFixed(1)+'px;width:'+(p.r*2).toFixed(1)+'px;height:'+(p.r*2).toFixed(1)+'px;background:'+p.c+';--d0:'+(.1+p.i*.06).toFixed(2)+'s;--bd:'+(-(p.i*.9)).toFixed(2)+'s">'+
+       '<b style="font-size:'+fs.toFixed(1)+'px">'+p.k.split(' ').map(function(w){return '<span>'+esc(w)+'</span>';}).join(' ')+'</b><i>'+p.n+'명</i></button>';
   });
   f.innerHTML=h;
-  f.querySelectorAll('.mpill').forEach(function(p){
-    const sl=SLOT[+p.dataset.sl],w=p.offsetWidth,hh=p.offsetHeight;
-    const x=Math.max(4,Math.min(W-w-4,sl[0]*W-w/2)),y=Math.max(0,Math.min(H-hh,sl[1]*H-hh/2));
-    p.style.left=x+'px';p.style.top=y+'px';
-    p.style.setProperty('--dx','0px');p.style.setProperty('--dy','14px');
-  });
 }
 function pickMarket(k,btn){
   const scr=document.getElementById('s-market');if(scr.classList.contains('tap'))return;
   const list=peopleFor(k,mkMode),give=mkMode==='give';
   const sr=scr.getBoundingClientRect(),br=btn.getBoundingClientRect();
-  btn.style.setProperty('--ty',(sr.top+sr.height*.3-(br.top+br.height/2))+'px');
+  btn.style.setProperty('--ty',(sr.top+Math.max(sr.height*.3,br.height*.6+70)-(br.top+br.height/2))+'px');
   btn.style.setProperty('--tx',(sr.left+sr.width/2-(br.left+br.width/2))+'px');
   btn.classList.add('sel');scr.classList.add('tap');
   document.getElementById('mkSheetT').innerHTML='<em>'+esc(k)+'</em> '+(give?'경험을<br>나눠줄 수 있는 동료':'조언을<br>구하는 동료');
