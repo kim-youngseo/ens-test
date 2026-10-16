@@ -2028,6 +2028,11 @@ button.ms.mine::after{content:"";position:absolute}
 .mvcard{padding:16px 12px 10px}
 .mvcard.lt{background:#F6F1E8}
 .mviz{display:block}
+/* ===== 13차 : 버블 뒤 은은한 빛 ===== */
+.gl{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(var(--rgb),.42) 0%,rgba(var(--rgb),.16) 45%,rgba(var(--rgb),0) 70%);opacity:.75}
+#s-market[data-fx="e3"] .gl{animation:efade 1.1s cubic-bezier(.2,.7,.2,1) calc(var(--dl) * 1.6) both,efloat calc(var(--dur) * 1.8) ease-in-out calc(var(--dl) * 1.6 + 1.1s) infinite alternate,eglow calc(var(--dur) * 2.4) ease-in-out calc(var(--dl) * 2) infinite}
+@keyframes eglow{0%,100%{scale:1;opacity:.55}50%{scale:1.12;opacity:.9}}
+#s-market.tap .gl{opacity:.08!important;transition:opacity .45s}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -2208,7 +2213,7 @@ button.ms.mine::after{content:"";position:absolute}
       </section>
 
       <!-- ========== GIVE & GET 마켓 ========== -->
-      <section class="screen" id="s-market" data-gv="1" data-fx="e3" data-pal="l2b">
+      <section class="screen" id="s-market" data-gv="1" data-fx="e3" data-pal="l2c">
         <div class="nav"><button class="bk" data-back>&#8592;</button></div>
         <h1 class="ggh">GIVE &amp; GET</h1>
         <p class="gglede" id="mkLede">버블을 눌러 경험을 나눠줄 동료를 만나보세요</p>
@@ -2271,7 +2276,7 @@ button.ms.mine::after{content:"";position:absolute}
       </section>
 
       <!-- ========== 행사장 맵 ========== -->
-      <section class="screen" id="s-map">
+      <section class="screen" id="s-map" data-mv="15">
         <div class="hname"><span class="as">Ascént</span> 맵</div>
         <div id="mapTabs"></div>
         <div class="map2 rise" style="animation-delay:.06s">
@@ -3892,6 +3897,7 @@ function renderMap(){
   const host=document.getElementById('roomPlan');if(!host)return;
   const MV=(document.getElementById('s-map').dataset.mv)||'';
   document.querySelector('#s-map .map2').style.display=(+MV>=5)?'none':'';
+  if(MV==='15'){document.getElementById('mapTabs').innerHTML='';document.getElementById('mapList').innerHTML='<div class="mcard mvcard lt">'+secFinal()+'</div>';return;}
   if(+MV>=9){renderMapViz(MV);return;}
   if(+MV>=5){renderMapNew(MV);return;}
   /* 시안별 층 높이 : 1 낮게, 2 5층 빼고, 3 한 층씩, 4 아주 낮게 + 층별 안내 */
@@ -4146,6 +4152,40 @@ function renderMapViz(MV){
   const light=(iso&&st==='b')||(!iso&&st!=='a');
   list.innerHTML='<div class="mcard mvcard'+(light?' lt':'')+'">'+(iso?isoViz(st):secViz(st))+'</div>';
 }
+
+/* ===== Ascént 맵 최종 : 글씨·아이콘이 방 안에 들어가도록 칸 너비를 따로 잡은 단면도 ===== */
+const SCH={
+  '4F':[['_',0],['G401',56],['ST',16],['G402',56],['WC',20],['ST',14],['H401',60],['ST',14]],
+  '3F':[['F301',62],['ST',16],['G301',56],['ST',16],['G302',56],['EV',20],['WC',20],['_',0]],
+  '2F':[['IN',20],['F201',112],['_',0],['EV',20],['_',38]]};
+function stIcon(cx,cy,c){return '<path transform="translate('+(cx-6)+' '+(cy-6)+')" d="M0 12V9h3V6h3V3h3V0h3v3H9v3H6v3H3v3z" fill="'+c+'"/>';}
+function evIcon(cx,cy,c){return '<g transform="translate('+cx+' '+cy+')"><rect x="-7" y="-9" width="14" height="18" rx="2.5" fill="none" stroke="'+c+'" stroke-width="1.8"/>'+
+  '<path d="M-3.5 -1.5l3.5-4 3.5 4zM-3.5 1.5l3.5 4 3.5-4z" fill="'+c+'"/></g>';}
+function secFinal(){
+  const w=340,L=40,R0=w-4,fl=['4F','3F','2F'],rh=88,gp=12,pad=7,G=3,H=fl.length*(rh+gp)+22;
+  const RM={};MAP2.ROOMS.forEach(function(r){RM[r.id]=r;});
+  let s='<svg viewBox="0 0 '+w+' '+H+'" width="100%" class="mviz">',lab='';
+  fl.forEach(function(f,i){const y=i*(rh+gp),items=SCH[f];
+    s+='<rect x="'+L+'" y="'+y+'" width="'+(R0-L)+'" height="'+rh+'" rx="12" fill="#EAE3D6"/>'+
+       '<g transform="translate(17 '+(y+rh/2)+')"><circle r="15" fill="#7E5BD6"/><text y="4.5" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">'+f+'</text></g>';
+    const fixed=items.reduce(function(a,it){return a+it[1];},0),flexN=items.filter(function(it){return !it[1];}).length;
+    const inner=R0-L-pad*2-G*(items.length-1),fw=flexN?(inner-fixed)/flexN:0;
+    let x=L+pad;const y0=y+pad,hh=rh-pad*2,cy=y+rh/2;
+    items.forEach(function(it){const ww=it[1]||fw,cx=x+ww/2,id=it[0];
+      if(id==='_'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="7" fill="#E1D9CB"/>';}
+      else if(id==='ST'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#D9D0C0"/>'+stIcon(cx,cy,'#7D7262');}
+      else if(id==='EV'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#CFC5B4"/>'+evIcon(cx,cy,'#5E5446');}
+      else if(id==='WC'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#FFD84D"/>';lab+=wcBadge(cx,cy,9.5);}
+      else if(id==='IN'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#FF6B1A"/>'+
+          '<path transform="translate('+(cx-6)+' '+(cy-7)+')" d="M2 0h8v14H2z" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="'+(cx+1.5)+'" cy="'+cy+'" r="1.2" fill="#fff"/>';
+        lab+=inTag(cx+14,y+rh+16,'up');}
+      else{const r=RM[id],ink=r.light?'#fff':'#231638',u=mUse(r),fs=Math.min(9,(ww-8)/u.length*1.1);
+        s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="8" fill="'+r.c+'"/>';
+        lab+='<text x="'+cx+'" y="'+(cy-1)+'" text-anchor="middle" font-size="13" font-weight="900" fill="'+ink+'">'+id+'</text>'+
+             '<text x="'+cx+'" y="'+(cy+12)+'" text-anchor="middle" font-size="'+fs.toFixed(1)+'" font-weight="700" fill="'+ink+'" opacity=".85">'+u+'</text>';}
+      x+=ww+G;});
+  });
+  return s+lab+'</svg>';}
 let mapFloor='2F';
 function mapNowSession(){
   const base=Date.UTC(2026,9,31,-9),now=Date.now(),mins=function(t){const a=t.split(':');return base+(+a[0]*60+ +a[1])*60000;};
@@ -4211,6 +4251,7 @@ function renderMarket(){
   PALS.l1=[['#45BBAC','#56A6E3','#8790EA'],['#E6A93F','#EF8F55'],['#E8726C','#E37AAA'],['#6CBD69','#45BBAC'],['#56A6E3'],['#9A80E6'],['#E6A93F']];
   PALS.l2=[['#62B9AE','#6EA5D8','#979DE2'],['#D9A955','#E0935F'],['#DD7D79','#D886AE'],['#7DB67B','#62B9AE'],['#6EA5D8'],['#A38EDD'],['#D9A955']];
   PALS.l3=PALS.l1;
+  PALS.l2c=[['#7DCAC1','#89B9E4','#ADB2EC'],['#E5BD72','#EAA97B'],['#E79692','#E3A0C1'],['#97C895','#7DCAC1'],['#89B9E4'],['#B8A6E8'],['#E5BD72']];
   PALS.l2b=[['#71C3B9','#7DB1E0','#A3A9E8'],['#E0B565','#E6A06E'],['#E38B87','#DF95BA'],['#8CC18A','#71C3B9'],['#7DB1E0'],['#AF9CE4'],['#E0B565']];
   const LP=scr0.dataset.pal||'';
   const PAL=(FX==='e3'&&PALS[LP])?PALS[LP]:(FX==='e1'||FX==='e3')?PALS.deep:(PALS[GV]||PALS['1']);
@@ -4246,7 +4287,8 @@ function renderMarket(){
   if(LP==='l3'&&FX==='e3'){svg=svg.replace('</defs>',B.map(function(p){return '<radialGradient id="gg'+p.i+'" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="'+lite(p.c,.45)+'"/><stop offset=".55" stop-color="'+lite(p.c,.08)+'"/><stop offset="1" stop-color="'+p.c+'"/></radialGradient>';}).join('')+'</defs>');}
   B.forEach(function(p){svg+='<circle class="gc" data-i="'+p.i+'" style="'+FXV(p)+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)+'" fill="'+((LP==='l3'&&FX==='e3')?'url(#gg'+p.i+')':p.c)+'"/>';});
   svg+='</g></svg>';
-  let h='<div class="gwrap">'+svg;
+  let h='<div class="gwrap">'+B.map(function(p){const g=p.r*1.5;
+    return '<i class="gl" style="left:'+(p.x-g).toFixed(1)+'px;top:'+(p.y-g).toFixed(1)+'px;width:'+(g*2).toFixed(1)+'px;height:'+(g*2).toFixed(1)+'px;--rgb:'+hx(p.c)+';'+FXV(p)+'"></i>';}).join('')+svg;
   [[.06,.08,6],[.94,.1,8],[.05,.94,9],[.95,.96,5],[.97,.62,4],[.5,.97,5]].forEach(function(d,j){
     if(B.some(function(p){return Math.hypot(p.x-d[0]*W,p.y-d[1]*H)<p.r+d[2]+16;}))return;
     h+='<i class="mdot" style="left:'+(d[0]*W)+'px;top:'+(d[1]*H)+'px;width:'+(d[2]*2)+'px;height:'+(d[2]*2)+'px;background:'+PAL[j%4][0]+';animation-delay:'+(-j*.8)+'s"></i>';});
