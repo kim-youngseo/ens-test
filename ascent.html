@@ -1899,6 +1899,28 @@ button.vact.vlink{border:none;background:none;font-family:inherit;cursor:pointer
 #s-market.tap .gsvg,#s-market.tap .gbub:not(.sel),#s-market.tap .mdot{opacity:.12;pointer-events:none}
 #s-market.tap .gbub.sel{background:var(--c);z-index:5;pointer-events:none;animation:mbsel .7s cubic-bezier(.45,0,.2,1) forwards}
 #s-market.tap .gwrap{animation:none}
+/* GIVE & GET 이펙트 시안 : #s-market[data-fx] */
+.gc{transform-box:fill-box;transform-origin:center}
+#s-market[data-fx] .gwrap{animation:none}
+#s-market[data-fx] .gc,#s-market[data-fx] .gbub{will-change:transform}
+/* A 말랑 젤리 : 퐁 하고 튀어나와 말랑말랑 */
+#s-market[data-fx="a"] .gc,#s-market[data-fx="a"] .gbub{animation:fxpop .75s cubic-bezier(.3,1.6,.5,1) var(--dl) both,fxjelly var(--dur) ease-in-out calc(var(--dl) + .75s) infinite}
+@keyframes fxpop{0%{transform:scale(0)}60%{transform:scale(1.14)}80%{transform:scale(.95)}100%{transform:scale(1)}}
+@keyframes fxjelly{0%,100%{transform:scale(1,1)}25%{transform:scale(1.06,.94)}50%{transform:scale(.95,1.05)}75%{transform:scale(1.03,.97)}}
+/* B 둥실 : 아래에서 떠오르고 제각각 떠다니며 붙었다 늘어났다 */
+#s-market[data-fx="b"] .gc,#s-market[data-fx="b"] .gbub{animation:fxrise .9s cubic-bezier(.2,.9,.3,1.2) var(--dl) both,fxdrift calc(var(--dur) * 2.2) ease-in-out calc(var(--dl) + .9s) infinite}
+@keyframes fxrise{from{transform:translateY(90px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes fxdrift{0%,100%{transform:translate(0,0)}33%{transform:translate(var(--dx),var(--dy))}66%{transform:translate(calc(var(--dy) * -1),var(--dx)) scale(1.03)}}
+/* C 통통 : 위에서 떨어져 튕기고, 숨 쉬다가 가끔 하나씩 통 */
+#s-market[data-fx="c"] .gc,#s-market[data-fx="c"] .gbub{animation:fxdrop .9s linear var(--dl) both,fxbreath var(--dur) ease-in-out calc(var(--dl) + .9s) infinite}
+@keyframes fxdrop{0%{transform:translateY(-140px) scale(.7);opacity:0;animation-timing-function:cubic-bezier(.5,0,1,.6)}
+  45%{transform:translateY(0) scale(1.08,.9);opacity:1;animation-timing-function:cubic-bezier(0,.4,.5,1)}
+  65%{transform:translateY(-22px) scale(.97,1.04);animation-timing-function:cubic-bezier(.5,0,1,.6)}
+  80%{transform:translateY(0) scale(1.04,.96)}90%{transform:translateY(-5px)}100%{transform:none}}
+@keyframes fxbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+#s-market[data-fx="c"] .boing{animation:fxboing .65s cubic-bezier(.3,1.5,.5,1) both!important}
+@keyframes fxboing{0%{transform:scale(1)}30%{transform:scale(1.18,.86)}55%{transform:scale(.9,1.1)}75%{transform:scale(1.06,.96)}100%{transform:scale(1)}}
+#s-market[data-fx] .gbub:active{scale:.88;transition:scale .12s}
 /* 휴대폰 · 접은 폴더블 : 화면 전체를 씁니다 */
 @media(max-width:540px){
   body{padding:0;justify-content:flex-start}
@@ -3874,17 +3896,18 @@ function renderMarket(){
   for(let it=0;it<420;it++){
     for(let a=0;a<B.length;a++)for(let b=a+1;b<B.length;b++){
       const p=B[a],q=B[b];let dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy)||1;dx/=d;dy/=d;
-      if(linked(p,q)){const m=(d-(p.r+q.r)*.8)*.12;p.x+=dx*m;p.y+=dy*m;q.x-=dx*m;q.y-=dy*m;}
+      if(linked(p,q)){const m=(d-(p.r+q.r)*.93)*.12;p.x+=dx*m;p.y+=dy*m;q.x-=dx*m;q.y-=dy*m;}
       else{const need=p.r+q.r+26;if(d<need){const m=(need-d)/2;p.x-=dx*m;p.y-=dy*m;q.x+=dx*m;q.y+=dy*m;}}}
     const pad=GV==='4'?14:4;B.forEach(function(p){p.x=Math.max(p.r+pad,Math.min(W-p.r-pad,p.x));p.y=Math.max(p.r+pad,Math.min(H-p.r-pad,p.y));});
   }
   const mix=function(c1,c2){const h=function(c,i){return parseInt(c.slice(1+i*2,3+i*2),16);};
     return '#'+[0,1,2].map(function(i){return ((h(c1,i)+h(c2,i))>>1).toString(16).padStart(2,'0');}).join('');};
   let svg='<svg class="gsvg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'"><defs><filter id="goo" x="-20%" y="-20%" width="140%" height="140%">'+
-    '<feGaussianBlur in="SourceGraphic" stdDeviation="11" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10"/></filter></defs><g filter="url(#goo)">';
+    '<feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -11"/></filter></defs><g filter="url(#goo)">';
   L.forEach(function(l){const p=l[0],q=l[1],t=p.r/(p.r+q.r);
-    svg+='<circle cx="'+(p.x+(q.x-p.x)*t).toFixed(1)+'" cy="'+(p.y+(q.y-p.y)*t).toFixed(1)+'" r="'+(Math.min(p.r,q.r)*.55).toFixed(1)+'" fill="'+mix(p.c,q.c)+'"/>';});
-  B.forEach(function(p){svg+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)+'" fill="'+p.c+'"/>';});
+    svg+='<circle cx="'+(p.x+(q.x-p.x)*t).toFixed(1)+'" cy="'+(p.y+(q.y-p.y)*t).toFixed(1)+'" r="'+(Math.min(p.r,q.r)*.3).toFixed(1)+'" fill="'+mix(p.c,q.c)+'"/>';});
+  const FXV=function(p){const a=p.i*2.39;return '--dl:'+(.08+p.i*.07).toFixed(2)+'s;--dx:'+(Math.cos(a)*9).toFixed(1)+'px;--dy:'+(Math.sin(a)*9).toFixed(1)+'px;--dur:'+(2.6+(p.i%4)*.45).toFixed(2)+'s';};
+  B.forEach(function(p){svg+='<circle class="gc" data-i="'+p.i+'" style="'+FXV(p)+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)+'" fill="'+p.c+'"/>';});
   svg+='</g></svg>';
   let h='<div class="gwrap">'+svg;
   [[.06,.08,6],[.94,.1,8],[.05,.94,9],[.95,.96,5],[.97,.62,4],[.5,.97,5]].forEach(function(d,j){
@@ -3892,10 +3915,16 @@ function renderMarket(){
     h+='<i class="mdot" style="left:'+(d[0]*W)+'px;top:'+(d[1]*H)+'px;width:'+(d[2]*2)+'px;height:'+(d[2]*2)+'px;background:'+PAL[j%4][0]+';animation-delay:'+(-j*.8)+'s"></i>';});
   B.forEach(function(p){
     const ln=Math.max(2,Math.max.apply(null,p.k.split(' ').map(function(w){return w.length;}))),fs=Math.max(11.5,Math.min(20,p.r*.27,p.r*1.45/ln));
-    h+='<button type="button" class="gbub'+(p.n?'':' dim')+'" data-mkk="'+esc(p.k)+'" style="left:'+(p.x-p.r).toFixed(1)+'px;top:'+(p.y-p.r).toFixed(1)+'px;width:'+(p.r*2).toFixed(1)+'px;height:'+(p.r*2).toFixed(1)+'px;--c:'+p.c+'">'+
+    h+='<button type="button" class="gbub'+(p.n?'':' dim')+'" data-mkk="'+esc(p.k)+'" style="left:'+(p.x-p.r).toFixed(1)+'px;top:'+(p.y-p.r).toFixed(1)+'px;width:'+(p.r*2).toFixed(1)+'px;height:'+(p.r*2).toFixed(1)+'px;--c:'+p.c+';'+FXV(p)+'" data-i="'+p.i+'">'+
        '<b style="font-size:'+fs.toFixed(1)+'px">'+p.k.split(' ').map(function(w){return '<span>'+esc(w)+'</span>';}).join(' ')+'</b><i>'+p.n+'명</i></button>';
   });
   f.innerHTML=h+'</div>';
+  clearInterval(window.mkFxT);
+  if(scr0.dataset.fx==='c')window.mkFxT=setInterval(function(){
+    if(scr0.classList.contains('tap')||!scr0.offsetParent)return;
+    const i=Math.floor(Math.random()*B.length);
+    f.querySelectorAll('[data-i="'+i+'"]').forEach(function(e){e.classList.remove('boing');void e.getBoundingClientRect();e.classList.add('boing');});
+  },1300);
 }
 function pickMarket(k,btn){
   const scr=document.getElementById('s-market');if(scr.classList.contains('tap'))return;
