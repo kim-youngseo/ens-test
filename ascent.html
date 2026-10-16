@@ -4155,12 +4155,16 @@ function renderMapViz(MV){
 
 /* ===== Ascént 맵 최종 : 글씨·아이콘이 방 안에 들어가도록 칸 너비를 따로 잡은 단면도 ===== */
 const SCH={
-  '4F':[['_',0],['G401',56],['ST',16],['G402',56],['WC',20],['ST',14],['H401',60],['ST',14]],
-  '3F':[['F301',62],['ST',16],['G301',56],['ST',16],['G302',56],['EV',20],['WC',20],['_',0]],
-  '2F':[['IN',20],['F201',112],['_',0],['EV',20],['_',38]]};
-function stIcon(cx,cy,c){return '<path transform="translate('+(cx-6)+' '+(cy-6)+')" d="M0 12V9h3V6h3V3h3V0h3v3H9v3H6v3H3v3z" fill="'+c+'"/>';}
-function evIcon(cx,cy,c){return '<g transform="translate('+cx+' '+cy+')"><rect x="-7" y="-9" width="14" height="18" rx="2.5" fill="none" stroke="'+c+'" stroke-width="1.8"/>'+
-  '<path d="M-3.5 -1.5l3.5-4 3.5 4zM-3.5 1.5l3.5 4 3.5-4z" fill="'+c+'"/></g>';}
+  '4F':[['_',0],['G401',56],['ST',20],['G402',56],['WC',21],['ST',20],['H401',60],['ST',20]],
+  '3F':[['F301',62],['ST',20],['G301',56],['ST',20],['G302',56],['EV',21],['WC',21],['_',0]],
+  '2F':[['IN',20],['F201',112],['_',0],['EV',21],['_',35]]};
+/* 계단 : 슬레이트 원 안에 오르는 계단과 사람 / 엘리베이터 : 파란 원 안에 문과 ▲▼ */
+function stIcon(cx,cy){return '<g transform="translate('+cx+' '+cy+')"><circle r="9.5" fill="#5F6B7A" stroke="#fff" stroke-width="1.5"/>'+
+  '<path d="M-6 6h3.2v-3h3v-3h3v-3h3.2" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>'+
+  '<circle cx="-1.5" cy="-5.2" r="1.5" fill="#fff"/><path d="M-1.5 -3.4l-1.6 3.4M-1.5 -3.4l1.8 2.2" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></g>';}
+function evIcon(cx,cy){return '<g transform="translate('+cx+' '+cy+')"><circle r="9.5" fill="#3F7BD6" stroke="#fff" stroke-width="1.5"/>'+
+  '<rect x="-4.6" y="-1.4" width="9.2" height="7.6" rx="1" fill="none" stroke="#fff" stroke-width="1.4"/><line x1="0" y1="-1.4" x2="0" y2="6.2" stroke="#fff" stroke-width="1.2"/>'+
+  '<path d="M-4.2 -3.2l2.2-3 2.2 3zM.2 -6.2l2.2 3 2.2-3z" fill="#fff" transform="translate(0 .2)"/></g>';}
 function secFinal(){
   const w=340,L=40,R0=w-4,fl=['4F','3F','2F'],rh=88,gp=12,pad=7,G=3,H=fl.length*(rh+gp)+22;
   const RM={};MAP2.ROOMS.forEach(function(r){RM[r.id]=r;});
@@ -4173,8 +4177,8 @@ function secFinal(){
     let x=L+pad;const y0=y+pad,hh=rh-pad*2,cy=y+rh/2;
     items.forEach(function(it){const ww=it[1]||fw,cx=x+ww/2,id=it[0];
       if(id==='_'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="7" fill="#E1D9CB"/>';}
-      else if(id==='ST'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#D9D0C0"/>'+stIcon(cx,cy,'#7D7262');}
-      else if(id==='EV'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#CFC5B4"/>'+evIcon(cx,cy,'#5E5446');}
+      else if(id==='ST'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#D9D0C0"/>';lab+=stIcon(cx,cy);}
+      else if(id==='EV'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#CFC5B4"/>';lab+=evIcon(cx,cy);}
       else if(id==='WC'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#FFD84D"/>';lab+=wcBadge(cx,cy,9.5);}
       else if(id==='IN'){s+='<rect x="'+x+'" y="'+y0+'" width="'+ww+'" height="'+hh+'" rx="6" fill="#FF6B1A"/>'+
           '<path transform="translate('+(cx-6)+' '+(cy-7)+')" d="M2 0h8v14H2z" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="'+(cx+1.5)+'" cy="'+cy+'" r="1.2" fill="#fff"/>';
